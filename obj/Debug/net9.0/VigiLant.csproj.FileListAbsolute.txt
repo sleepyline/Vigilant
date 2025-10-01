@@ -90,3 +90,4 @@ E:\Tiago\Documents\VigiLant\obj\Debug\net9.0\refint\VigiLant.dll
 E:\Tiago\Documents\VigiLant\obj\Debug\net9.0\VigiLant.pdb
 E:\Tiago\Documents\VigiLant\obj\Debug\net9.0\VigiLant.genruntimeconfig.cache
 E:\Tiago\Documents\VigiLant\obj\Debug\net9.0\ref\VigiLant.dll
+E:\Tiago\Documents\VigiLant\obj\Debug\net9.0\VigiLant.sourcelink.json
