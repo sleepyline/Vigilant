@@ -14,16 +14,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
 
+app.UseStaticFiles();
+app.UseRouting();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
+// The standard way to map controller routes
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
