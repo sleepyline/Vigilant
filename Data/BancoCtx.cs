@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VigiLant.Models;
+using VigiLant.Models.Enum;
 
 namespace VigiLant.Data
 {
@@ -13,8 +14,22 @@ namespace VigiLant.Data
         public DbSet<Colaborador> Colaboradores { get; set; }
         public DbSet<Equipamento> Equipamentos { get; set; }
         public DbSet<Risco> Riscos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Risco>()
+                .Property(r => r.Tipo)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Risco>()
+                .Property(r => r.Nivel)
+                .HasConversion<string>();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Relatorio> Relatorios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        
+
     }
 }
