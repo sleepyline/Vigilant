@@ -19,11 +19,11 @@ namespace VigiLant.Data
         {
             modelBuilder.Entity<Risco>()
                 .Property(r => r.Tipo)
-                .HasConversion<string>();
+                .HasConversion<string>(); // Converte a enum TipoRisco para string
 
             modelBuilder.Entity<Risco>()
                 .Property(r => r.Nivel)
-                .HasConversion<string>();
+                .HasConversion<string>(); // Converte a enum NivelSeveridade para string
 
             base.OnModelCreating(modelBuilder);
         }

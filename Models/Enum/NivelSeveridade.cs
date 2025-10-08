@@ -1,7 +1,9 @@
-namespace VigiLant.Models.Enum
+namespace VigiLant.Models.Enum;
+
+public enum NivelSeveridade
 {
-    public class NivelSeveridade
-    {
-        
-    }
+    Baixo,
+    Medio,
+    Alto,
+    Critico
 }

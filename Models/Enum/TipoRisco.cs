@@ -1,7 +1,10 @@
-namespace VigiLant.Models.Enum
+namespace VigiLant.Models.Enum;
+
+public enum TipoRisco
 {
-    public enum TipoRisco
-    {
-        
-    }
+    Fisico,
+    Quimico,
+    Biologico,
+    Ergonomico,
+    Acidente
 }
