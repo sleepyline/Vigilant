@@ -1,8 +1,130 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <div class="breadcrumb">
+        <a href="#">Analisados</a>
+        <span class="separator">/</span>
+        <span class="active">Riscos</span>
+    </div>
 </div>
+
+<div class="page-actions">
+    <div></div>
+    <button class="btn-primary">
+        <i class="fas fa-download"></i>
+        Download CSV
+    </button>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@ViewBag.TotalRiscos</h3>
+            <p>Risco Identificado</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon black">
+            <i class="fas fa-tools"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@ViewBag.TotalEquipamentos</h3>
+            <p>Equipamentos check</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@ViewBag.AnalisesPeriodos</h3>
+            <p>Análise de Períodos</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon yellow">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@ViewBag.RelatoriosIncidentes</h3>
+            <p>Relatórios de Incidentes</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-chart-bar"></i>
+                Taxa de Riscos do ano
+            </h2>
+            <div class="card-actions">
+                <button><i class="fas fa-filter"></i></button>
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="chart-placeholder">
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-clipboard-list"></i>
+                Análise e Solução urgente
+            </h2>
+            <div class="card-actions">
+                <button><i class="fas fa-filter"></i></button>
+                <button><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+        <ul class="urgent-list">
+            <li class="urgent-item">
+                <div class="urgent-item-content">
+                    <div class="check-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p>Afaste-se de áreas de risco imediato</p>
+                </div>
+                <button class="more-btn">⋮</button>
+            </li>
+            <li class="urgent-item">
+                <div class="urgent-item-content">
+                    <div class="check-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p>Ligue para os serviços de emergência</p>
+                </div>
+                <button class="more-btn">⋮</button>
+            </li>
+            <li class="urgent-item">
+                <div class="urgent-item-content">
+                    <div class="check-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p>Isole a área para evitar a propagação do vazamento.</p>
+                </div>
+                <button class="more-btn">⋮</button>
+            </li>
+        </ul>
+    </div>
+</div>
+

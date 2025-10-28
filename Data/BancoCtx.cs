@@ -14,20 +14,6 @@ namespace VigiLant.Data
         public DbSet<Colaborador> Colaboradores { get; set; }
         public DbSet<Equipamento> Equipamentos { get; set; }
         public DbSet<Risco> Riscos { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Risco>()
-                .Property(r => r.Tipo)
-                .HasConversion<string>(); // Converte a enum TipoRisco para string
-
-            modelBuilder.Entity<Risco>()
-                .Property(r => r.Nivel)
-                .HasConversion<string>(); // Converte a enum NivelSeveridade para string
-
-            base.OnModelCreating(modelBuilder);
-        }
-
         public DbSet<Relatorio> Relatorios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
 

@@ -1,0 +1,77 @@
+
+@model IEnumerable<VigiLant.Models.Equipamento>
+@{
+    ViewData["Title"] = "Equipamentos";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Gerenciamento de Equipamentos</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="active">Equipamentos</span>
+    </div>
+</div>
+
+<div class="page-actions">
+    <div></div>
+    <button class="btn-primary">
+        <i class="fas fa-plus"></i>
+        Adicionar Novo Equipamento
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome do Equipamento</th>
+                <th>Tipo</th>
+                <th>Localização</th>
+                <th>Status</th>
+                <th>Próxima Manutenção</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var equipamento in Model)
+            {
+                <tr>
+                    <td>#@equipamento.Id</td>
+                    <td><strong>@equipamento.Nome</strong></td>
+                    <td>@equipamento.Tipo</td>
+                    <td>@equipamento.Localizacao</td>
+                    <td>
+                        @if (equipamento.Status == "Ativo")
+                        {
+                            <span class="status-badge success">@equipamento.Status</span>
+                        }
+                        else if (equipamento.Status == "Manutenção")
+                        {
+                            <span class="status-badge warning">@equipamento.Status</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge danger">@equipamento.Status</span>
+                        }
+                    </td>
+                    <td>@equipamento.DataManutencao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="btn-icon" title="Ver Detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
