@@ -1,3 +1,4 @@
+@using VigiLant.Models.Enum
 
 @model IEnumerable<VigiLant.Models.Risco>
 @{
@@ -5,7 +6,7 @@
 }
 
 <div class="page-header">
-    <h1 class="page-title">Gerenciamento de Riscos</h1>
+    <h1 class="page-title">Riscos</h1>
     <div class="breadcrumb">
         <a href="@Url.Action("Index", "Home")">Dashboard</a>
         <span class="separator">/</span>
@@ -42,15 +43,15 @@
                     <td><strong>@risco.Nome</strong></td>
                     <td>@risco.Descricao</td>
                     <td>
-                        @if (risco.NivelGravidade == "Crítico")
+                        @if (risco.NivelGravidade == NivelSeveridade.Critico)
                         {
                             <span class="status-badge danger">@risco.NivelGravidade</span>
                         }
-                        else if (risco.NivelGravidade == "Alto")
+                        else if (risco.NivelGravidade == NivelSeveridade.Alto)
                         {
                             <span class="status-badge warning">@risco.NivelGravidade</span>
                         }
-                        else if (risco.NivelGravidade == "Médio")
+                        else if (risco.NivelGravidade == NivelSeveridade.Medio)
                         {
                             <span class="status-badge info">@risco.NivelGravidade</span>
                         }

@@ -1,22 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using VigiLant.Models;
+using VigiLant.Contratos; 
 
-namespace VigiLantMVC.Controllers
+namespace VigiLant.Controllers
 {
     public class RiscosController : Controller
     {
-        private static List<Risco> riscos = new List<Risco>
+        private readonly IRiscoRepository _riscoRepository;
+
+        public RiscosController(IRiscoRepository riscoRepository)
         {
-            new Risco { Id = 1, Nome = "Risco Elétrico", Descricao = "Instalação elétrica inadequada", NivelGravidade = "Alto", Status = "Identificado", DataIdentificacao = DateTime.Now.AddDays(-10) },
-            new Risco { Id = 2, Nome = "Risco de Incêndio", Descricao = "Falta de extintores", NivelGravidade = "Crítico", Status = "Em Análise", DataIdentificacao = DateTime.Now.AddDays(-5) },
-            new Risco { Id = 3, Nome = "Risco Químico", Descricao = "Armazenamento inadequado de produtos químicos", NivelGravidade = "Médio", Status = "Resolvido", DataIdentificacao = DateTime.Now.AddDays(-20) },
-            new Risco { Id = 4, Nome = "Risco Ergonômico", Descricao = "Mobiliário inadequado", NivelGravidade = "Baixo", Status = "Identificado", DataIdentificacao = DateTime.Now.AddDays(-15) },
-            new Risco { Id = 5, Nome = "Risco de Queda", Descricao = "Piso escorregadio", NivelGravidade = "Alto", Status = "Em Tratamento", DataIdentificacao = DateTime.Now.AddDays(-8) }
-        };
+            _riscoRepository = riscoRepository;
+        }
 
         public IActionResult Index()
         {
+            var riscos = _riscoRepository.GetAll();
             return View(riscos);
         }
+        
+        // Você adicionaria outros métodos como Details, Create, Edit, Delete aqui,
+        // usando os métodos do _riscoRepository (GetById, Add, Update, Delete).
     }
 }

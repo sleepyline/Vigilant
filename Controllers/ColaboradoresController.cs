@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using VigiLant.Models;
 
-namespace VigiLantMVC.Controllers
+namespace VigiLant.Controllers;
+
+public class ColaboradoresController : Controller
 {
-    public class ColaboradoresController : Controller
-    {
-        private static List<Colaborador> colaboradores = new List<Colaborador>
+    private static List<Colaborador> colaboradores = new List<Colaborador>
         {
             new Colaborador { Id = 1, Nome = "João Silva", Cargo = "Engenheiro de Segurança", Departamento = "Segurança do Trabalho", Email = "joao.silva@empresa.com", Telefone = "(11) 98765-4321", DataAdmissao = DateTime.Now.AddYears(-3) },
             new Colaborador { Id = 2, Nome = "Maria Santos", Cargo = "Técnica de Segurança", Departamento = "Segurança do Trabalho", Email = "maria.santos@empresa.com", Telefone = "(11) 98765-1234", DataAdmissao = DateTime.Now.AddYears(-2) },
@@ -14,9 +14,9 @@ namespace VigiLantMVC.Controllers
             new Colaborador { Id = 5, Nome = "Carlos Mendes", Cargo = "Operador de Máquinas", Departamento = "Produção", Email = "carlos.mendes@empresa.com", Telefone = "(11) 98765-3456", DataAdmissao = DateTime.Now.AddYears(-1) }
         };
 
-        public IActionResult Index()
-        {
-            return View(colaboradores);
-        }
+    public IActionResult Index()
+    {
+        return View(colaboradores);
     }
 }
+

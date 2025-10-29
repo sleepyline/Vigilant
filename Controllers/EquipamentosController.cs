@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using VigiLant.Models;
 
-namespace VigiLantMVC.Controllers
+namespace VigiLant.Controllers;
+
+public class EquipamentosController : Controller
 {
-    public class EquipamentosController : Controller
-    {
-        private static List<Equipamento> equipamentos = new List<Equipamento>
+    private static List<Equipamento> equipamentos = new List<Equipamento>
         {
             new Equipamento { Id = 1, Nome = "Extintor A-001", Tipo = "Extintor de Incêndio", Localizacao = "Sala 101", Status = "Ativo", DataManutencao = DateTime.Now.AddDays(30) },
             new Equipamento { Id = 2, Nome = "Máquina de Corte XZ-500", Tipo = "Equipamento Industrial", Localizacao = "Galpão 2", Status = "Manutenção", DataManutencao = DateTime.Now.AddDays(-2) },
@@ -14,9 +14,9 @@ namespace VigiLantMVC.Controllers
             new Equipamento { Id = 5, Nome = "Empilhadeira EMP-7", Tipo = "Veículo Industrial", Localizacao = "Depósito", Status = "Ativo", DataManutencao = DateTime.Now.AddDays(45) }
         };
 
-        public IActionResult Index()
-        {
-            return View(equipamentos);
-        }
+    public IActionResult Index()
+    {
+        return View(equipamentos);
     }
 }
+
