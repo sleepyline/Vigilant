@@ -1,6 +1,12 @@
 .content-area {
     padding: 30px;
     flex: 1;
+    background-color: #f3f3f3;
+    border-radius: 30px;
+}
+
+h1 {
+    font-size: 3em;
 }
 
 .breadcrumb {
@@ -161,14 +167,45 @@
     position: relative;
 }
 
-.chart-bar:nth-child(1) { height: 35%; background: #87CEEB; }
-.chart-bar:nth-child(2) { height: 55%; background: #FFC107; }
-.chart-bar:nth-child(3) { height: 45%; background: #dc3545; }
-.chart-bar:nth-child(4) { height: 70%; background: #28a745; }
-.chart-bar:nth-child(5) { height: 60%; background: #9370DB; }
-.chart-bar:nth-child(6) { height: 80%; background: #87CEEB; }
-.chart-bar:nth-child(7) { height: 90%; background: #FFC107; }
-.chart-bar:nth-child(8) { height: 50%; background: #dc3545; }
+.chart-bar:nth-child(1) {
+    height: 35%;
+    background: #87CEEB;
+}
+
+.chart-bar:nth-child(2) {
+    height: 55%;
+    background: #FFC107;
+}
+
+.chart-bar:nth-child(3) {
+    height: 45%;
+    background: #dc3545;
+}
+
+.chart-bar:nth-child(4) {
+    height: 70%;
+    background: #28a745;
+}
+
+.chart-bar:nth-child(5) {
+    height: 60%;
+    background: #9370DB;
+}
+
+.chart-bar:nth-child(6) {
+    height: 80%;
+    background: #87CEEB;
+}
+
+.chart-bar:nth-child(7) {
+    height: 90%;
+    background: #FFC107;
+}
+
+.chart-bar:nth-child(8) {
+    height: 50%;
+    background: #dc3545;
+}
 
 .urgent-list {
     list-style: none;
