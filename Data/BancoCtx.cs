@@ -11,6 +11,13 @@ namespace VigiLant.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Risco>()
+                .Property(r => r.NivelGravidade)
+                .HasConversion<string>(); 
+        }
+
         public DbSet<Colaborador> Colaboradores { get; set; }
         public DbSet<Equipamento> Equipamentos { get; set; }
         public DbSet<Risco> Riscos { get; set; }
