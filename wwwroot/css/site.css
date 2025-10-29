@@ -286,6 +286,70 @@ body {
   background-color: #dee2e6;
 }
 
+.user-icon {
+    position: relative; 
+    cursor: pointer;
+    padding: 0 10px; 
+}
+
+.user-icon {
+    position: relative; 
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.user-dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000; 
+    min-width: 150px;
+    background-color: #fff; 
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 0; 
+}
+
+.user-dropdown-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px; 
+    font-weight: bold; 
+    color: #333; 
+    border-bottom: 1px solid #eee; 
+    margin-bottom: 5px; 
+    padding-bottom: 10px; 
+}
+
+.user-dropdown-header i {
+    font-size: 18px; 
+    margin-right: 10px;
+}
+
+.user-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.user-dropdown-menu a:hover {
+    background-color: #f0f0f0; 
+}
+
+.user-dropdown-menu a i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.user-icon:hover .user-dropdown-menu {
+    display: block;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
