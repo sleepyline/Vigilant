@@ -1,0 +1,66 @@
+
+@model IEnumerable<VigiLant.Models.Colaborador>
+@{
+    ViewData["Title"] = "Colaboradores";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Colaboradores</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="active">Colaboradores</span>
+    </div>
+</div>
+
+<div class="page-actions">
+    <div></div>
+    <button class="btn-primary">
+        <i class="fas fa-plus"></i>
+        Adicionar Novo Colaborador
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Departamento</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Data Admissão</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var colaborador in Model)
+            {
+                <tr>
+                    <td>#@colaborador.Id</td>
+                    <td><strong>@colaborador.Nome</strong></td>
+                    <td>@colaborador.Cargo</td>
+                    <td>@colaborador.Departamento</td>
+                    <td>@colaborador.Email</td>
+                    <td>@colaborador.Telefone</td>
+                    <td>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="btn-icon" title="Ver Detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

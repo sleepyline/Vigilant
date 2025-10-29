@@ -1,0 +1,95 @@
+@using VigiLant.Models.Enum
+
+@model IEnumerable<VigiLant.Models.Risco>
+@{
+    ViewData["Title"] = "Riscos";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Riscos</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="active">Riscos</span>
+    </div>
+</div>
+
+<div class="page-actions">
+    <div></div>
+    <button class="btn-primary">
+        <i class="fas fa-plus"></i>
+        Adicionar Novo Risco
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome do Risco</th>
+                <th>Descrição</th>
+                <th>Nível de Gravidade</th>
+                <th>Status</th>
+                <th>Data Identificação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var risco in Model)
+            {
+                <tr>
+                    <td>#@risco.Id</td>
+                    <td><strong>@risco.Nome</strong></td>
+                    <td>@risco.Descricao</td>
+                    <td>
+                        @if (risco.NivelGravidade == NivelSeveridade.Critico)
+                        {
+                            <span class="status-badge danger">@risco.NivelGravidade</span>
+                        }
+                        else if (risco.NivelGravidade == NivelSeveridade.Alto)
+                        {
+                            <span class="status-badge warning">@risco.NivelGravidade</span>
+                        }
+                        else if (risco.NivelGravidade == NivelSeveridade.Medio)
+                        {
+                            <span class="status-badge info">@risco.NivelGravidade</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge success">@risco.NivelGravidade</span>
+                        }
+                    </td>
+                    <td>
+                        @if (risco.Status == "Resolvido")
+                        {
+                            <span class="status-badge success">@risco.Status</span>
+                        }
+                        else if (risco.Status == "Em Tratamento" || risco.Status == "Em Análise")
+                        {
+                            <span class="status-badge info">@risco.Status</span>
+                        }
+                        else
+                        {
+                            <span class="status-badge warning">@risco.Status</span>
+                        }
+                    </td>
+                    <td>@risco.DataIdentificacao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="btn-icon" title="Ver Detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

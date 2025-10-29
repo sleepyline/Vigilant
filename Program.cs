@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using VigiLant.Contratos;
 using VigiLant.Data;
+using VigiLant.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Repositorios e contratos
+builder.Services.AddScoped<IRiscoRepository, RiscoRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

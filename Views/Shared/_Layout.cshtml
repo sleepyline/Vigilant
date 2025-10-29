@@ -1,50 +1,142 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - VigiLant</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/VigiLant.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] | VigiLant</title>
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/view.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">VigiLant</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="layout-container">
+        <aside class="sidebar">
+            <a asp-controller="Home" asp-action="Index" class="logo">
+                <i class="bx bx-shield-alt"></i>
+                <div class="logo-name"><span>Vigi</span>Lant</div>
+            </a>
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                            <i class="bx bxs-dashboard menu-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="separator-item">
+                        <hr class="menu-divider">
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Riscos")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Riscos" ? "active" : "")">
+                            <i class="bx bx-shield-alt menu-icon"></i>
+                            <span>Riscos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Equipamentos")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipamentos" ? "active" : "")">
+                            <i class="bx bx-wrench menu-icon"></i>
+                            <span>Equipamentos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Colaboradores")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Colaboradores" ? "active" : "")">
+                            <i class="bx bx-group menu-icon"></i>
+                            <span>Colaboradores</span>
+                        </a>
+                    </li>
+                    <li class="separator-item">
+                        <hr class="menu-divider">
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Equipamentos")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Relatórios" ? "active" : "")">
+                            <i class="bx bx-file menu-icon"></i>
+                            <span>Relatórios</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Equipamentos")"
+                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Configurações" ? "active" : "")">
+                            <i class="bx bx-cog menu-icon"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </a>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Pesquisar..." />
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+
+                        <div class="user-dropdown-menu">
+
+                            <div class="user-dropdown-header">
+                                <i class="fas fa-user"></i>
+                                <span>TG</span>
+                            </div>
+                            <a href="#">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Perfil</span>
+                            </a>
+                            <a href="#">
+                                <i class="fas fa-cog"></i>
+                                <span>Configurações</span>
+                            </a>
+                            <a href="#" class="logout-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - VigiLant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
