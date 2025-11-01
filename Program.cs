@@ -1,12 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using VigiLant.Contratos;
 using VigiLant.Data;
 using VigiLant.Repository;
+using VigiLant.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Repositorios e contratos
-builder.Services.AddScoped<IRiscoRepository, RiscoRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -16,6 +15,25 @@ string mySqlConnection = builder.Configuration.GetConnectionString("DefaultDatab
 builder.Services.AddDbContext<BancoCtx>(opt =>
 {
     opt.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
+});
+
+// Repositorios e contratos
+builder.Services.AddScoped<IRiscoRepository, RiscoRepository>();
+builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
+builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+//Services
+builder.Services.AddSingleton<IHashService, HashService>();
+
+//Cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Conta/Login"; // Redireciona usuários não autenticados
+        options.AccessDeniedPath = "/Conta/AcessoNegado"; // Redireciona usuários sem permissão (Role)
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
 });
 
 var app = builder.Build();
@@ -28,9 +46,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 // The standard way to map controller routes

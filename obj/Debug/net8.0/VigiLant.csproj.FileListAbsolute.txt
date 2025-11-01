@@ -169,3 +169,4 @@ E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.csproj.AssemblyReference.cache
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.csproj.Up2Date
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\BCrypt.Net-Next.dll

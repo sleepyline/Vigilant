@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using VigiLant.Models;
-using VigiLant.Contratos; 
+using VigiLant.Contratos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VigiLant.Controllers
 {
+    [Authorize]
     public class RiscosController : Controller
     {
         private readonly IRiscoRepository _riscoRepository;
@@ -19,7 +21,5 @@ namespace VigiLant.Controllers
             return View(riscos);
         }
         
-        // Você adicionaria outros métodos como Details, Create, Edit, Delete aqui,
-        // usando os métodos do _riscoRepository (GetById, Add, Update, Delete).
     }
 }
