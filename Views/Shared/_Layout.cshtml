@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] | VigiLant</title>
     <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 
+    @await RenderSectionAsync("Styles", required: false)
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/view.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
@@ -17,123 +18,142 @@
 
 <body>
     <div class="layout-container">
-        <aside class="sidebar">
-            <a asp-controller="Home" asp-action="Index" class="logo">
-                <i class="bx bx-shield-alt"></i>
-                <div class="logo-name"><span>Vigi</span>Lant</div>
-            </a>
 
-            <nav class="sidebar-menu">
-                <ul>
-                    <li>
-                        <a href="@Url.Action("Index", "Home")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
-                            <i class="bx bxs-dashboard menu-icon"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="separator-item">
-                        <hr class="menu-divider">
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Riscos")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Riscos" ? "active" : "")">
-                            <i class="bx bx-shield-alt menu-icon"></i>
-                            <span>Riscos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Equipamentos")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipamentos" ? "active" : "")">
-                            <i class="bx bx-wrench menu-icon"></i>
-                            <span>Equipamentos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Colaboradores")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Colaboradores" ? "active" : "")">
-                            <i class="bx bx-group menu-icon"></i>
-                            <span>Colaboradores</span>
-                        </a>
-                    </li>
-                    <li class="separator-item">
-                        <hr class="menu-divider">
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Equipamentos")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Relatórios" ? "active" : "")">
-                            <i class="bx bx-file menu-icon"></i>
-                            <span>Relatórios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Equipamentos")"
-                            class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Configurações" ? "active" : "")">
-                            <i class="bx bx-cog menu-icon"></i>
-                            <span>Configurações</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <a href="#">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <aside class="sidebar">
+                <a asp-controller="Home" asp-action="Index" class="logo">
+                    <i class="bx bx-shield-alt"></i>
+                    <div class="logo-name"><span>Vigi</span>Lant</div>
                 </a>
-            </div>
-        </aside>
 
-        <div class="main-wrapper">
-            <header class="topbar">
-                <div class="topbar-left">
-                    <button class="menu-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Pesquisar..." />
-                        <button class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="@Url.Action("Index", "Home")"
+                                class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                                <i class="bx bxs-dashboard menu-icon"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="separator-item">
+                            <hr class="menu-divider">
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Riscos")"
+                                class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Riscos" ? "active" : "")">
+                                <i class="bx bx-shield-alt menu-icon"></i>
+                                <span>Riscos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Equipamentos")"
+                                class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipamentos" ? "active" : "")">
+                                <i class="bx bx-wrench menu-icon"></i>
+                                <span>Equipamentos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Colaboradores")"
+                                class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Colaboradores" ? "active" : "")">
+                                <i class="bx bx-group menu-icon"></i>
+                                <span>Colaboradores</span>
+                            </a>
+                        </li>
+                        <li class="separator-item">
+                            <hr class="menu-divider">
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Relatorios")"
+                                class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Relatorios" ? "active" : "")">
+                                <i class="bx bx-file menu-icon"></i>
+                                <span>Relatórios</span>
+                            </a>
+                        </li>
+
+                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Configuracoes")"
+                                    class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Configuracoes" ? "active" : "")">
+                                    <i class="bx bx-cog menu-icon"></i>
+                                    <span>Configurações</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <a href="javascript:document.getElementById('logoutFormSidebar').submit()" class="logout-link-anchor">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a>
                 </div>
+            </aside>
+        }
+        <div class="main-wrapper">
 
-                <div class="topbar-right">
-                    <div class="notification-icon">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="user-icon">
-                        <i class="fas fa-user"></i>
-
-                        <div class="user-dropdown-menu">
-
-                            <div class="user-dropdown-header">
-                                <i class="fas fa-user"></i>
-                                <span>TG</span>
-                            </div>
-                            <a href="#">
-                                <i class="fas fa-user-circle"></i>
-                                <span>Perfil</span>
-                            </a>
-                            <a href="#">
-                                <i class="fas fa-cog"></i>
-                                <span>Configurações</span>
-                            </a>
-                            <a href="#" class="logout-link">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Sair</span>
-                            </a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <button class="menu-toggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="search-container">
+                            <input type="text" class="search-input" placeholder="Pesquisar..." />
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </header>
 
+                    <div class="topbar-right">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">3</span>
+                        </div>
+
+                        <div class="user-icon">
+                            <i class="fas fa-user"></i>
+
+                            <div class="user-dropdown-menu">
+
+                                <div class="user-dropdown-header">
+                                    <i class="fas fa-user"></i>
+                                    <span>@User.Identity.Name</span>
+                                </div>
+                                <a href="#">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>Perfil</span>
+                                </a>
+                                <a href="#">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Configurações</span>
+                                </a>
+                                <a href="javascript:document.getElementById('logoutFormDropdown').submit()" class="logout-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sair</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            }
             <main class="content-area">
                 @RenderBody()
             </main>
         </div>
     </div>
+
+    <form asp-controller="Conta" asp-action="Logout" method="post" id="logoutFormSidebar" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <form asp-controller="Conta" asp-action="Logout" method="post" id="logoutFormDropdown" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
 
     <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

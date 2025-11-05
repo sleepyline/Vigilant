@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "RxWQ4C9HXzw=",
+  "dgSpecHash": "8GMUTrdkKME=",
   "success": true,
   "projectFilePath": "C:\\Users\\MARIA\\OneDrive\\Documentos\\GitHub\\Vigilant\\VigiLant.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MARIA\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\MARIA\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\MARIA\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\MARIA\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\MARIA\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\MARIA\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",
@@ -155,5 +156,12 @@
     "C:\\Users\\MARIA\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\MARIA\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache C:\\Users\\MARIA\\OneDrive\\Documentos\\GitHub\\Vigilant\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
