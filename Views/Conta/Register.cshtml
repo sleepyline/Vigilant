@@ -1,5 +1,8 @@
 @{
     ViewData["Title"] = "Register";
+
+    ViewData[index: "ExcludeSharedCss"] = true;
+
 }
 
 @section Styles {
@@ -8,7 +11,7 @@
 
 <div class="auth-container">
     <form asp-controller="Conta" asp-action="Register" method="post" class="auth-form">
-        <h2>Criar Conta VigiLant</h2>
+        <h2>Criar Conta</h2>
 
         @if (ViewBag.Erro != null)
         {

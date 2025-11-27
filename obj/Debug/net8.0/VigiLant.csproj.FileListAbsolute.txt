@@ -9,7 +9,6 @@ E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.sourcelink.json
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\appsettings.Development.json
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\appsettings.json
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\VigiLant.staticwebassets.runtime.json
-E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\VigiLant.staticwebassets.endpoints.json
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\VigiLant.exe
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\VigiLant.deps.json
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\VigiLant.runtimeconfig.json
@@ -19,9 +18,7 @@ E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.csht
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\scopedcss\bundle\VigiLant.styles.css
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\scopedcss\projectbundle\VigiLant.bundle.scp.css
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets.build.json
-E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets.build.json.cache
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets.development.json
-E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.dll
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\refint\VigiLant.dll
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.pdb
@@ -349,3 +346,8 @@ C:\Users\MARIA\OneDrive\Documentos\GitHub\Vigilant\obj\Debug\net8.0\ref\VigiLant
 =======
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\BCrypt.Net-Next.dll
 >>>>>>> a0a2a15e40cd7b4a697b86df9fa700fef45147f5
+E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets\msbuild.VigiLant.Microsoft.AspNetCore.StaticWebAssets.props
+E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets\msbuild.build.VigiLant.props
+E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.VigiLant.props
+E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.VigiLant.props
+E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\staticwebassets.pack.json

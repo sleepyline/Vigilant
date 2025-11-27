@@ -7,9 +7,13 @@
     <title>@ViewData["Title"] | VigiLant</title>
     <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 
+    @if (ViewData["ExcludeSharedCss"] == null)
+    {
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/view.css" />
+    }
+    
     @await RenderSectionAsync("Styles", required: false)
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/view.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
@@ -132,7 +136,8 @@
                                     <i class="fas fa-cog"></i>
                                     <span>Configurações</span>
                                 </a>
-                                <a href="javascript:document.getElementById('logoutFormDropdown').submit()" class="logout-link">
+                                <a href="javascript:document.getElementById('logoutFormDropdown').submit()"
+                                    class="logout-link">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Sair</span>
                                 </a>

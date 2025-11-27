@@ -23,6 +23,9 @@ builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
+builder.Services.AddScoped<IMqttConfigurationRepository, MqttConfigurationRepository>();
+builder.Services.AddSingleton<IMqttService, MqttService>(); // O serviço MQTT deve ser Singleton ou Scoped, dependendo da sua arquitetura
+
 //Services
 builder.Services.AddSingleton<IHashService, HashService>();
 

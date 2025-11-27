@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VigiLant.Data;
 
@@ -11,9 +12,11 @@ using VigiLant.Data;
 namespace VigiLant.Migrations
 {
     [DbContext(typeof(BancoCtx))]
-    partial class BancoCtxModelSnapshot : ModelSnapshot
+    [Migration("20251127025439_AtualizandoEquipaments")]
+    partial class AtualizandoEquipaments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,30 +110,6 @@ namespace VigiLant.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Equipamentos");
-                });
-
-            modelBuilder.Entity("VigiLant.Models.MqttConfiguration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BaseTopic")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("BrokerHost")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("BrokerPort")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MqttConfigurations");
                 });
 
             modelBuilder.Entity("VigiLant.Models.Relatorio", b =>

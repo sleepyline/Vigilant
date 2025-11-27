@@ -1,0 +1,169 @@
+@model VigiLant.Models.Equipamento
+@{
+    ViewData["Title"] = "Conectar Sensor de Equipamento";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Conectar Sensor</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="@Url.Action("Index", "Equipamentos")">Equipamentos</a>
+        <span class="separator">/</span>
+        <span class="active">Conectar Sensor</span>
+    </div>
+</div>
+
+<div class="form-container">
+    <form asp-action="Conectar" asp-controller="Equipamentos" method="post">
+        
+        @* --- Mensagens de Notificação --- *@
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+        {
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                Houve um erro ao processar sua solicitação ou ao testar a conexão MQTT. Por favor, verifique os dados e tente novamente.
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Detalhes do Sensor e Sistema</h2>
+            </div>
+            <div class="card-body">
+                
+                <div class="form-group">
+                    <label asp-for="Nome">Nome do Sensor/Dispositivo</label>
+                    <input asp-for="Nome" id="sensorNome" class="form-control" placeholder="Ex: Moinho1Vibracao" required />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="TipoSensor">Tipo de Sensor (Medição)</label>
+                    <select asp-for="TipoSensor" id="sensorTipo" class="form-control" required>
+                        <option value="">-- Selecione o Tipo de Medição --</option>
+                        <option value="Vibracao">Vibração</option>
+                        <option value="Temperatura">Temperatura</option>
+                        <option value="Corrente">Corrente Elétrica</option>
+                        <option value="Pressao">Pressão</option>
+                        <option value="Umidade">Umidade</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                    <span asp-validation-for="TipoSensor" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Status">Status Inicial do Sistema Ligado</label>
+                    <select asp-for="Status" class="form-control" required>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Aguardando Manutenção">Aguardando Manutenção</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    @* CORREÇÃO: Usando asp-for="DataManutencao" em vez de "DataUltimaManutencao" *@
+                    <label asp-for="DataUltimaManutencao">Data da Última Manutenção</label>
+                    <input asp-for="DataUltimaManutencao" class="form-control" type="date" required />
+                    <span asp-validation-for="DataUltimaManutencao" class="text-danger"></span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2>Configurações de Conexão MQTT (Pré-definidas)</h2>
+                <p class="text-muted">Estes dados são carregados das Configurações Globais do sistema (<a href="@Url.Action("Index", "Configuracoes")">Editar aqui</a>).</p>
+            </div>
+            <div class="card-body">
+                @* BROKER HOST E PORTA AGORA SÃO READONLY E VÊM DO MODEL INICIALIZADO NO CONTROLLER *@
+                <div class="form-group">
+                    <label asp-for="BrokerHost">Endereço do Broker MQTT (Host/IP)</label>
+                    <input asp-for="BrokerHost" class="form-control bg-light" readonly />
+                    <span asp-validation-for="BrokerHost" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BrokerPort">Porta</label>
+                    <input asp-for="BrokerPort" class="form-control bg-light" readonly />
+                    <span asp-validation-for="BrokerPort" class="text-danger"></span>
+                </div>
+
+                @* TÓPICO FINAL GERADO DINAMICAMENTE *@
+                <div class="form-group">
+                    <label asp-for="MqttTopic">Tópico de Publicação (Gerado)</label>
+                    @* O valor será escrito aqui pelo JS, mas o campo REAL para o POST é o hidden abaixo *@
+                    <p id="generatedTopicDisplay" class="form-control-static" style="font-weight: bold; color: #dc3545; word-wrap: break-word;">
+                        @Model.MqttTopic (Aguardando Nome/Tipo)
+                    </p>
+                    
+                    @* Campo oculto que enviará o Tópico REAL para o Controller *@
+                    <input type="hidden" asp-for="MqttTopic" id="mqttTopicHidden" />
+                    <small class="form-text text-muted">O sensor deve publicar em: <span class="text-danger">*Gerado Acima*</span></small>
+                    <span asp-validation-for="MqttTopic" class="text-danger"></span>
+                </div>
+                
+                @* CAMPOS OPCIONAIS MQTT (Ainda devem ser incluídos, mas podem ser removidos do Equipamento Model se não for para salvar) *@
+                <div class="form-group">
+                    <label asp-for="MqttUser">Usuário MQTT (Opcional)</label>
+                    <input asp-for="MqttUser" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="MqttPassword">Senha MQTT (Opcional)</label>
+                    <input asp-for="MqttPassword" class="form-control" type="password" />
+                </div>
+            </div>
+        </div>
+
+        <div class="page-actions mt-4">
+            <a href="@Url.Action("Index", "Equipamentos")" class="btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-primary"><i class="fas fa-satellite-dish"></i> Conectar & Testar Sensor</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sensorNomeInput = document.getElementById('sensorNome');
+            const sensorTipoSelect = document.getElementById('sensorTipo');
+            const generatedTopicDisplay = document.getElementById('generatedTopicDisplay');
+            const mqttTopicHidden = document.getElementById('mqttTopicHidden');
+            
+            // Tópico Base é o valor inicial do MqttTopic (ex: vigilant/sensores)
+            const baseTopic = mqttTopicHidden.value.trim().replace(/\/$/, ''); 
+
+            function generateMqttTopic() {
+                // Remove espaços e converte para minúsculas para um tópico limpo
+                const nome = sensorNomeInput.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+                const tipo = sensorTipoSelect.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+                if (nome && tipo) {
+                    const fullTopic = `${baseTopic}/${tipo}/${nome}`;
+                    generatedTopicDisplay.textContent = fullTopic;
+                    mqttTopicHidden.value = fullTopic; // Define o valor para o POST
+                } else {
+                    generatedTopicDisplay.textContent = `${baseTopic}/<TIPO_SENSOR>/<NOME_SENSOR>`;
+                    mqttTopicHidden.value = baseTopic; // Retorna ao valor base
+                }
+            }
+
+            // Ouve as mudanças nos campos que definem o Tópico
+            sensorNomeInput.addEventListener('input', generateMqttTopic);
+            sensorTipoSelect.addEventListener('change', generateMqttTopic);
+
+            // Roda no carregamento para preencher se houver dados de validação
+            generateMqttTopic();
+        });
+    </script>
+}
