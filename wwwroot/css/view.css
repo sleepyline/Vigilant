@@ -32,7 +32,7 @@ h1 {
 
 .TwoButtons{
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 .breadcrumb a:hover {
@@ -297,10 +297,10 @@ h1 {
 }
 
 .btn-secondary {
-    background-color: #6c757d;
+    background-color: #000000;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 12px 25px;
     border-radius: 6px;
     font-size: 13px;
     cursor: pointer;
