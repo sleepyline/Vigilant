@@ -1,4 +1,5 @@
 @model VigiLant.Models.Colaborador
+@using VigiLant.Models.Enum @* Não se esqueça de adicionar este using *@
 @{
     ViewData["Title"] = "Editar Colaborador";
 }
@@ -9,13 +10,7 @@
 
 <div class="page-header">
     <h1 class="page-title">Editar Colaborador: **@Model.Nome**</h1>
-    <div class="breadcrumb">
-        <a href="@Url.Action("Index", "Home")">Dashboard</a>
-        <span class="separator">/</span>
-        <a href="@Url.Action("Index")">Colaboradores</a>
-        <span class="separator">/</span>
-        <span class="active">Editar</span>
-    </div>
+    @* ... (Restante do Breadcrumb) ... *@
 </div>
 
 <div class="card p-4">
@@ -29,17 +24,25 @@
             <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
 
+        @* START: Campo Cargo transformado em SELECT com Enum *@
         <div class="form-group mb-3">
             <label asp-for="Cargo" class="form-label"></label>
-            <input asp-for="Cargo" class="form-control" />
+            <select asp-for="Cargo" 
+                    asp-items="Html.GetEnumSelectList<Cargo>()" 
+                    class="form-select">
+                <option value="">-- Selecione o Cargo --</option>
+            </select>
             <span asp-validation-for="Cargo" class="text-danger"></span>
         </div>
+        @* END: Campo Cargo transformado em SELECT com Enum *@
 
         <div class="form-group mb-3">
             <label asp-for="Departamento" class="form-label"></label>
             <input asp-for="Departamento" class="form-control" />
             <span asp-validation-for="Departamento" class="text-danger"></span>
         </div>
+        
+        @* ... (Restante dos Campos Email, Telefone, DataAdmissao) ... *@
 
         <div class="form-group mb-3">
             <label asp-for="Email" class="form-label"></label>
