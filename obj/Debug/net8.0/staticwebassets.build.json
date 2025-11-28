@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tKPeXORsXT2CyByci11GaoBj63lT4v7tl/f1F9II6tk=",
+  "Hash": "XJ959i3fG0dQnCC+7q/OFRfIdPRJ2kbq+iOZk35Yz3E=",
   "Source": "VigiLant",
   "BasePath": "_content/VigiLant",
   "Mode": "Default",
@@ -110,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\view.css"
+    },
+    {
+      "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\viewrevo.css",
+      "SourceId": "VigiLant",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\",
+      "BasePath": "_content/VigiLant",
+      "RelativePath": "css/viewrevo.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\viewrevo.css"
     },
     {
       "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\favicon.png",

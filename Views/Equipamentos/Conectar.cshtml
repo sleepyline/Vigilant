@@ -1,169 +1,304 @@
 @model VigiLant.Models.Equipamento
 @{
-    ViewData["Title"] = "Conectar Sensor de Equipamento";
+    ViewData["Title"] = "Conectar Equipamento";
 }
 
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
 <div class="page-header">
-    <h1 class="page-title">Conectar Sensor</h1>
+    <h1 class="page-title">Conectar Novo Equipamento</h1>
     <div class="breadcrumb">
         <a href="@Url.Action("Index", "Home")">Dashboard</a>
         <span class="separator">/</span>
         <a href="@Url.Action("Index", "Equipamentos")">Equipamentos</a>
         <span class="separator">/</span>
-        <span class="active">Conectar Sensor</span>
+        <span class="active">Conectar</span>
     </div>
 </div>
 
-<div class="form-container">
-    <form asp-action="Conectar" asp-controller="Equipamentos" method="post">
-        
-        @* --- Mensagens de Notificação --- *@
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success" role="alert">
-                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+<div class="card">
+    <div class="card-header">
+        <h2>Detalhes da Conexão</h2>
+    </div>
+    <div class="card-body">
+        <form id="conexao-form">
+            
+            <div class="form-group">
+                <label for="Nome">Nome do Equipamento:</label>
+                <input type="text" id="Nome" name="Nome" class="form-control" required>
             </div>
-        }
-        @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
-        {
-            <div class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-triangle"></i>
-                Houve um erro ao processar sua solicitação ou ao testar a conexão MQTT. Por favor, verifique os dados e tente novamente.
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <label for="Localizacao">Localização:</label>
+                <input type="text" id="Localizacao" name="Localizacao" class="form-control" required>
             </div>
-        }
 
-        <div class="card">
-            <div class="card-header">
-                <h2>Detalhes do Sensor e Sistema</h2>
+            <div class="form-group">
+                <label for="TipoSensor">Tipo do Sensor (ex: SensorCAL, SensorTemp):</label>
+                <input type="text" id="TipoSensor" name="TipoSensor" class="form-control" placeholder="Ex: SensorTemp" required onkeyup="updateTopico()">
             </div>
-            <div class="card-body">
-                
-                <div class="form-group">
-                    <label asp-for="Nome">Nome do Sensor/Dispositivo</label>
-                    <input asp-for="Nome" id="sensorNome" class="form-control" placeholder="Ex: Moinho1Vibracao" required />
-                    <span asp-validation-for="Nome" class="text-danger"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label asp-for="TipoSensor">Tipo de Sensor (Medição)</label>
-                    <select asp-for="TipoSensor" id="sensorTipo" class="form-control" required>
-                        <option value="">-- Selecione o Tipo de Medição --</option>
-                        <option value="Vibracao">Vibração</option>
-                        <option value="Temperatura">Temperatura</option>
-                        <option value="Corrente">Corrente Elétrica</option>
-                        <option value="Pressao">Pressão</option>
-                        <option value="Umidade">Umidade</option>
-                        <option value="Outro">Outro</option>
-                    </select>
-                    <span asp-validation-for="TipoSensor" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Status">Status Inicial do Sistema Ligado</label>
-                    <select asp-for="Status" class="form-control" required>
-                        <option value="Ativo">Ativo</option>
-                        <option value="Inativo">Inativo</option>
-                        <option value="Aguardando Manutenção">Aguardando Manutenção</option>
-                    </select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    @* CORREÇÃO: Usando asp-for="DataManutencao" em vez de "DataUltimaManutencao" *@
-                    <label asp-for="DataUltimaManutencao">Data da Última Manutenção</label>
-                    <input asp-for="DataUltimaManutencao" class="form-control" type="date" required />
-                    <span asp-validation-for="DataUltimaManutencao" class="text-danger"></span>
-                </div>
-                
+            
+            <div class="form-group">
+                <label for="Endereco">Endereço do Broker MQTT:</label>
+                <input type="text" id="Endereco" name="Endereco" class="form-control" value="broker.emqx.io" readonly>
             </div>
-        </div>
 
-        <div class="card mt-4">
-            <div class="card-header">
-                <h2>Configurações de Conexão MQTT (Pré-definidas)</h2>
-                <p class="text-muted">Estes dados são carregados das Configurações Globais do sistema (<a href="@Url.Action("Index", "Configuracoes")">Editar aqui</a>).</p>
+            <div class="form-group">
+                <label for="Porta">Porta do Broker MQTT:</label>
+                <input type="number" id="Porta" name="Porta" class="form-control" value="8083" readonly>
             </div>
-            <div class="card-body">
-                @* BROKER HOST E PORTA AGORA SÃO READONLY E VÊM DO MODEL INICIALIZADO NO CONTROLLER *@
-                <div class="form-group">
-                    <label asp-for="BrokerHost">Endereço do Broker MQTT (Host/IP)</label>
-                    <input asp-for="BrokerHost" class="form-control bg-light" readonly />
-                    <span asp-validation-for="BrokerHost" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BrokerPort">Porta</label>
-                    <input asp-for="BrokerPort" class="form-control bg-light" readonly />
-                    <span asp-validation-for="BrokerPort" class="text-danger"></span>
-                </div>
 
-                @* TÓPICO FINAL GERADO DINAMICAMENTE *@
-                <div class="form-group">
-                    <label asp-for="MqttTopic">Tópico de Publicação (Gerado)</label>
-                    @* O valor será escrito aqui pelo JS, mas o campo REAL para o POST é o hidden abaixo *@
-                    <p id="generatedTopicDisplay" class="form-control-static" style="font-weight: bold; color: #dc3545; word-wrap: break-word;">
-                        @Model.MqttTopic (Aguardando Nome/Tipo)
-                    </p>
-                    
-                    @* Campo oculto que enviará o Tópico REAL para o Controller *@
-                    <input type="hidden" asp-for="MqttTopic" id="mqttTopicHidden" />
-                    <small class="form-text text-muted">O sensor deve publicar em: <span class="text-danger">*Gerado Acima*</span></small>
-                    <span asp-validation-for="MqttTopic" class="text-danger"></span>
+            <div class="form-group">
+                <label for="Topico">Tópico MQTT:</label>
+                <div class="input-group">
+                    <input type="text" id="TopicoBase" name="TopicoBase" class="form-control" value="Equipamentos/" readonly style="flex-grow: 0; width: auto;">
+                    <input type="text" id="TopicoTipo" name="TopicoTipo" class="form-control" placeholder="Tipo do Sensor (preenchido automaticamente)" readonly style="flex-grow: 1;">
+                    <input type="text" id="TopicoAdicional" name="TopicoAdicional" class="form-control" placeholder="Adicional (ex: /Area1/Motor)" style="flex-grow: 1;">
                 </div>
-                
-                @* CAMPOS OPCIONAIS MQTT (Ainda devem ser incluídos, mas podem ser removidos do Equipamento Model se não for para salvar) *@
-                <div class="form-group">
-                    <label asp-for="MqttUser">Usuário MQTT (Opcional)</label>
-                    <input asp-for="MqttUser" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="MqttPassword">Senha MQTT (Opcional)</label>
-                    <input asp-for="MqttPassword" class="form-control" type="password" />
-                </div>
+                <small class="form-text text-muted">Tópico completo será: <span id="full-topico">Equipamentos/...</span></small>
             </div>
-        </div>
 
-        <div class="page-actions mt-4">
-            <a href="@Url.Action("Index", "Equipamentos")" class="btn-secondary">Cancelar</a>
-            <button type="submit" class="btn-primary"><i class="fas fa-satellite-dish"></i> Conectar & Testar Sensor</button>
-        </div>
-    </form>
+            <button type="button" class="btn btn-success" onclick="iniciarConexao()">
+                <i class="fas fa-plug"></i> Conectar
+            </button>
+            <a href="@Url.Action("Index", "Equipamentos")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+            
+            <div id="status-mqtt" class="mt-3 alert d-none" role="alert"></div>
+
+        </form>
+    </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    // Configurações Padrão
+    const BROKER_HOST = document.getElementById('Endereco').value;
+    const BROKER_PORT = 8083;
+    const CONNECT_TOPIC = "VigiLant/conexao/novo_equipamento";
+    const RESPONSE_TOPIC = "VigiLant/conexao/resposta_equipamento";
+    
+    // Variável global para o cliente MQTT
+    let client = null;
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const sensorNomeInput = document.getElementById('sensorNome');
-            const sensorTipoSelect = document.getElementById('sensorTipo');
-            const generatedTopicDisplay = document.getElementById('generatedTopicDisplay');
-            const mqttTopicHidden = document.getElementById('mqttTopicHidden');
+    /**
+     * Atualiza o campo do Tópico com base no TipoSensor.
+     */
+    function updateTopico() {
+        const tipoSensor = document.getElementById('TipoSensor').value.trim();
+        const topicoTipoInput = document.getElementById('TopicoTipo');
+        const fullTopicoSpan = document.getElementById('full-topico');
+        const topicoAdicional = document.getElementById('TopicoAdicional').value.trim();
+
+        if (tipoSensor) {
+            topicoTipoInput.value = tipoSensor + "/";
+        } else {
+            topicoTipoInput.value = "";
+        }
+        
+        const fullTopic = "Equipamentos/" + topicoTipoInput.value + topicoAdicional + "/";
+        fullTopicoSpan.textContent = fullTopic;
+    }
+    
+    function getFullTopico() {
+        const topicoBase = document.getElementById('TopicoBase').value;
+        const topicoTipo = document.getElementById('TopicoTipo').value;
+        const topicoAdicional = document.getElementById('TopicoAdicional').value.trim();
+        
+        return topicoBase + topicoTipo + topicoAdicional.replace(/^\//, ''); // Remove '/' inicial se houver
+    }
+
+    function showStatus(message, type) {
+        const statusDiv = document.getElementById('status-mqtt');
+        statusDiv.className = `mt-3 alert alert-${type}`;
+        statusDiv.textContent = message;
+        statusDiv.classList.remove('d-none');
+    }
+
+    /**
+     * Inicia o processo de conexão MQTT.
+     */
+    function iniciarConexao() {
+        const nome = document.getElementById('Nome').value.trim();
+        const tipoSensor = document.getElementById('TipoSensor').value.trim();
+        const localizacao = document.getElementById('Localizacao').value.trim();
+
+        if (!nome || !tipoSensor || !localizacao) {
+            showStatus("Por favor, preencha todos os campos obrigatórios (Nome, Localização, Tipo do Sensor).", "warning");
+            return;
+        }
+
+        const fullTopico = getFullTopico();
+        showStatus(`Conectando ao broker ${BROKER_HOST}:${BROKER_PORT}...`, "info");
+        
+        // 1. Conecta ao Broker
+        const url = `ws://${BROKER_HOST}:${BROKER_PORT}/mqtt`;
+        client = mqtt.connect(url);
+
+        client.on('connect', () => {
+            showStatus("Conectado ao Broker. Aguardando resposta...", "info");
             
-            // Tópico Base é o valor inicial do MqttTopic (ex: vigilant/sensores)
-            const baseTopic = mqttTopicHidden.value.trim().replace(/\/$/, ''); 
-
-            function generateMqttTopic() {
-                // Remove espaços e converte para minúsculas para um tópico limpo
-                const nome = sensorNomeInput.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-                const tipo = sensorTipoSelect.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-
-                if (nome && tipo) {
-                    const fullTopic = `${baseTopic}/${tipo}/${nome}`;
-                    generatedTopicDisplay.textContent = fullTopic;
-                    mqttTopicHidden.value = fullTopic; // Define o valor para o POST
+            // 2. Inscreve no tópico de resposta
+            client.subscribe(RESPONSE_TOPIC, (err) => {
+                if (!err) {
+                    showStatus("Inscrição no tópico de resposta bem-sucedida. Enviando comando de conexão...", "info");
+                    
+                    // 3. Envia o comando de conexão
+                    client.publish(CONNECT_TOPIC, "Conectando", (err) => {
+                        if (err) {
+                            showStatus(`Erro ao publicar no tópico ${CONNECT_TOPIC}: ${err.message}`, "danger");
+                            client.end();
+                        } else {
+                            // Sucesso na publicação
+                        }
+                    });
                 } else {
-                    generatedTopicDisplay.textContent = `${baseTopic}/<TIPO_SENSOR>/<NOME_SENSOR>`;
-                    mqttTopicHidden.value = baseTopic; // Retorna ao valor base
+                    showStatus(`Erro ao se inscrever no tópico de resposta ${RESPONSE_TOPIC}: ${err.message}`, "danger");
+                    client.end();
+                }
+            });
+        });
+
+        // 4. Recebe a resposta
+        client.on('message', (topic, message) => {
+            const payload = message.toString();
+            
+            if (topic === RESPONSE_TOPIC) {
+                if (payload === "Conectado") {
+                    showStatus("✅ Equipamento conectado com sucesso!", "success");
+                    
+                    // 5. Salva no "banco de dados" (simulado via AJAX) e redireciona
+                    salvarEquipamento(nome, tipoSensor, localizacao, fullTopico, BROKER_HOST, parseInt(BROKER_PORT));
+                    
+                } else {
+                    showStatus(`❌ Erro de Conexão: O sensor respondeu com "${payload}"`, "danger");
+                    client.end();
                 }
             }
-
-            // Ouve as mudanças nos campos que definem o Tópico
-            sensorNomeInput.addEventListener('input', generateMqttTopic);
-            sensorTipoSelect.addEventListener('change', generateMqttTopic);
-
-            // Roda no carregamento para preencher se houver dados de validação
-            generateMqttTopic();
         });
-    </script>
-}
+
+        client.on('error', (err) => {
+            showStatus(`Erro de Conexão: ${err.message}`, "danger");
+            client.end();
+        });
+
+        client.on('close', () => {
+            console.log("Conexão MQTT fechada.");
+        });
+    }
+
+    function salvarEquipamento(nome, tipoSensor, localizacao, topico, endereco, porta) {
+        const equipamentoData = {
+            Nome: nome,
+            TipoSensor: tipoSensor,
+            Localizacao: localizacao,
+            Topico: topico,
+            Endereco: endereco,
+            Porta: porta,
+            Status: "Ativo",
+            DataUltimaManutencao: new Date().toISOString()
+        };
+
+        // Simulação de requisição POST para o C# Controller
+        // NOTA: Você deve criar a Action "SalvarEquipamento" no seu EquipamentosController
+        fetch('@Url.Action("SalvarEquipamento", "Equipamentos")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Adicione tokens de segurança se necessário
+            },
+            body: JSON.stringify(equipamentoData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Falha ao salvar no servidor.');
+        })
+        .then(data => {
+            showStatus(`✅ Equipamento "${data.nome}" salvo. Redirecionando...`, "success");
+            // Desconecta o cliente MQTT
+            if (client) {
+                client.end();
+            }
+            // Redireciona para a tela de index
+            setTimeout(() => {
+                window.location.href = '@Url.Action("Index", "Equipamentos")';
+            }, 2000);
+        })
+        .catch(error => {
+            showStatus(`❌ Erro ao salvar o equipamento: ${error.message}. Você precisa criar a Action SalvarEquipamento no EquipamentosController.`, "danger");
+            console.error('Erro de salvamento:', error);
+            if (client) {
+                client.end();
+            }
+        });
+    }
+
+    // Inicializa o campo do tópico ao carregar a página
+    window.onload = updateTopico;
+</script>
+
+<style>
+    /* Estilos básicos para este exemplo, ajuste conforme seu CSS principal */
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-top: 20px;
+    }
+    .card-header {
+        background-color: #f7f7f7;
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        border-radius: 8px 8px 0 0;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Garante que padding não aumente a largura total */
+    }
+    .input-group input {
+        border-radius: 0;
+    }
+    .input-group input:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    .input-group input:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .alert {
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .alert-info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .d-none { display: none !important; }
+</style>

@@ -16,7 +16,7 @@
 
 <div class="page-actions">
     <div></div>
-    <button class="btn-primary">
+    <button type="button" class="btn-primary" id="btnAddRisco">
         <i class="fas fa-plus"></i>
         Adicionar Novo Risco Manualmente
     </button>
@@ -77,15 +77,23 @@
                     <td>@risco.DataIdentificacao.ToString("dd/MM/yyyy")</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon" title="Editar">
+
+                            @* 1. Botão EDITAR (Chama a Action Edit, passando o ID) *@
+                            <a href="@Url.Action("Edit", new { id = risco.Id })" class="btn-icon" title="Editar">
                                 <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon" title="Excluir">
+                            </a>
+
+                            @* 2. Botão EXCLUIR (Chama a Action DeleteConfirmation, passando o ID) *@
+                            <a href="@Url.Action("DeleteConfirmation", new { id = risco.Id })" class="btn-icon text-danger"
+                                title="Excluir">
                                 <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="btn-icon" title="Ver Detalhes">
+                            </a>
+
+                            @* 3. Botão VER DETALHES (Chama a Action Details, passando o ID) *@
+                            <a href="@Url.Action("Details", new { id = risco.Id })" class="btn-icon" title="Ver Detalhes">
                                 <i class="fas fa-eye"></i>
-                            </button>
+                            </a>
+
                         </div>
                     </td>
                 </tr>
@@ -93,3 +101,12 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('btnAddRisco').addEventListener('click', function () {
+            // Usa JavaScript para redirecionar para a Action Create do Controller Riscos
+            window.location.href = '@Url.Action("Create", "Riscos")';
+        });
+    </script>
+}

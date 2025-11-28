@@ -1047,6 +1047,19 @@
           "buildTransitive/Mono.TextTemplating.targets": {}
         }
       },
+      "MQTTnet/4.3.0.858": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/MQTTnet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "MySqlConnector/2.4.0": {
         "type": "package",
         "dependencies": {
@@ -4887,6 +4900,41 @@
         "mono.texttemplating.3.0.0.nupkg.sha512",
         "mono.texttemplating.nuspec",
         "readme.md"
+      ]
+    },
+    "MQTTnet/4.3.0.858": {
+      "sha512": "0ApufhJuJTfxSXt8plY07nYUug3L5V6KAt5NITPUKq7hMklSoBl52T4PiA2jvqDLVD0pdYGhdm2E0F5zN5K9FQ==",
+      "type": "package",
+      "path": "mqttnet/4.3.0.858",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/MQTTnet.dll",
+        "lib/net452/MQTTnet.xml",
+        "lib/net461/MQTTnet.dll",
+        "lib/net461/MQTTnet.xml",
+        "lib/net48/MQTTnet.dll",
+        "lib/net48/MQTTnet.xml",
+        "lib/net5.0/MQTTnet.dll",
+        "lib/net5.0/MQTTnet.xml",
+        "lib/net6.0/MQTTnet.dll",
+        "lib/net6.0/MQTTnet.xml",
+        "lib/net7.0/MQTTnet.dll",
+        "lib/net7.0/MQTTnet.xml",
+        "lib/netcoreapp3.1/MQTTnet.dll",
+        "lib/netcoreapp3.1/MQTTnet.xml",
+        "lib/netstandard1.3/MQTTnet.dll",
+        "lib/netstandard1.3/MQTTnet.xml",
+        "lib/netstandard2.0/MQTTnet.dll",
+        "lib/netstandard2.0/MQTTnet.xml",
+        "lib/netstandard2.1/MQTTnet.dll",
+        "lib/netstandard2.1/MQTTnet.xml",
+        "lib/uap10.0.10240/MQTTnet.dll",
+        "lib/uap10.0.10240/MQTTnet.pri",
+        "lib/uap10.0.10240/MQTTnet.xml",
+        "mqttnet.4.3.0.858.nupkg.sha512",
+        "mqttnet.nuspec",
+        "nuget.png"
       ]
     },
     "MySqlConnector/2.4.0": {
@@ -9119,6 +9167,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "BCrypt.Net-Next >= 4.0.3",
+      "MQTTnet >= 4.3.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 9.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.9",
       "Pomelo.EntityFrameworkCore.MySql >= 9.0.0",
@@ -9171,6 +9220,10 @@
             "target": "Package",
             "version": "[4.0.3, )"
           },
+          "MQTTnet": {
+            "target": "Package",
+            "version": "[4.3.0, )"
+          },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[9.0.9, )"
@@ -9212,5 +9265,17 @@
         "runtimeIdentifierGraphPath": "E:\\Program Files\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "VigiLant depends on MQTTnet (>= 4.3.0) but MQTTnet 4.3.0 was not found. An approximate best match of MQTTnet 4.3.0.858 was resolved.",
+      "libraryId": "MQTTnet",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

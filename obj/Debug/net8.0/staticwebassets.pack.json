@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\css\\view.css"
     },
     {
+      "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\viewrevo.css",
+      "PackagePath": "staticwebassets\\css\\viewrevo.css"
+    },
+    {
       "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },

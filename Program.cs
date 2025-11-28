@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using VigiLant.Contratos;
 using VigiLant.Data;
+using VigiLant.Repositories;
 using VigiLant.Repository;
 using VigiLant.Services;
 
@@ -23,8 +24,7 @@ builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-builder.Services.AddScoped<IMqttConfigurationRepository, MqttConfigurationRepository>();
-builder.Services.AddSingleton<IMqttService, MqttService>(); // O serviço MQTT deve ser Singleton ou Scoped, dependendo da sua arquitetura
+builder.Services.AddScoped<IMqttService, MqttService>();
 
 //Services
 builder.Services.AddSingleton<IHashService, HashService>();

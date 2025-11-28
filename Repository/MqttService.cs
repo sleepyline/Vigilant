@@ -1,71 +1,57 @@
-using VigiLant.Contratos;
-using System.Threading.Tasks;
+using MQTTnet;
+using MQTTnet.Client;
+using System;
 using System.Text;
-// Você precisaria instalar o pacote NuGet MQTTnet
-// using MQTTnet;
-// using MQTTnet.Client;
-// using MQTTnet.Protocol;
+using System.Threading.Tasks;
 
 namespace VigiLant.Services
 {
     public class MqttService : IMqttService
     {
-        // NOTA: Esta é uma implementação simulada/simplificada.
-        // Em um ambiente real, você usaria o MQTTnet para tentar a conexão,
-        // se inscrever no tópico e esperar ativamente pela mensagem de confirmação.
+        private readonly string _broker = "broker.emqx.io";
+        private readonly int _port = 1883;
 
-        public async Task<bool> TestConnectionAndSubscribeAsync(string host, int port, string topic, string expectedMessage, string sensorName)
+        public async Task<string> PublicarEReceberAsync(string topicoEnvio, string payload)
         {
-            // 1. Configurar o cliente MQTTnet
-            // var mqttFactory = new MqttFactory();
-            // using var mqttClient = mqttFactory.CreateMqttClient();
-            
-            // 2. Conectar ao Broker
-            // var mqttClientOptions = new MqttClientOptionsBuilder()
-            //     .WithTcpServer(host, port)
-            //     .WithClientId(sensorName + "_TestClient")
-            //     .Build();
-            
-            try
+            var factory = new MqttFactory();
+            var client = factory.CreateMqttClient();
+
+            var options = new MqttClientOptionsBuilder()
+                .WithTcpServer(_broker, _port)
+                .Build();
+
+            string respostaRecebida = null;
+
+            client.ApplicationMessageReceivedAsync += e =>
             {
-                // await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
-                
-                // 3. Se inscrever no Tópico (para o teste)
-                // var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
-                //     .WithTopicFilter(f => f.WithTopic(topic).WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce))
-                //     .Build();
+                respostaRecebida = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                return Task.CompletedTask;
+            };
 
-                // await mqttClient.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
+            await client.ConnectAsync(options);
 
-                // 4. Esperar pela mensagem de confirmação do sensor
-                // (Em um cenário real, você implementaria um EventHandler e um CancellationTokenSource aqui.)
-                
-                // Simulação de delay para a máquina de estado do ESP32 publicar o status
-                await Task.Delay(5000); // Espera 5 segundos
+            // Inscreve no tópico de retorno (pode ajustar)
+            await client.SubscribeAsync(topicoEnvio + "/resposta");
 
-                // Simulação: Se o tópico contiver "moinho", o teste passa, senão falha
-                if (topic.Contains("moinho")) 
-                {
-                    // Neste ponto, você teria recebido a mensagem 'CONECTADO'
-                    return true;
-                }
-                else
-                {
-                    // Conectou, mas não recebeu a mensagem esperada
-                    return false;
-                }
-            }
-            catch (Exception ex)
+            // Publica para o sensor usando o tópico real
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic(topicoEnvio)
+                .WithPayload(payload)
+                .Build();
+
+            await client.PublishAsync(message);
+
+            // Aguarda resposta
+            int tentativas = 0;
+            while (respostaRecebida == null && tentativas < 30)
             {
-                // Falha na conexão (Host/Porta errados)
-                Console.WriteLine($"Erro na conexão MQTT de teste: {ex.Message}");
-                return false;
+                await Task.Delay(100);
+                tentativas++;
             }
-            // finally
-            // {
-            //     if (mqttClient.IsConnected)
-            //         await mqttClient.DisconnectAsync();
-            // }
+
+            await client.DisconnectAsync();
+
+            return respostaRecebida;
         }
     }
 }

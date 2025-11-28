@@ -1,9 +1,10 @@
-using VigiLant.Contratos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using VigiLant.Data;
 using VigiLant.Models;
-using VigiLant.Data; // Adicione este using para o seu DbContext
-using Microsoft.EntityFrameworkCore; // Para usar métodos do EF Core
 
-namespace VigiLant.Repository
+namespace VigiLant.Repositories
 {
     public class EquipamentoRepository : IEquipamentoRepository
     {
@@ -14,35 +15,35 @@ namespace VigiLant.Repository
             _context = context;
         }
 
-        public IEnumerable<Equipamento> GetAll()
+        public async Task<IEnumerable<Equipamento>> GetAllAsync()
         {
-            return _context.Equipamentos.ToList();
+            return await _context.Equipamentos.ToListAsync();
         }
 
-        public Equipamento GetById(int id)
+        public async Task<Equipamento> GetByIdAsync(int id)
         {
-            return _context.Equipamentos.Find(id);
+            return await _context.Equipamentos.FindAsync(id);
         }
 
-        public void Add(Equipamento equipamento)
+        public async Task AddAsync(Equipamento equipamento)
         {
             _context.Equipamentos.Add(equipamento);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Equipamento equipamento)
+        public async Task UpdateAsync(Equipamento equipamento)
         {
-            _context.Entry(equipamento).State = EntityState.Modified;
-            _context.SaveChanges();
+            _context.Equipamentos.Update(equipamento);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var equipamento = GetById(id);
+            var equipamento = await GetByIdAsync(id);
             if (equipamento != null)
             {
                 _context.Equipamentos.Remove(equipamento);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

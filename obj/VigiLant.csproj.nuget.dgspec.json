@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "MQTTnet": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[9.0.9, )"

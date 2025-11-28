@@ -14,11 +14,11 @@
 </div>
 
 <div class="page-actions">
-    <div></div>
-    <button class="btn-primary">
-        <i class="fas fa-plus"></i>
-        Adicionar Novo Colaborador
-    </button>
+    <div></div>
+    <button type="button" class="btn-primary" id="btnAddColaborador">
+        <i class="fas fa-plus"></i>
+        Adicionar Novo Colaborador
+    </button>
 </div>
 
 <div class="table-container">
@@ -48,15 +48,23 @@
                     <td>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon" title="Editar">
+
+                            @* 1. Botão EDITAR (Chama a Action Edit, passando o ID) *@
+                            <a href="@Url.Action("Edit", new { id = colaborador.Id })" class="btn-icon" title="Editar">
                                 <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon" title="Excluir">
+                            </a>
+
+                            @* 2. Botão EXCLUIR (Chama a Action DeleteConfirmation, passando o ID) *@
+                            <a href="@Url.Action("DeleteConfirmation", new { id = colaborador.Id })" class="btn-icon text-danger"
+                                title="Excluir">
                                 <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="btn-icon" title="Ver Detalhes">
+                            </a>
+
+                            @* 3. Botão VER DETALHES (Chama a Action Details, passando o ID) *@
+                            <a href="@Url.Action("Details", new { id = colaborador.Id })" class="btn-icon" title="Ver Detalhes">
                                 <i class="fas fa-eye"></i>
-                            </button>
+                            </a>
+
                         </div>
                     </td>
                 </tr>
@@ -64,3 +72,11 @@
         </tbody>
     </table>
 </div>
+@section Scripts {
+    <script>
+        // Lógica de navegação para o botão Adicionar
+        document.getElementById('btnAddColaborador').addEventListener('click', function() {
+            window.location.href = '@Url.Action("Create", "Colaboradores")';
+        });
+    </script>
+}

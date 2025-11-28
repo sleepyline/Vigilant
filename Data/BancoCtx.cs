@@ -23,6 +23,5 @@ namespace VigiLant.Data
         public DbSet<Risco> Riscos { get; set; }
         public DbSet<Relatorio> Relatorios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<MqttConfiguration> MqttConfigurations { get; set; }
     }
 }

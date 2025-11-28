@@ -1,0 +1,53 @@
+@model VigiLant.Models.Colaborador
+@{
+    ViewData["Title"] = "Detalhes do Colaborador";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+}
+
+<div class="page-header">
+    <h1 class="page-title">Detalhes do Colaborador: **@Model.Nome**</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="@Url.Action("Index")">Colaboradores</a>
+        <span class="separator">/</span>
+        <span class="active">Detalhes</span>
+    </div>
+</div>
+
+<div class="card p-4">
+    <dl class="row">
+        <dt class="col-sm-3">ID</dt>
+        <dd class="col-sm-9">#@Model.Id</dd>
+
+        <dt class="col-sm-3">Nome</dt>
+        <dd class="col-sm-9">@Model.Nome</dd>
+
+        <dt class="col-sm-3">Cargo</dt>
+        <dd class="col-sm-9">@Model.Cargo</dd>
+
+        <dt class="col-sm-3">Departamento</dt>
+        <dd class="col-sm-9">@Model.Departamento</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Telefone</dt>
+        <dd class="col-sm-9">@Model.Telefone</dd>
+
+        <dt class="col-sm-3">Data Admissão</dt>
+        <dd class="col-sm-9">@Model.DataAdmissao.ToString("dd/MM/yyyy")</dd>
+    </dl>
+</div>
+
+<div class="mt-4">
+    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn-primary">
+        <i class="fas fa-edit"></i> Editar
+    </a>
+    <a href="@Url.Action("Index")" class="btn-secondary">
+        <i class="fas fa-arrow-left"></i> Voltar para a Lista
+    </a>
+</div>
