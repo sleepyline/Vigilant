@@ -1,10 +1,23 @@
-🛡️ VIGILANT: SISTEMA INTELIGENTE DE GESTÃO DE RISCOS 
+# 🛡️ VIGILANT
+SISTEMA INTELIGENTE DE GESTÃO DE RISCOS 
 
-Visão Geral
+O projeto VIGILANT é uma solução de software desenvolvida para modernizar e tornar proativa a gestão de riscos na linha de produção do Complexo Ayrton Senna da Renault, no Paraná (Brasil). A plataforma utiliza a Inteligência Artificial (IA) para transformar processos manuais e burocráticos em um sistema digital, preditivo e intuitivo.
 
-O projeto VIGILANT (Tema: TECNOLOGIA INTELIGENTE NA GESTÃO DE RISCOS) é uma solução de software desenvolvida para modernizar e tornar proativa a gestão de riscos na linha de produção do Complexo Ayrton Senna da Renault, no Paraná (Brasil). A plataforma utiliza a Inteligência Artificial (IA) para transformar processos manuais e burocráticos em um sistema digital, preditivo e intuitivo.
+---
 
-💡 O Problema que Endereçamos
+## Indice
+
+* [ Problema que Endereçamos](#O_Problema_que_Endereçamos)
+* [Core concepts](#core-concepts)
+* [Example](#example)
+* [Design & extensibility](#design--extensibility)
+* [Roadmap](#roadmap)
+* [License](#license)
+* [Special Thanks](#special-thanks)
+
+---
+
+##  O_Problema_que_Endereçamos
 
 A gestão de riscos na Renault era baseada em processos manuais e reativos, resultando em:
 
