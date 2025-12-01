@@ -8,12 +8,11 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 ## Indice
 
 * [Inicio Rápido](#Inicio_Rápido)
-* [Core concepts](#core-concepts)
-* [Example](#example)
-* [Design & extensibility](#design--extensibility)
-* [Roadmap](#roadmap)
-* [License](#license)
-* [Special Thanks](#special-thanks)
+* [Problema](#Problema )
+* [Design & Extensibilidade](#Design_&_Extensibilidade)
+* [Recursos-Chave](#Recursos-Chave)
+* [Licença](#Licença)
+* [License](#Equipe_do_Projeto)
 
 ---
 
@@ -50,7 +49,7 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
 
 > **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
 
-## Design e extensibilidade
+## Design_&_Extensibilidade
 
 ## Recursos-Chave
 
@@ -60,13 +59,12 @@ Dashboard Centralizado	Painel principal com indicadores de segurança (KPIs) em 
 Gestão de Riscos Intuitiva	Interface simplificada para registro de riscos por qualquer colaborador, atribuindo prioridade e status de forma fácil.	Aumenta a adesão e o empoderamento dos colaboradores.
 Monitoramento Integrado	Permite o cadastro e monitoramento de equipamentos, com emissão de alertas e notificações automáticas em caso de falhas.	Garante resposta rápida e eficiente.
 
-## License
-
+## Licença
 `Vigilant` possui licença MIT — veja o arquivo `LICENSE` no repositório.
 
 ---
 
-## Equipe do Projeto
+## Equipe_do_Projeto
 
 Este projeto foi desenvolvido por estudantes do SENAI, com a participação de:
 Nome do Componente	Instituição de Origem
