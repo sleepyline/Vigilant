@@ -14,19 +14,16 @@
 
 <div class="page-actions">
     <div></div>
-    <div class="TwoButtons">
-        <form asp-controller="Configuracoes" asp-action="Index" method="post">
-            <button type="submit" class="btn btn-secondary">
-                <i class="fas fa-cog"></i>
-            </button>
-        </form>
+    <div class="btts">
+        <button type="button" class="btn-secondary" id="btnConfig">
+            <i class="fas fa-cog"></i>
+        </button>
 
-        <form asp-controller="Equipamentos" asp-action="Conectar" method="post">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-                Conectar a sensor de Equipamento
-            </button>
-        </form>
+        <button type="button" class="btn-primary" id="btnConectar" data-action-type="create-modal"
+            data-url="@Url.Action("Create", "Equipamentos")" data-title="Conectar Equipamento" data-form-id="riscoForm">
+            <i class="fas fa-plus"></i>
+            Conectar a sensor de Equipamento
+        </button>
     </div>
 </div>
 
@@ -84,3 +81,16 @@
         </tbody>
     </table>
 </div>
+
+<div id="ajax-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 id="modalTitle">Título</h5> <button id="closeModalButton" ...>X</button>
+        </div>
+        <div id="modalBody" class="modal-body"> </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/js/Partialjs.js" asp-append-version="true"></script>
+}

@@ -5,10 +5,6 @@
     ViewData["Title"] = "Riscos";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/view.css" asp-append-version="true" />
-}
-
 <div class="page-header">
     <h1 class="page-title">Riscos</h1>
     <div class="breadcrumb">
@@ -27,7 +23,7 @@
         </button>
 
         <button type="button" class="btn-primary" id="btnAddRisco" data-action-type="create-modal"
-            data-url="@Url.Action("Create", "Riscos")" data-title="Adicionar Novo Risco" data-form-id="riscoForm">
+            data-url="@Url.Action("Create", "Riscos")" data-title="Adicionar Novo Risco Manualmente" data-form-id="riscoForm">
             <i class="fas fa-plus"></i>
             Adicionar Novo Risco Manualmente
         </button>

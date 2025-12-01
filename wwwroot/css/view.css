@@ -148,6 +148,7 @@ h1 {
 
 .status-badge {
     display: inline-block;
+    margin-top: 4px;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
