@@ -26,8 +26,7 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
     Falta de Visibilidade: Dificuldade em avaliar a criticidade de um risco e priorizar ações.
 
     Impacto na Segurança: Maior incidência de erros e acidentes evitáveis.
-
-✨ A Solução: Vigilant - Gestão Proativa
+    
 
 > **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
 
