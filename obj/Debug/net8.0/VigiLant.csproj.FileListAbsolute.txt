@@ -40,8 +40,11 @@ E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Configuration.
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Identity.Client.dll
@@ -55,7 +58,9 @@ E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Mono.TextTemplating.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\MQTTnet.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\MySqlConnector.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Newtonsoft.Json.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.Design.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.ClientModel.dll
@@ -72,6 +77,7 @@ E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Formats.Asn1.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.IO.Pipelines.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Memory.Data.dll
+E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Runtime.Caching.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\System.Security.Permissions.dll
@@ -172,4 +178,3 @@ E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\refint\VigiLant.dll
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.pdb
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\VigiLant.genruntimeconfig.cache
 E:\Tiago\Documents\VigiLant\obj\Debug\net8.0\ref\VigiLant.dll
-E:\Tiago\Documents\VigiLant\bin\Debug\net8.0\MQTTnet.dll

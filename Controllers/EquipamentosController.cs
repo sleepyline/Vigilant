@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
+// Controllers/EquipamentosController.cs
 using Microsoft.AspNetCore.Mvc;
 using VigiLant.Contratos;
 using VigiLant.Models;
-using VigiLant.Services;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
@@ -10,7 +9,7 @@ using VigiLant.Repositories;
 
 namespace VigiLant.Controllers
 {
-    [Authorize]
+    // ... Assume que a injeção de IEquipamentoRepository e IMqttService já existe
     public class EquipamentosController : Controller
     {
         private readonly IEquipamentoRepository _repo;
@@ -21,121 +20,81 @@ namespace VigiLant.Controllers
             _repo = repo;
             _mqtt = mqtt;
         }
-
-        // Helper para verificar se a requisição é AJAX
+        
         private bool IsAjaxRequest()
         {
             return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
-
-        // GET: /Equipamentos/Index
-        public async Task<IActionResult> Index()
-        {
-            var equipamentos = await _repo.GetAllAsync();
-            return View(equipamentos);
-        }
         
         public IActionResult Conectar()
         {
-            var novoEquipamento = new Equipamento { DataUltimaManutencao = DateTime.Now };
+            var novoEquipamento = new Equipamento 
+            { 
+                DataUltimaManutencao = DateTime.Now,
+                Porta = 1883 // Define o valor padrão para a Partial View
+            };
 
             if (IsAjaxRequest())
             {
-                return PartialView("_ConectarEquipamentoPartial", novoEquipamento);
+                return PartialView("_ConectarEquipamentosPartial", novoEquipamento);
             }
             return View(novoEquipamento);
         }
 
+
+        // POST: /Equipamentos/Conectar (Ação Principal)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Conectar(Equipamento equipamento)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                equipamento.Status = equipamento.Status ?? "Ativo"; // Define um valor padrão se for null
-                equipamento.DataUltimaManutencao = DateTime.Now; // Garante a data atual na criação
+                if (IsAjaxRequest())
+                {
+                    Response.StatusCode = 400; 
+                    return PartialView("_ConectarEquipamentosPartial", equipamento); 
+                }
+                return View(equipamento);
+            }
 
-                await _repo.AddAsync(equipamento);
+            try
+            {
+                // 1. Definir o Tópico de Resposta (Convenção: Tópico Medição + /status)
+                string baseTopic = equipamento.Topico.TrimEnd('/');
+                equipamento.TopicoResposta = $"{baseTopic}/status";
+                equipamento.Status = "Aguardando Conexão";
                 
-                if (IsAjaxRequest()) { return Ok(); } // Sucesso AJAX (HTTP 200 OK)
+                // 2. Cadastrar o Equipamento Provisoriamente no banco de dados.
+                await _repo.AddAsync(equipamento); 
+                
+                // 3. Assinar os tópicos no broker para escutar a medição e a resposta
+                await _mqtt.AssinarTopicoAsync(equipamento.Topico);
+                await _mqtt.AssinarTopicoAsync(equipamento.TopicoResposta);
+
+                // 4. Publicar a mensagem "Conectando" (Gatilho para o dispositivo IoT)
+                await _mqtt.PublicarAsync(equipamento.Topico, "Conectando");
+
+                // 5. Sucesso (a confirmação final será feita pelo MqttHostedService)
+                if (IsAjaxRequest())
+                {
+                    return Ok(new 
+                    { 
+                        success = true, 
+                        message = $"Tentativa de conexão iniciada. Aguardando resposta em: {equipamento.TopicoResposta}..." 
+                    });
+                }
                 return RedirectToAction(nameof(Index));
             }
-            
-            if (IsAjaxRequest())
+            catch (Exception ex)
             {
-                Response.StatusCode = 400; // Erro de Validação (HTTP 400 Bad Request)
-                return PartialView("_ConectarEquipamentoPartial", equipamento); // Retorna a Partial com erros
+                ModelState.AddModelError(string.Empty, "Erro ao processar a conexão: " + ex.Message);
+                if (IsAjaxRequest())
+                {
+                    Response.StatusCode = 500;
+                    return PartialView("_ConectarEquipamentosPartial", equipamento);
+                }
+                return View(equipamento);
             }
-            return View(equipamento);
-        }
-
-        // GET: /Equipamentos/Details/5 -> Retorna a Partial
-        public async Task<IActionResult> Details(int id)
-        {
-            var equipamento = await _repo.GetByIdAsync(id);
-            if (equipamento == null) { return NotFound(); }
-
-            if (IsAjaxRequest())
-            {
-                return PartialView("_DetailsEquipamentoPartial", equipamento);
-            }
-            return View(equipamento);
-        }
-
-        // GET: /Equipamentos/Edit/5 -> Retorna a Partial
-        public async Task<IActionResult> Edit(int id)
-        {
-            var equipamento = await _repo.GetByIdAsync(id);
-            if (equipamento == null) { return NotFound(); }
-            
-            if (IsAjaxRequest())
-            {
-                return PartialView("_EditEquipamentoPartial", equipamento);
-            }
-            return View(equipamento);
-        }
-
-        // POST: /Equipamentos/Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Equipamento equipamento)
-        {
-            if (ModelState.IsValid)
-            {
-                await _repo.UpdateAsync(equipamento);
-                if (IsAjaxRequest()) { return Ok(); } // Sucesso AJAX
-                return RedirectToAction(nameof(Index));
-            }
-            
-            if (IsAjaxRequest())
-            {
-                Response.StatusCode = 400; 
-                return PartialView("_EditEquipamentoPartial", equipamento); // Retorna a Partial com erros
-            }
-            return View(equipamento);
-        }
-
-        public async Task<IActionResult> DeleteConfirmation(int id)
-        {
-            var equipamento = await _repo.GetByIdAsync(id);
-            if (equipamento == null) { return NotFound(); }
-            
-            if (IsAjaxRequest())
-            {
-                return PartialView("_DeleteEquipamentoPartial", equipamento);
-            }
-            return View(equipamento);
-        }
-
-        // POST: /Equipamentos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _repo.DeleteAsync(id);
-            
-            if (IsAjaxRequest()) { return Ok(); } // Sucesso AJAX
-            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -18,6 +18,11 @@
         </div>
     </div>
 
+    <div class="row mb-2">
+        <dt class="col-sm-4">Tipo de Risco:</dt>
+        <dd class="col-sm-8">@Model.TipoRisco</dd>
+    </div>
+
     <div class="SuperFlex">
         <div class="row">
             <div class="col-sm-6">Nível de Gravidade:</div>
@@ -38,6 +43,7 @@
             <div class="col-sm-6">Data de Identificação:</div>
             <div class="col-sm-6">@Model.DataIdentificacao.ToShortDateString()</div>
         </div>
+
         <div class="row">
             <div class="col-sm-6">Status Atual:</div>
             <div class="col-sm-6">

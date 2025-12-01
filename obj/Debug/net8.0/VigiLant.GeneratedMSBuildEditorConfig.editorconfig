@@ -58,12 +58,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Tiago/Documents/VigiLant/Views/Equipamentos/Conectar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXENvbmVjdGFyLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [E:/Tiago/Documents/VigiLant/Views/Equipamentos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Tiago/Documents/VigiLant/Views/Equipamentos/_ConectarEquipamentosPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9Db25lY3RhckVxdWlwYW1lbnRvc1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Tiago/Documents/VigiLant/Views/Home/Index.cshtml]

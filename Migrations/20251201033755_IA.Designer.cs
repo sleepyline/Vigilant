@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VigiLant.Data;
 
@@ -11,9 +12,11 @@ using VigiLant.Data;
 namespace VigiLant.Migrations
 {
     [DbContext(typeof(BancoCtx))]
-    partial class BancoCtxModelSnapshot : ModelSnapshot
+    [Migration("20251201033755_IA")]
+    partial class IA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,14 +90,11 @@ namespace VigiLant.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("TipoSensor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Topico")
+                    b.Property<string>("TipoSensor")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("TopicoResposta")
+                    b.Property<string>("Topico")
                         .IsRequired()
                         .HasColumnType("longtext");
 

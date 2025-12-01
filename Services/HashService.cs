@@ -1,6 +1,7 @@
-// Services/HashService.cs
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation; 
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using VigiLant.Contratos;
+
 
 namespace VigiLant.Services
 {

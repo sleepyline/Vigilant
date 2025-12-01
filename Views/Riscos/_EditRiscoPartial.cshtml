@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="NivelGravidade" class="form-label"></label>
+                <label asp-for="NivelGravidade" class="form-label">Nivel de Gravidade</label>
                 <select asp-for="NivelGravidade" asp-items="Html.GetEnumSelectList<NivelSeveridade>()"
                     class="form-select"></select>
                 <span asp-validation-for="NivelGravidade" class="text-danger"></span>
@@ -45,9 +45,17 @@
             </div>
 
             <div class="form-group mb-3">
-                <label asp-for="DataIdentificacao" class="form-label"></label>
+                <label asp-for="DataIdentificacao" class="form-label">Data de Indentificação</label>
                 <input asp-for="DataIdentificacao" type="date" class="form-control" />
                 <span asp-validation-for="DataIdentificacao" class="text-danger"></span>
+            </div>
+
+            
+            <div class="form-group mb-3">
+                <label asp-for="TipoRisco" class="form-label">Tipo de Risco</label>
+                <select asp-for="TipoRisco" asp-items="Html.GetEnumSelectList<TipoRisco>()"
+                    class="form-select"></select>
+                <span asp-validation-for="TipoRisco" class="text-danger"></span>
             </div>
         </div>
     </div>

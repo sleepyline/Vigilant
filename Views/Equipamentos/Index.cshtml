@@ -20,7 +20,7 @@
         </button>
 
         <button type="button" class="btn-primary" id="btnConectar" data-action-type="create-modal"
-            data-url="@Url.Action("Create", "Equipamentos")" data-title="Conectar Equipamento" data-form-id="riscoForm">
+            data-url="@Url.Action("Conectar", "Equipamentos")" data-title="Conectar Equipamento" data-form-id="riscoForm">
             <i class="fas fa-plus"></i>
             Conectar a sensor de Equipamento
         </button>
@@ -92,5 +92,66 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@7.0.0/dist/browser/signalr.min.js"></script>
     <script src="/js/Partialjs.js" asp-append-version="true"></script>
+    <script>
+        // Cria a conexão com o Hub SignalR
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/medicaoHub") // Endpoint mapeado no Program.cs
+            .withAutomaticReconnect()
+            .build();
+
+        // ----------------------------------------------------
+        // Lógica de Atualização em Tempo Real da Medição (Corrente)
+        // ----------------------------------------------------
+        connection.on("ReceberMedicao", function (equipamentoId, corrente) {
+            // 1. Localiza a linha correta na tabela pelo ID do equipamento
+            const row = document.querySelector(`#equipamentosTable tr[data-equipamento-id="${equipamentoId}"]`);
+            if (row) {
+                // 2. Encontra a célula de status (quinta coluna)
+                const statusCell = row.querySelector('.status-cell');
+                if (statusCell) {
+                    // 3. Atualiza o conteúdo com a intensidade da corrente
+                    statusCell.innerHTML = `<span class="status-badge success"><i class="fas fa-bolt"></i> ${corrente.toFixed(2)}A</span>`;
+                }
+            }
+        });
+        
+        // ----------------------------------------------------
+        // Lógica de Novo Equipamento Conectado (Confirmação do Broker)
+        // ----------------------------------------------------
+        connection.on("NovoEquipamentoConectado", function (equipamento) {
+            // Notifica e recarrega a página para exibir o novo status
+            alert(`Equipamento '${equipamento.Nome}' conectado com sucesso (Status: Conectado)!`);
+            window.location.reload(); 
+        });
+
+        // ----------------------------------------------------
+        // Inicia a Conexão
+        // ----------------------------------------------------
+        async function startSignalR() {
+            try {
+                await connection.start();
+                console.log("Conexão SignalR estabelecida.");
+            } catch (err) {
+                console.error("Erro ao conectar ao SignalR:", err);
+                // Tenta reconectar após 5 segundos
+                setTimeout(startSignalR, 5000); 
+            }
+        };
+
+        // Inicia o processo de conexão
+        startSignalR();
+        
+        // Ajuste no botão de conectar (baseado no seu Index.cshtml)
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnConectar = document.getElementById('btnConectar');
+            if (btnConectar) {
+                // Atualiza a URL e o título para usar a nova Partial View e Action
+                btnConectar.setAttribute('data-url', '@Url.Action("Conectar", "Equipamentos")');
+                btnConectar.setAttribute('data-title', 'Conectar Equipamento MQTT');
+                btnConectar.setAttribute('data-form-id', 'equipamentoForm'); // O ID do formulário na partial
+            }
+        });
+    </script>
 }

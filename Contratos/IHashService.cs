@@ -1,4 +1,4 @@
-namespace VigiLant.Services
+namespace VigiLant.Contratos
 {
     public interface IHashService
     {
