@@ -7,7 +7,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ## Indice
 
-* [ Problema que Endereçamos](#O_Problema_que_Endereçamos)
+* [ Problema que Endereçamos](#Problema)
 * [Core concepts](#core-concepts)
 * [Example](#example)
 * [Design & extensibility](#design--extensibility)
@@ -17,7 +17,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ---
 
-##  O_Problema_que_Endereçamos
+##  Problema
 
 A gestão de riscos na Renault era baseada em processos manuais e reativos, resultando em:
 
