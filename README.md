@@ -31,7 +31,7 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
 > **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
 
 
-Recursos-Chave
+## Recursos-Chave
 
 Módulo	Descrição	Valor
 Análise Preditiva (IA)	O diferencial central. Utiliza IA para analisar dados históricos e prever riscos futuros, sugerindo soluções antes que incidentes ocorram.	Transforma a segurança de reativa para proativa.
@@ -41,7 +41,7 @@ Monitoramento Integrado	Permite o cadastro e monitoramento de equipamentos, com 
 
 
 
-👥 Equipe do Projeto
+## 👥 Equipe do Projeto
 
 Este projeto foi desenvolvido por estudantes do SENAI, com a participação de:
 Nome do Componente	Instituição de Origem
