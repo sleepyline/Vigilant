@@ -29,7 +29,8 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
 
 ✨ A Solução: Vigilant - Gestão Proativa
 
-O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
+> **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
+
 
 Recursos-Chave
 
