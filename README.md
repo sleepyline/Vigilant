@@ -12,7 +12,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 * [Design & Extensibilidade](#Design_&_Extensibilidade)
 * [Recursos-Chave](#Recursos-Chave)
 * [Licença](#Licença)
-* [License](#Equipe_do_Projeto)
+* [Equipe do Projeto](#Equipe_do_Projeto)
 
 ---
 
