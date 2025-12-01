@@ -41,7 +41,7 @@ Monitoramento Integrado	Permite o cadastro e monitoramento de equipamentos, com 
 
 
 
-## 👥 Equipe do Projeto
+## Equipe do Projeto
 
 Este projeto foi desenvolvido por estudantes do SENAI, com a participação de:
 Nome do Componente	Instituição de Origem
