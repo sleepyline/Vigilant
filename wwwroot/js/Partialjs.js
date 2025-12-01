@@ -1,0 +1,206 @@
+/**
+ * ARQUIVO: GenericPartial.js
+ * Lógica Genérica para o carregamento de Partial Views via AJAX na modal.
+ * * Depende dos botões terem os atributos:
+ * - data-title (título da modal)
+ * - data-url (URL da Action do Controller) - USADO APENAS PARA CREATE
+ * - data-controller-url (URL base para ações de tabela)
+ * - data-action-type (Tipo de ação: 'edit', 'details', 'delete' ou 'create-modal')
+ * - data-id (ID do registro para ações de tabela)
+ * - data-form-id (ID do formulário dentro da Partial View)
+ */
+
+// 1. Definição das variáveis globais dos elementos da modal
+const modalOverlay = document.getElementById('ajax-modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const closeModalButton = document.getElementById('closeModalButton');
+
+
+// --- FUNÇÕES DE CONTROLE DA MODAL ---
+
+function openModal(title) {
+    modalTitle.textContent = title;
+    modalOverlay.classList.add('show'); 
+    document.body.style.overflow = 'hidden'; 
+}
+
+function closeModal() {
+    modalOverlay.classList.remove('show');
+    // Limpa o corpo da modal após a animação (300ms)
+    setTimeout(() => {
+        modalBody.innerHTML = '';
+        document.body.style.overflow = '';
+    }, 300); 
+}
+
+function loadPartialView(url, method, title, formId) {
+    // 1. Mostrar loading e abrir a modal com o título correto
+    modalBody.innerHTML = '<div style="text-align: center; padding: 50px;">Carregando...</div>';
+    openModal(title);
+    
+    // 2. Requisição AJAX
+    fetch(url, {
+        method: method,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest' 
+        }
+    })
+    .then(response => {
+        // Trata erro de Validação (400) no Controller, permitindo que a Partial View seja lida
+        if (!response.ok && response.status !== 400) {
+            throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        }
+        return response.text();
+    })
+    .then(html => {
+        modalBody.innerHTML = html;
+        
+        // 3. Re-bind dos listeners e validação, passando o ID do formulário
+        bindModalEventListeners(formId);
+    })
+    .catch(error => {
+        console.error('Erro ao carregar Partial View:', error);
+        modalBody.innerHTML = `<div class="delete-message">Ocorreu um erro ao carregar o conteúdo: ${error.message}</div>`;
+        modalTitle.textContent = 'Erro de Carregamento'; 
+    });
+}
+
+
+// --- LÓGICA DE SUBMISSÃO DE FORMULÁRIOS (AJAX) ---
+
+// Função agora recebe o ID do formulário para ser genérica
+function handleFormSubmission(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    // Remove handlers antigos antes de adicionar um novo para evitar múltiplas execuções
+    // Isso é importante após re-binds ou se a mesma Partial for carregada várias vezes
+    if (form.currentSubmitHandler) {
+        form.removeEventListener('submit', form.currentSubmitHandler);
+    }
+    
+    form.currentSubmitHandler = function (e) {
+        e.preventDefault();
+
+        // 1. Validação do lado do cliente (jQuery Unobtrusive)
+        if (window.jQuery && !jQuery(form).valid()) {
+            return;
+        }
+
+        const formData = new FormData(form);
+        const actionUrl = form.getAttribute('action');
+        const method = form.getAttribute('method') || 'POST';
+
+        fetch(actionUrl, {
+            method: method,
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Sucesso (Status 200/204)
+                closeModal();
+                // Recarrega a página para atualizar a tabela
+                window.location.reload(); 
+            } else if (response.status === 400) {
+                // Erro de Validação (Controller retorna PartialView com ModelState.Errors)
+                return response.text().then(html => {
+                    modalBody.innerHTML = html;
+                    // Re-bind com o ID do formulário correto após erro
+                    bindModalEventListeners(formId); 
+                    // Removido o alert, pois a validação deve ser exibida no formulário
+                });
+            } else {
+                // Outro erro (500, etc.)
+                throw new Error(`Erro ${response.status}: ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            console.error('Erro na submissão do formulário:', error);
+            alert(`Erro na submissão: ${error.message}`);
+        });
+    };
+    
+    form.addEventListener('submit', form.currentSubmitHandler);
+}
+
+
+// --- EVENT LISTENERS GERAIS (INÍCIO DO FLUXO) ---
+
+// 1. Lógica para Botões de CRIAR (data-action-type="create-modal")
+document.querySelectorAll('[data-action-type="create-modal"]').forEach(button => {
+    button.addEventListener('click', function () {
+        const url = this.getAttribute('data-url');
+        const title = this.getAttribute('data-title');
+        const formId = this.getAttribute('data-form-id');
+        loadPartialView(url, 'GET', title, formId); 
+    });
+});
+
+// 2. Lógica para Botões de Ação na Tabela (EDITAR/DETALHES/EXCLUIR)
+// Selecionamos todos os botões com a classe de ação da modal para evitar problemas de delegação.
+document.querySelectorAll('.btn-ajax-modal').forEach(button => {
+    button.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        const actionType = this.getAttribute('data-action-type');
+        const baseControllerUrl = this.getAttribute('data-controller-url');
+        const formId = this.getAttribute('data-form-id');
+        const titleTemplate = this.getAttribute('data-title');
+
+        let url = '';
+        let title = titleTemplate.replace('{ID}', id); 
+        
+        // Constrói a URL dinamicamente
+        if (actionType === 'delete') {
+            // Ação de Exclusão usa a Action "DeleteConfirmation" no Controller
+            url = `${baseControllerUrl}/DeleteConfirmation/${id}`;
+        } else {
+            // Ações "Edit" e "Details" usam a Action com o mesmo nome
+            url = `${baseControllerUrl}/${actionType}/${id}`;
+        }
+        
+        loadPartialView(url, 'GET', title, formId);
+    });
+});
+
+
+// 3. Fechar a modal pelo botão 'X' no header
+closeModalButton.addEventListener('click', closeModal);
+
+// 4. Fechar a modal clicando fora
+modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) {
+        closeModal();
+    }
+});
+
+
+// --- EVENT LISTENERS INTERNOS (RE-BIND APÓS CARREGAR PARTIAL) ---
+
+function bindModalEventListeners(formId) {
+    // 1. Botão de Cancelar dentro das Partial Views
+    const cancelButton = document.getElementById('cancelModalButton'); // Usar ID genérico
+    if (cancelButton) {
+        // Remove e adiciona o listener para garantir que só haja um
+        cancelButton.removeEventListener('click', closeModal); 
+        cancelButton.addEventListener('click', closeModal);
+    }
+    
+    // 2. Reativação da Validação Unobtrusive (Crucial!)
+    // Apenas aplica no formulário carregado.
+    if (window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive) {
+        const form = document.getElementById(formId);
+        if(form) {
+            // Remove dados de validação antigos e re-analisa o formulário
+            jQuery(form).removeData('validator');
+            jQuery(form).removeData('unobtrusiveValidation');
+            jQuery.validator.unobtrusive.parse(form);
+        }
+    }
+
+    // 3. Submissão de Formulário (aplica o handler APENAS no formulário carregado)
+    handleFormSubmission(formId);
+}

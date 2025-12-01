@@ -1,0 +1,68 @@
+@using VigiLant.Models.Enum
+@model VigiLant.Models.Risco
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Create" method="post" id="riscoForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="SuperFlex">
+        <div>
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Descricao" class="form-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="NivelGravidade" class="form-label">Nivel de Gravidade</label>
+                <select asp-for="NivelGravidade" asp-items="Html.GetEnumSelectList<NivelSeveridade>()"
+                    class="form-select"></select>
+                <span asp-validation-for="NivelGravidade" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div>
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="form-label">Status</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="">-- Selecione o Status --</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Concluido">Concluído</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DataIdentificacao" class="form-label">Data de Indentificação</label>
+                <input asp-for="DataIdentificacao" type="date" class="form-control" />
+                <span asp-validation-for="DataIdentificacao" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-plus"></i> Criar Risco
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>
+
+<script>
+    if (window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive) {
+        var form = document.getElementById('riscoForm');
+        jQuery.validator.unobtrusive.parse(form);
+    }
+</script>

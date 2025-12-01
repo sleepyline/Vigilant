@@ -1,6 +1,6 @@
 using VigiLant.Contratos;
 using VigiLant.Models;
-using VigiLant.Data; 
+using VigiLant.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace VigiLant.Repository
@@ -15,6 +15,35 @@ namespace VigiLant.Repository
             _context = context;
         }
 
+        private int GetNextAvailableId()
+        {
+            // 1. Busca todos os IDs existentes e os ordena
+            var existingIds = _context.Colaboradores
+                                    .Select(r => r.Id)
+                                    .OrderBy(id => id)
+                                    .ToList();
+
+            if (!existingIds.Any())
+            {
+                return 1; // Tabela vazia, começa em 1
+            }
+
+            int nextId = 1;
+
+            // 2. Itera para encontrar o primeiro ID faltante (o buraco)
+            foreach (var id in existingIds)
+            {
+                if (id > nextId)
+                {
+                    // Ex: IDs são {1, 3, 4}. nextId é 2, id é 3. Retorna 2.
+                    return nextId;
+                }
+                nextId = id + 1; // Move para o próximo ID sequencial
+            }
+
+            return nextId;
+        }
+
         public IEnumerable<Colaborador> GetAll()
         {
             return _context.Colaboradores.ToList();
@@ -27,6 +56,7 @@ namespace VigiLant.Repository
 
         public void Add(Colaborador colaborador)
         {
+            colaborador.Id = GetNextAvailableId();
             _context.Colaboradores.Add(colaborador);
             _context.SaveChanges();
         }

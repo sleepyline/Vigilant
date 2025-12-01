@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XJ959i3fG0dQnCC+7q/OFRfIdPRJ2kbq+iOZk35Yz3E=",
+  "Hash": "pLtGDAE0kJf+ctzY5pr49M82g/kBzl7qHfHwijkLFxY=",
   "Source": "VigiLant",
   "BasePath": "_content/VigiLant",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\Conta.css"
+    },
+    {
+      "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\dash.css",
+      "SourceId": "VigiLant",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\",
+      "BasePath": "_content/VigiLant",
+      "RelativePath": "css/dash.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\dash.css"
     },
     {
       "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\site.css",
@@ -148,6 +167,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\js\\Partialjs.js",
+      "SourceId": "VigiLant",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\",
+      "BasePath": "_content/VigiLant",
+      "RelativePath": "js/Partialjs.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Partialjs.js"
     },
     {
       "Identity": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\js\\site.js",

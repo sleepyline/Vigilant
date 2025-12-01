@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\css\\Conta.css"
     },
     {
+      "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\dash.css",
+      "PackagePath": "staticwebassets\\css\\dash.css"
+    },
+    {
       "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -23,6 +27,10 @@
     {
       "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\js\\Partialjs.js",
+      "PackagePath": "staticwebassets\\js\\Partialjs.js"
     },
     {
       "Id": "E:\\Tiago\\Documents\\VigiLant\\wwwroot\\js\\site.js",

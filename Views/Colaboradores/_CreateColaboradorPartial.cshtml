@@ -1,0 +1,65 @@
+@model VigiLant.Models.Colaborador
+@using VigiLant.Models.Enum 
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Create" method="post" id="colaboradorForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="SuperFlex"> 
+        <div class="flex1">
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Cargo" class="form-label"></label>
+                <select asp-for="Cargo" 
+                        asp-items="Html.GetEnumSelectList<Cargo>()" 
+                        class="form-select">
+                    <option value="">Selecione o Cargo</option>
+                </select>
+                <span asp-validation-for="Cargo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Departamento" class="form-label"></label>
+                <input asp-for="Departamento" class="form-control" />
+                <span asp-validation-for="Departamento" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="flex2">
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Telefone" class="form-label"></label>
+                <input asp-for="Telefone" class="form-control" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DataAdmissao" class="form-label">Data de Admissão</label>
+                <input asp-for="DataAdmissao" type="date" class="form-control" />
+                <span asp-validation-for="DataAdmissao" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-plus"></i> Criar Colaborador
+        </button>
+
+          <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>

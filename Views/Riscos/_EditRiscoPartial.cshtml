@@ -1,0 +1,72 @@
+@using VigiLant.Models.Enum
+@model VigiLant.Models.Risco
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Edit" method="post" id="editRiscoForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="SuperFlex">
+        <div class="flex1">
+
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Descricao" class="form-label"></label>
+                <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="NivelGravidade" class="form-label"></label>
+                <select asp-for="NivelGravidade" asp-items="Html.GetEnumSelectList<NivelSeveridade>()"
+                    class="form-select"></select>
+                <span asp-validation-for="NivelGravidade" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="flex1">
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="">-- Selecione o Status --</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Concluido">Concluído</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DataIdentificacao" class="form-label"></label>
+                <input asp-for="DataIdentificacao" type="date" class="form-control" />
+                <span asp-validation-for="DataIdentificacao" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Salvar Alterações
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>
+
+@* Script para reativar a validação do lado do cliente (Unobtrusive Validation) *@
+<script>
+    if (window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive) {
+        var form = document.getElementById('editRiscoForm');
+        jQuery(form).data('validator', null);
+        jQuery.validator.unobtrusive.parse(form);
+    }
+</script>

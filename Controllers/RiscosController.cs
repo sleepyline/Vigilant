@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using VigiLant.Models;
 using VigiLant.Contratos;
 using Microsoft.AspNetCore.Authorization;
-using VigiLant.Models.Enum; // Certifique-se de adicionar este using para o Enum
+using VigiLant.Models.Enum;
+using System; 
 
 namespace VigiLant.Controllers
 {
@@ -15,6 +16,13 @@ namespace VigiLant.Controllers
         {
             _riscoRepository = riscoRepository;
         }
+        
+        // Helper para verificar se a requisição é AJAX (CRUCIAL para a modal)
+        private bool IsAjaxRequest()
+        {
+            // Verifica o cabeçalho 'X-Requested-With' enviado pelo fetch/XMLHttpRequest
+            return Request.Headers["X-Requested-With"] == "XMLHttpRequest"; 
+        }
 
         // GET: /Riscos/Index
         public IActionResult Index()
@@ -23,14 +31,20 @@ namespace VigiLant.Controllers
             return View(riscos);
         }
 
+        // GET: /Riscos/Create
         public IActionResult Create()
         {
-            // Inicializa o objeto Risco com uma DataIdentificacao padrão (ex: hoje)
-            // para garantir que o Model na View não seja nulo.
             var novoRisco = new Risco
             {
-                DataIdentificacao = DateTime.Today // Define a data inicial
+                DataIdentificacao = DateTime.Today
             };
+            
+            if (IsAjaxRequest())
+            {
+                // SE AJAX: Retorna APENAS o conteúdo para a modal
+                return PartialView("_CreateRiscoPartial", novoRisco); 
+            }
+            // SE NÃO AJAX: Retorna a View completa
             return View(novoRisco);
         }
 
@@ -39,19 +53,31 @@ namespace VigiLant.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Risco risco)
         {
-            // Garante que a DataIdentificacao não seja uma data inválida para a base de dados
             if (risco.DataIdentificacao == default(DateTime))
             {
-                risco.DataIdentificacao = DateTime.Now;
+                 // Garante que a data seja definida se a validação falhar por causa do valor default.
+                 risco.DataIdentificacao = DateTime.Today; 
             }
-
+            
             if (ModelState.IsValid)
             {
-                _riscoRepository.Add(risco); // Usa o método Add implementado no RiscoRepository
+                _riscoRepository.Add(risco);
+                
+                if (IsAjaxRequest())
+                {
+                    return Ok(); // Retorna Status 200/OK para o JavaScript (Sucesso)
+                }
                 return RedirectToAction(nameof(Index));
             }
-
-            // Se houver erros de validação, retorna a View para o usuário corrigir
+            
+            // SE VALIDAÇÃO FALHAR (ModelState.IsValid == false)
+            if (IsAjaxRequest())
+            {
+                // Retorna Status 400 (Bad Request) para o JavaScript
+                // O corpo da resposta é a Partial View com as mensagens de erro preenchidas
+                Response.StatusCode = 400; 
+                return PartialView("_CreateRiscoPartial", risco);
+            }
             return View(risco);
         }
 
@@ -61,7 +87,13 @@ namespace VigiLant.Controllers
             var risco = _riscoRepository.GetById(id);
             if (risco == null)
             {
+                if (IsAjaxRequest()) { Response.StatusCode = 404; return Content("Risco não encontrado."); }
                 return NotFound();
+            }
+
+            if (IsAjaxRequest())
+            {
+                return PartialView("_DetailsRiscoPartial", risco);
             }
             return View(risco);
         }
@@ -72,9 +104,14 @@ namespace VigiLant.Controllers
             var risco = _riscoRepository.GetById(id);
             if (risco == null)
             {
+                if (IsAjaxRequest()) { Response.StatusCode = 404; return Content("Risco não encontrado."); }
                 return NotFound();
             }
-            // Você pode precisar passar listas de seleção (Ex: NivelSeveridade, Status) para a View aqui se não usar Tags Helpers de Enum diretamente.
+            
+            if (IsAjaxRequest())
+            {
+                return PartialView("_EditRiscoPartial", risco); 
+            }
             return View(risco);
         }
 
@@ -88,34 +125,68 @@ namespace VigiLant.Controllers
                 try
                 {
                     _riscoRepository.Update(risco);
+                    
+                    if (IsAjaxRequest())
+                    {
+                        return Ok(); // Retorna Status 200/OK para o JavaScript (Sucesso)
+                    }
                     return RedirectToAction(nameof(Index));
                 }
-                catch (Exception) // Catch de exceção mais específica se souber qual é (Ex: DbUpdateConcurrencyException)
+                catch (Exception) 
                 {
-                    // Tratar erro ou redirecionar para uma página de erro
+                    // Lógica para tratar erros de banco de dados
+                    ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar as alterações.");
+                    
+                    if (IsAjaxRequest())
+                    {
+                        Response.StatusCode = 400;
+                        return PartialView("_EditRiscoPartial", risco);
+                    }
                     return View(risco);
                 }
+            }
+            
+            // SE VALIDAÇÃO FALHAR
+            if (IsAjaxRequest())
+            {
+                Response.StatusCode = 400; 
+                return PartialView("_EditRiscoPartial", risco);
             }
             return View(risco);
         }
 
-        // GET: /Riscos/DeleteConfirmation/5 (Exibe a mensagem de confirmação)
+        // GET: /Riscos/DeleteConfirmation/5 
         public IActionResult DeleteConfirmation(int id)
         {
             var risco = _riscoRepository.GetById(id);
             if (risco == null)
             {
+                 if (IsAjaxRequest())
+                {
+                    Response.StatusCode = 404;
+                    return Content("Risco não encontrado para exclusão.");
+                }
                 return NotFound();
+            }
+            
+            if (IsAjaxRequest())
+            {
+                return PartialView("_DeleteRiscoPartial", risco);
             }
             return View(risco);
         }
 
-        // POST: /Riscos/Delete/5
+        // POST: /Riscos/Delete/5 (O ActionName="Delete" permite usar DeleteConfirmed no método)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             _riscoRepository.Delete(id);
+            
+            if (IsAjaxRequest())
+            {
+                return Ok(); // Retorna Status 200/OK para o JavaScript (Sucesso)
+            }
             return RedirectToAction(nameof(Index));
         }
     }

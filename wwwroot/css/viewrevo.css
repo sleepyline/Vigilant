@@ -1,106 +1,161 @@
-/* ==================================== */
-/* 1. ESTRUTURA E LAYOUT GERAL (Priorizando o novo Dashboard CSS) */
-/* ==================================== */
-
-body {
-    /* Adicione estilos de corpo se aplicável, como fonte e margens */
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #f3f3f3; /* Cor de fundo principal do content-area */
-}
-
-/* Container principal, mantendo o espaçamento da sidebar (250px) */
-.main-wrapper {
-    margin-left: 250px;
-    flex: 1;
+.SuperFlex {
     display: flex;
-    flex-direction: column;
-    width: calc(100% - 250px);
-}
-
-/* Área de conteúdo que envolve todas as views (Index, Create, Edit, Details) */
-.content-area {
-    padding: 30px;
-    flex: 1;
-    background-color: #f3f3f3;
-    border-radius: 30px; /* Borda arredondada no container principal */
-}
-
-h1 {
-    font-size: 3em; /* Tamanho do título principal */
-    color: #333;
-}
-
-/* Título de página menor para as views CRUD (se diferente de h1) */
-.page-title {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
-}
-
-/* ==================================== */
-/* 2. BREADCRUMB (Caminho de Navegação) */
-/* ==================================== */
-
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
 }
 
-.breadcrumb {
-    font-size: 14px;
-    color: #999;
-    display: flex;
-    gap: 8px; /* Usa gap em vez de margin/padding */
-    align-items: center;
+.SuperFlex>div {
+    flex: 1 1 100%;
 }
 
-.breadcrumb a {
-    color: #999; /* Cor padrão para links no breadcrumb */
-    text-decoration: none;
-    transition: color 0.3s;
+@media (min-width: 576px) {
+    .SuperFlex>div {
+        flex: 1 1 calc(50% - 12.5px);
+    }
 }
 
-.breadcrumb a:hover {
-    color: #dc3545; /* Cor de destaque (vermelho) no hover */
+/* --- ELEMENTOS DE FORMULÁRIO --- */
+
+/* Título H4 dentro do corpo da modal */
+.modal-body h4 {
+    font-size: 1.35em;
+    color: #343a40;
+    font-weight: 600;
+    border-bottom: 2px solid #dc3545;
+    /* Linha de destaque */
+    padding-bottom: 8px;
+    margin-bottom: 25px !important;
 }
 
-.breadcrumb .separator {
-    color: #ccc;
+.modal-body .form-group {
+    margin-bottom: 18px !important;
 }
 
-.breadcrumb .active {
-    color: #dc3545; /* O item ativo deve ser destacado com a cor principal */
-    font-weight: 600; /* Adicionado peso para destaque */
+.modal-body .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 6px;
+    display: block;
 }
 
-/* ==================================== */
-/* 3. BOTÕES E AÇÕES (Unificando Estilos) */
-/* Prioridade para o estilo mais moderno e robusto (btn-primary do Dashboard) */
-/* ==================================== */
+/* Estilo para inputs, selects e textareas */
+.modal-body .form-control,
+.modal-body .form-select,
+.modal-body textarea {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    padding: 10px 12px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    min-height: 40px;
+}
 
-.page-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.modal-body .form-control:focus,
+.modal-body .form-select:focus,
+.modal-body textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- VALIDAÇÃO E ERROS --- */
+
+.modal-body .text-danger[data-valmsg-summary="true"] {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    list-style-type: none;
+    border-left: 5px solid #dc3545;
+}
+
+.modal-body .text-danger[data-valmsg-for] {
+    font-size: 0.85em;
+    margin-top: 4px;
+    display: block;
+}
+
+/* --- DETALHES (Details) --- */
+
+.modal-body .details-container {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
 }
 
-.TwoButtons { /* Mantido para uso em dashboards */
-    display: flex;
-    gap: 20px;
+.modal-body dl.row dt,
+.modal-body dl.row dd {
+    padding: 15px 25px;
+    border-bottom: none;
 }
 
-/* Botão Primário (Usado para 'Adicionar Novo Risco', 'Salvar Alterações') */
-.btn-primary {
-    background-color: #dc3545; /* Vermelho principal do tema */
+.row {
+    padding: 10px;
+}
+
+
+.modal-body dl.row dt {
+    font-weight: 700;
+    color: #212529;
+}
+
+.modal-body dl.row>div:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+/* --- EXCLUSÃO (Delete) --- */
+
+.modal-body .delete-message {
+    padding: 20px;
+    background-color: #fff0f0;
+    border: 1px solid #ffcccc;
+    border-left: 5px solid #dc3545;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.modal-body .delete-message p {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-body .delete-message p strong {
+    color: #dc3545;
+}
+
+/* --- BOTÕES DE AÇÃO NA MODAL (Rodapé da Partial View) --- */
+
+.modal-body .form-group.mt-4.text-end {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 20px;
+    margin-top: 25px !important;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.03);
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Estilo do botão Primário na Modal (Salvar/Criar) */
+.modal-body .btn-primary {
+    /* Garante o padding correto dentro da modal */
+    padding: 10px 20px;
+}
+
+/* Estilo do botão de CANCELAR (Secundário) na Modal */
+.modal-body .btn-secondary,
+.modal-body #cancelRiscoCreation {
+    background-color: #6c757d;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
@@ -109,231 +164,68 @@ h1 {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    text-decoration: none; /* Garante que funcione bem com <a> */
 }
 
-.btn-primary:hover {
-    background-color: #c82333;
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-}
-
-/* Botão Secundário (Usado para 'Voltar', 'Cancelar') */
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex; /* Adicionado para consistência */
-    align-items: center;
-    gap: 5px; /* Adicionado para ícones */
-    text-decoration: none;
-}
-
-.btn-secondary:hover {
+.modal-body .btn-secondary:hover,
+.modal-body #cancelRiscoCreation:hover {
     background-color: #5a6268;
 }
 
-/* Botão de Ícone para Ações em Tabela (Edit, Delete, View) */
-.btn-icon {
-    background: none;
+/* Estilo específico para o botão de Excluir */
+.modal-body #deleteForm .btn-primary {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.modal-body #deleteForm .btn-primary:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+#closeModalButton {
+    /* Aparência */
+    padding: 0;
     border: none;
-    color: #999;
+    background: transparent;
     cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
+    font-size: 1.5rem;
+    /* Tamanho do 'X' */
+    color: #6c757d;
+    /* Cor cinza padrão */
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, color 0.2s ease;
 
-.btn-icon:hover {
-    background-color: #f0f0f0;
-    color: #dc3545;
-}
-
-/* ==================================== */
-/* 4. CARDS, FORMULÁRIOS E DETALHES */
-/* Aplicado a estatísticas e containers CRUD */
-/* ==================================== */
-
-.stat-card, .dashboard-card, .table-container, .card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-/* Reaplicando padding padrão para formulários/detalhes */
-.card, .dashboard-card {
-    padding: 25px; 
-}
-/* Form Group para campos de entrada */
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: .5rem;
-    font-weight: 600;
-    color: #495057;
-}
-
-.form-control, .form-select {
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-.form-control:focus, .form-select:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #dc3545; /* Destaca com a cor principal ao focar */
-    outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(220, 53, 69, 0.25);
-}
-
-/* Estilos de Detalhes (dl) */
-.card dt {
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-.card dd {
-    margin-bottom: 10px;
-}
-
-/* ==================================== */
-/* 5. BADGES (Status e Gravidade) */
-/* MANTIDO o estilo mais detalhado e visível do CSS CRUD/Tabela */
-/* ==================================== */
-
-.status-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.status-badge.success {
-    background-color: #d4edda;
-    color: #155724; /* Texto escuro para melhor legibilidade */
-}
-
-.status-badge.warning {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.status-badge.danger {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-.status-badge.info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-}
-
-/* Estilos de exclusão (DeleteConfirmation.cshtml) */
-.bg-danger-light {
-    background-color: #f8d7da;
-    color: #721c24; /* Cores consistentes com o badge danger */
-    padding: 20px;
-    border-radius: 8px;
-}
-
-/* ==================================== */
-/* 6. ESTILOS DASHBOARD (mantidos intactos para grids e cards de estatística) */
-/* ==================================== */
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    /* Mantém o estilo do dashboard */
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-/* ... (Inclua todos os estilos .stat-icon, .stat-info, .dashboard-grid, .chart-placeholder, etc., que vieram do CSS de Dashboard) ... */
-
-.stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
+    /* Posição e alinhamento */
+    margin-left: 15px;
+    /* Espaçamento do título */
     flex-shrink: 0;
-}
-/* ... (Inclua todas as cores de .stat-icon.red, .stat-icon.black, etc.) ... */
-/* ... (Inclua todos os estilos de tabela, se não os incluí anteriormente) ... */
-.table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    /* Impede que ele encolha */
 }
 
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
+#closeModalButton:hover,
+#closeModalButton:focus {
+    color: #000000;
+    /* Preto ao passar o mouse */
+    opacity: 1;
+    outline: none;
+    /* Remove o contorno padrão em foco */
 }
 
-.data-table thead {
-    background-color: #f8f9fa;
+.details-container .row {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 0;
 }
 
-/* ... (Inclua os media queries no final) ... */
-@media (max-width: 1024px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.details-container .row:last-child {
+    border-bottom: none;
 }
 
-@media (max-width: 768px) {
-    .content-area {
-        padding: 20px;
-    }
+.details-container dt.col-sm-4 {
+    font-weight: 500;
+    color: #475569;
+}
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .table-container {
-        overflow-x: auto;
-    }
-
-    .data-table {
-        min-width: 800px;
-    }
+.details-container dd.col-sm-8 {
+    color: #1e293b;
 }

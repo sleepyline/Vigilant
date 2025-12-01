@@ -1,0 +1,64 @@
+@using VigiLant.Models.Enum
+@model VigiLant.Models.Risco
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<div class="details-container">
+    <div class="row">
+        <div class="col-sm-6">Nome do Risco:</div>
+        <div class="col-sm-6">@Model.Nome</div>
+    </div>
+    <hr class="divider" />
+
+    <div class="SuperFlex">
+        <div class="flex1">
+
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <strong class="form-label">Descrição Completa:</strong>
+                </div>
+                <div class="col-sm-12 description-text">
+                    @Model.Descricao
+                </div>
+                <hr class="divider" />
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">Nível de Gravidade:</div>
+                <div class="col-sm-6">
+                    @{
+                        var gravidadeClass = Model.NivelGravidade switch
+                        {
+                            NivelSeveridade.Alto => "danger",
+                            NivelSeveridade.Medio => "warning",
+                            _ => "success"
+                        };
+                    }
+                    <span class="status-badge @gravidadeClass">@Model.NivelGravidade</span>
+                </div>
+            </div>
+            <hr class="divider" />
+        </div>
+
+        <div class="flex1">
+            <div class="row">
+                <div class="col-sm-6">Data de Identificação:</div>
+                <div class="col-sm-6">@Model.DataIdentificacao.ToShortDateString()</div>
+            </div>
+            <hr class="divider" />
+            <div class="row">
+                <div class="col-sm-6">Status Atual:</div>
+                <div class="col-sm-6">
+                    <span class="status-badge info">@Model.Status</span>
+                </div>
+            </div>
+            <hr class="divider" />
+        </div>
+    </div>
+</div>
+
+<div class="form-group mt-4 text-end">
+    <button type="button" class="btn-secondary" id="cancelModalButton">
+        <i class="fas fa-arrow-left"></i> Fechar Details
+    </button>
+</div>
