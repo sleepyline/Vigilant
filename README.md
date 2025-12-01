@@ -7,7 +7,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ## Indice
 
-* [Inicio Rápido](#Inicio Rápido)
+* [Inicio Rápido](#Inicio_Rápido)
 * [Core concepts](#core-concepts)
 * [Example](#example)
 * [Design & extensibility](#design--extensibility)
@@ -17,7 +17,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ---
 
-## Inicio Rápido
+## Inicio_Rápido
 
 Clone o repositório e execute o exemplo incluído, e em seguida siga as instruções abaixo:
 
