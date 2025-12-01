@@ -12,7 +12,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 * [Design & Extensibilidade](#Design_&_Extensibilidade)
 * [Recursos-Chave](#Recursos-Chave)
 * [Licença](#Licença)
-* [Equipe do Projeto](#Equipe_do_Projeto)
+* [Equipe](#Equipe)
 
 ---
 
@@ -64,7 +64,7 @@ Monitoramento Integrado	Permite o cadastro e monitoramento de equipamentos, com 
 
 ---
 
-## Equipe_do_Projeto
+## Equipe
 
 Este projeto foi desenvolvido por estudantes do SENAI, com a participação de:
 Nome do Componente	Instituição de Origem
