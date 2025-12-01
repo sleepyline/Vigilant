@@ -17,9 +17,9 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ---
 
-## Quickstart
+## Inicio Rápido
 
-Clone the repo and run the included example (the examples are intentionally minimal and focused on showing how to plug into karga — the `reqwest` HTTP example is just the easiest illustration):
+Clone o repositório e execute o exemplo incluído, e em seguida siga as instruções abaixo:
 
 ```bash
 git clone https://github.com/karga-rs/karga.git
