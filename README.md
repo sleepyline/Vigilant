@@ -22,9 +22,9 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 Clone o repositório e execute o exemplo incluído, e em seguida siga as instruções abaixo:
 
 ```bash
-git clone https://github.com/karga-rs/karga.git
-cd karga
-cargo run --example http
+https://github.com/sleepyline/Vigilant.git
+cd Vigilant
+dotnet run watch
 ```
 
 ---
