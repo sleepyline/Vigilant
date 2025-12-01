@@ -17,7 +17,21 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 
 ---
 
-##  Problema
+## Quickstart
+
+Clone the repo and run the included example (the examples are intentionally minimal and focused on showing how to plug into karga — the `reqwest` HTTP example is just the easiest illustration):
+
+```bash
+git clone https://github.com/karga-rs/karga.git
+cd karga
+cargo run --example http
+```
+
+That example demonstrates measuring request latency and success (HTTP 200) using a simple executor. Replace the action with any async closure to exercise custom code (Kafka producer, filesystem workload, or any I/O you want).
+
+---
+
+##  Problema 
 
 A gestão de riscos na Renault era baseada em processos manuais e reativos, resultando em:
 
@@ -30,6 +44,12 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
 
 > **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
 
+## Design & extensibility
+
+  * **Serde-like core** — karga focuses on representing the *what* (scenarios, metrics) and not the *how*. Implementations live in separate crates.
+  * **Generic-first API** — heavy use of traits and generics to make composing components ergonomic and zero-cost where possible.
+  * **Closure-driven actions** — define workloads as simple async closures so users can embed arbitrary logic without boilerplate.
+  * **Composable pipelines** — metrics flow from actions → aggregates → reports. Each stage is pluggable.
 
 ## Recursos-Chave
 
@@ -39,7 +59,11 @@ Dashboard Centralizado	Painel principal com indicadores de segurança (KPIs) em 
 Gestão de Riscos Intuitiva	Interface simplificada para registro de riscos por qualquer colaborador, atribuindo prioridade e status de forma fácil.	Aumenta a adesão e o empoderamento dos colaboradores.
 Monitoramento Integrado	Permite o cadastro e monitoramento de equipamentos, com emissão de alertas e notificações automáticas em caso de falhas.	Garante resposta rápida e eficiente.
 
+## License
 
+`karga` is MIT-licensed — see the `LICENSE` file in the repository.
+
+---
 
 ## Equipe do Projeto
 
@@ -50,3 +74,5 @@ Misla Brito	SENAI SEDE, Camaçari, BA
 Orlando Lucas	SENAI SEDE, Camaçari, BA
 Tiago Andrade	SENAI SEDE, Camaçari, BA
 Yuri Silva	SENAI SEDE, Camaçari, BA
+
+
