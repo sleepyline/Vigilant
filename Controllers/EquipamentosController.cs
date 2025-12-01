@@ -9,7 +9,6 @@ using VigiLant.Repositories;
 
 namespace VigiLant.Controllers
 {
-    // ... Assume que a injeção de IEquipamentoRepository e IMqttService já existe
     public class EquipamentosController : Controller
     {
         private readonly IEquipamentoRepository _repo;
@@ -20,16 +19,23 @@ namespace VigiLant.Controllers
             _repo = repo;
             _mqtt = mqtt;
         }
-        
+
         private bool IsAjaxRequest()
         {
             return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
-        
+
+        public async Task<IActionResult> Index()
+        {
+            var equipamentos = await _repo.GetAllAsync();
+
+            return View(equipamentos);
+        }
+
         public IActionResult Conectar()
         {
-            var novoEquipamento = new Equipamento 
-            { 
+            var novoEquipamento = new Equipamento
+            {
                 DataUltimaManutencao = DateTime.Now,
                 Porta = 1883 // Define o valor padrão para a Partial View
             };
@@ -51,8 +57,8 @@ namespace VigiLant.Controllers
             {
                 if (IsAjaxRequest())
                 {
-                    Response.StatusCode = 400; 
-                    return PartialView("_ConectarEquipamentosPartial", equipamento); 
+                    Response.StatusCode = 400;
+                    return PartialView("_ConectarEquipamentosPartial", equipamento);
                 }
                 return View(equipamento);
             }
@@ -63,10 +69,10 @@ namespace VigiLant.Controllers
                 string baseTopic = equipamento.Topico.TrimEnd('/');
                 equipamento.TopicoResposta = $"{baseTopic}/status";
                 equipamento.Status = "Aguardando Conexão";
-                
+
                 // 2. Cadastrar o Equipamento Provisoriamente no banco de dados.
-                await _repo.AddAsync(equipamento); 
-                
+                await _repo.AddAsync(equipamento);
+
                 // 3. Assinar os tópicos no broker para escutar a medição e a resposta
                 await _mqtt.AssinarTopicoAsync(equipamento.Topico);
                 await _mqtt.AssinarTopicoAsync(equipamento.TopicoResposta);
@@ -77,10 +83,10 @@ namespace VigiLant.Controllers
                 // 5. Sucesso (a confirmação final será feita pelo MqttHostedService)
                 if (IsAjaxRequest())
                 {
-                    return Ok(new 
-                    { 
-                        success = true, 
-                        message = $"Tentativa de conexão iniciada. Aguardando resposta em: {equipamento.TopicoResposta}..." 
+                    return Ok(new
+                    {
+                        success = true,
+                        message = $"Tentativa de conexão iniciada. Aguardando resposta em: {equipamento.TopicoResposta}..."
                     });
                 }
                 return RedirectToAction(nameof(Index));
