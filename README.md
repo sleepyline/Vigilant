@@ -31,6 +31,7 @@ Crie um banco de dados chamado ( vigilant )
 Logo apos:
 
 ```bash
+dotnet ef databse update
 dotnet watch run
 ```
 
