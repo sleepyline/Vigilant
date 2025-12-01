@@ -24,7 +24,14 @@ Clone o repositório e execute o exemplo incluído, e em seguida siga as instru�
 ```bash
 https://github.com/sleepyline/Vigilant.git
 cd Vigilant
-dotnet run watch
+Code .
+```
+
+Crie um banco de dados chamado ( vigilant )
+Logo apos:
+
+```bash
+dotnet watch run
 ```
 
 ---
