@@ -1,3 +1,4 @@
+/* --- LAYOUTS FLEXÍVEIS E RESPONSIVOS --- */
 .SuperFlex {
     display: flex;
     gap: 10px;
@@ -15,15 +16,13 @@
     }
 }
 
-/* --- ELEMENTOS DE FORMULÁRIO --- */
+/* --- ELEMENTOS DE FORMULÁRIO GERAIS DENTRO DA MODAL --- */
 
-/* Título H4 dentro do corpo da modal */
 .modal-body h4 {
     font-size: 1.35em;
     color: #343a40;
     font-weight: 600;
     border-bottom: 2px solid #dc3545;
-    /* Linha de destaque */
     padding-bottom: 8px;
     margin-bottom: 25px !important;
 }
@@ -39,16 +38,17 @@
     display: block;
 }
 
-/* Estilo para inputs, selects e textareas */
+/* Estilo para inputs, selects e textareas (igual à imagem) */
 .modal-body .form-control,
 .modal-body .form-select,
 .modal-body textarea {
-    border-radius: 6px;
+    border-radius: 6px; /* Bordas arredondadas dos campos */
     border: 1px solid #ced4da;
     padding: 10px 12px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     min-height: 40px;
+    width: 100%; /* Garantir que ocupem o espaço total */
 }
 
 .modal-body .form-control:focus,
@@ -80,7 +80,6 @@
 }
 
 /* --- DETALHES (Details) --- */
-
 .modal-body .details-container {
     padding: 20px;
     border-radius: 8px;
@@ -100,7 +99,6 @@
     padding: 10px;
 }
 
-
 .modal-body dl.row dt {
     font-weight: 700;
     color: #212529;
@@ -108,6 +106,24 @@
 
 .modal-body dl.row>div:nth-child(odd) {
     background-color: #f8f9fa;
+}
+
+.details-container .row {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 0;
+}
+
+.details-container .row:last-child {
+    border-bottom: none;
+}
+
+.details-container dt.col-sm-4 {
+    font-weight: 500;
+    color: #475569;
+}
+
+.details-container dd.col-sm-8 {
+    color: #1e293b;
 }
 
 /* --- EXCLUSÃO (Delete) --- */
@@ -133,6 +149,7 @@
 
 /* --- BOTÕES DE AÇÃO NA MODAL (Rodapé da Partial View) --- */
 
+/* Contêiner de Botões (Rodapé da Partial View) */
 .modal-body .form-group.mt-4.text-end {
     display: flex;
     justify-content: flex-end;
@@ -143,10 +160,25 @@
     border-top: 1px solid #f0f0f0;
 }
 
-/* Estilo do botão Primário na Modal (Salvar/Criar) */
+/* Estilo do botão Primário na Modal (Salvar/Criar) - Deve ser VERMELHO (cor da imagem) */
 .modal-body .btn-primary {
-    /* Garante o padding correto dentro da modal */
+    background-color: #dc3545; /* Vermelho forte */
+    border-color: #dc3545;
+    color: white;
+    font-weight: 500;
     padding: 10px 20px;
+    border-radius: 8px; /* Mais arredondado, como na imagem */
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-body .btn-primary:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
 }
 
 /* Estilo do botão de CANCELAR (Secundário) na Modal */
@@ -171,7 +203,7 @@
     background-color: #5a6268;
 }
 
-/* Estilo específico para o botão de Excluir */
+/* Estilo específico para o botão de Excluir (mantém vermelho) */
 .modal-body #deleteForm .btn-primary {
     background-color: #dc3545;
     border-color: #dc3545;
@@ -182,50 +214,25 @@
     border-color: #bd2130;
 }
 
+/* --- ESTILOS DO HEADER DA MODAL (Botão X) --- */
+
 #closeModalButton {
-    /* Aparência */
     padding: 0;
     border: none;
     background: transparent;
     cursor: pointer;
     font-size: 1.5rem;
-    /* Tamanho do 'X' */
     color: #6c757d;
-    /* Cor cinza padrão */
     line-height: 1;
     opacity: 0.7;
     transition: opacity 0.2s ease, color 0.2s ease;
-
-    /* Posição e alinhamento */
     margin-left: 15px;
-    /* Espaçamento do título */
     flex-shrink: 0;
-    /* Impede que ele encolha */
 }
 
 #closeModalButton:hover,
 #closeModalButton:focus {
     color: #000000;
-    /* Preto ao passar o mouse */
     opacity: 1;
     outline: none;
-    /* Remove o contorno padrão em foco */
-}
-
-.details-container .row {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 10px 0;
-}
-
-.details-container .row:last-child {
-    border-bottom: none;
-}
-
-.details-container dt.col-sm-4 {
-    font-weight: 500;
-    color: #475569;
-}
-
-.details-container dd.col-sm-8 {
-    color: #1e293b;
 }
