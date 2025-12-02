@@ -74,6 +74,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsYXRvcmlvc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Tiago/Documents/VigiLant/Views/Relatorios/_CreateRelatorioPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsYXRvcmlvc1xfQ3JlYXRlUmVsYXRvcmlvUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Tiago/Documents/VigiLant/Views/Relatorios/_DeleteRelatorioPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsYXRvcmlvc1xfRGVsZXRlUmVsYXRvcmlvUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Tiago/Documents/VigiLant/Views/Relatorios/_DetailsRelatorioPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsYXRvcmlvc1xfRGV0YWlsc1JlbGF0b3Jpb1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Tiago/Documents/VigiLant/Views/Relatorios/_EditRelatorioPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVsYXRvcmlvc1xfRWRpdFJlbGF0b3Jpb1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Tiago/Documents/VigiLant/Views/Riscos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlzY29zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,42 @@
+@model VigiLant.Models.Relatorio
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<div class="details-container">
+    <div class="row mb-2">
+        <dt class="col-sm-4">Nome:</dt>
+        <dd class="col-sm-8">@Model.Nome</dd>
+    </div>
+    
+    <div class="row mb-2">
+        <dt class="col-sm-4">Data de Geração:</dt>
+        <dd class="col-sm-8">@Model.DataGeracao.ToShortDateString()</dd>
+    </div>
+    
+    <hr class="divider" />
+    
+    <div class="row mb-2">
+        <dt class="col-sm-4">Tipo de Relatório:</dt>
+        <dd class="col-sm-8">@Model.TipoRelatorio</dd>
+    </div>
+    
+    <div class="row mb-2">
+        <dt class="col-sm-4">ID do Colaborador (Gerador):</dt>
+        <dd class="col-sm-8">@Model.GeradoPorColaboradorId</dd>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <strong class="form-label">Conteúdo/Resumo:</strong>
+        </div>
+        <div class="col-sm-12 description-text" style="white-space: pre-wrap;">
+            @Model.Conteudo
+        </div>
+    </div>
+</div>
+
+<div class="form-group mt-4 text-end">
+    <button type="button" class="btn-secondary" id="cancelModalButton">
+        <i class="fas fa-arrow-left"></i> Fechar Details
+    </button>
+</div>

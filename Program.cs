@@ -24,6 +24,7 @@ builder.Services.AddScoped<IRiscoRepository, RiscoRepository>();
 builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
 
 // Servicos
 builder.Services.AddSingleton<IMqttService, MqttService>();

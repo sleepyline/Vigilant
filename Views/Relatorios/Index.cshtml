@@ -1,0 +1,85 @@
+@model IEnumerable<VigiLant.Models.Relatorio>
+@{
+    ViewData["Title"] = "Relatórios";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Relatórios</h1>
+    <div class="breadcrumb">
+        <a href="@Url.Action("Index", "Home")">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="active">Relatórios</span>
+    </div>
+</div>
+
+<div class="page-actions">
+    <div></div>
+    <div class="btts">
+        <button type="button" class="btn-primary" id="btnAddRelatorio" data-action-type="create-modal"
+            data-url="@Url.Action("Create", "Relatorios")" data-title="Gerar Novo Relatório" data-form-id="relatorioForm">
+            <i class="fas fa-file-alt"></i>
+            Gerar Novo Relatório
+        </button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome do Relatório</th>
+                <th>Data de Geração</th>
+                <th>Tipo de Relatório</th>
+                <th>Colaborador ID</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var relatorio in Model)
+            {
+                <tr>
+                    <td>#@relatorio.Id</td>
+                    <td>@relatorio.Nome</td>
+                    <td>@relatorio.DataGeracao.ToShortDateString()</td>
+                    <td>@relatorio.TipoRelatorio</td>
+                    <td>@relatorio.GeradoPorColaboradorId</td>
+                    <td>
+                        <div class="table-actions">
+                            <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@relatorio.Id"
+                                data-action-type="edit" data-controller-url="@Url.Content("~/Relatorios")"
+                                data-title="Editar Relatório #{ID}" data-form-id="editRelatorioForm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes" data-id="@relatorio.Id"
+                                data-action-type="details" data-controller-url="@Url.Content("~/Relatorios")"
+                                data-title="Detalhes do Relatório #{ID}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+
+                            <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
+                                data-id="@relatorio.Id" data-action-type="delete" data-controller-url="@Url.Content("~/Relatorios")"
+                                data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteForm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="ajax-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 id="modalTitle">Título</h5> <button id="closeModalButton" ...>X</button>
+        </div>
+        <div id="modalBody" class="modal-body"> </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/js/Partialjs.js" asp-append-version="true"></script>
+}

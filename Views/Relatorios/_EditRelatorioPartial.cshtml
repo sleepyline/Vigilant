@@ -1,0 +1,63 @@
+@model VigiLant.Models.Relatorio
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Edit" method="post" id="editRelatorioForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="SuperFlex">
+        <div class="flex1"> @* Coluna 1: Nome, Tipo, Colaborador *@
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label">Nome do Relatório</label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="TipoRelatorio" class="form-label">Tipo de Relatório</label>
+                <input asp-for="TipoRelatorio" class="form-control" />
+                <span asp-validation-for="TipoRelatorio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="GeradoPorColaboradorId" class="form-label">Gerado por (ID do Colaborador)</label>
+                <input asp-for="GeradoPorColaboradorId" type="number" class="form-control" />
+                <span asp-validation-for="GeradoPorColaboradorId" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="flex1"> @* Coluna 2: Conteúdo, Data *@
+            <div class="form-group mb-3">
+                <label asp-for="Conteudo" class="form-label">Conteúdo/Resumo do Relatório</label>
+                <textarea asp-for="Conteudo" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Conteudo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DataGeracao" class="form-label">Data de Geração</label>
+                <input asp-for="DataGeracao" type="date" class="form-control" />
+                <span asp-validation-for="DataGeracao" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Salvar Alterações
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>
+
+<script>
+    if (window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive) {
+        var form = document.getElementById('editRelatorioForm');
+        // Limpar e reativar a validação para o novo conteúdo da modal
+        jQuery(form).data('validator', null);
+        jQuery.validator.unobtrusive.parse(form);
+    }
+</script>

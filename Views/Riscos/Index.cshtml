@@ -54,6 +54,7 @@
                         @{
                             var gravidadeClass = risco.NivelGravidade switch
                             {
+                                NivelSeveridade.Critico => "danger",
                                 NivelSeveridade.Alto => "danger",
                                 NivelSeveridade.Medio => "warning",
                                 _ => "success"
