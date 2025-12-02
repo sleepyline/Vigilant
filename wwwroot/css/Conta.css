@@ -6,7 +6,6 @@ body {
     display: flex; /* Habilita o Flexbox */
     justify-content: center; /* Centraliza o conteúdo horizontalmente (eixo principal) */
     align-items: center; /* Centraliza o conteúdo verticalmente (eixo cruzado) */
-    min-height: 100vh; /* Garante que o corpo ocupe 100% da altura da viewport */
     /* -------------------------------------------------------- */
     padding: 30px;
 }
