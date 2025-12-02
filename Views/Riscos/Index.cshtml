@@ -17,14 +17,16 @@
 <div class="page-actions">
     <div></div>
     <div class="btts">
-        <button type="button" class="btn-secondary" id="btnIA">
+        <button type="button" class="btn-secondary btn-ajax-modal" id="btnIA" data-action-type="create"
+            data-url="@Url.Action("AnaliseRiscos", "IA")" data-title="Análise de Riscos e Soluções (IA)"
+            data-form-id="iaAnalysisForm">
             <i class="fas fa-microchip"></i>
             IA
         </button>
 
         <button type="button" class="btn-primary" id="btnAddRisco" data-action-type="create-modal"
-            data-url="@Url.Action("Create", "Riscos")" data-title="Adicionar Novo Risco Manualmente" data-form-id="riscoForm">
-            <i class="fas fa-plus"></i>
+            data-url="@Url.Action("Create", "Riscos")" data-title="Adicionar Novo Risco Manualmente"
+            data-form-id="riscoForm" <i class="fas fa-plus"></i>
             Adicionar Novo Risco Manualmente
         </button>
     </div>
@@ -37,6 +39,7 @@
                 <th>ID</th>
                 <th>Nome do Risco</th>
                 <th>Descrição</th>
+                <th>Equipamentos</th>
                 <th>Nível de Gravidade</th>
                 <th>Status</th>
                 <th>Data Identificação</th>
@@ -64,6 +67,7 @@
                             @risco.NivelGravidade
                         </span>
                     </td>
+                    <td>@risco.Equipamento</td>
                     <td>
                         <span class="status-badge info">
                             @risco.Status
@@ -110,4 +114,27 @@
 
 @section Scripts {
     <script src="/js/Partialjs.js" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 2. Faz a requisição AJAX GET
+            $.ajax({
+                type: 'GET',
+                url: urlAction,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    // 3. Carrega o conteúdo (Partial View)
+                    $('#modalBody').html(response);
+                },
+                error: function (xhr, status, error) {
+                    // 4. Trata erros e exibe mensagem
+                    console.error("Erro ao carregar a análise de IA:", error);
+                    $('#modalBody').html('<div class="alert alert-danger">Erro ao carregar a análise de IA. Verifique o console para detalhes.</div>');
+                }
+            });
+        });
+                    });
+    </script>
 }

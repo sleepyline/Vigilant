@@ -1,0 +1,71 @@
+@using VigiLant.Models.ViewModels
+@model IAAnalysisModel
+
+<div class="ia-analysis-container p-4">
+    <h3 class="text-primary mb-3"><i class="fas fa-microchip"></i> Análise de Riscos e Soluções (IA)</h3>
+
+    <div class="row mb-4">
+        <div class="col-sm-6">
+            <p><strong>Total de Riscos no Banco:</strong> @Model.TotalRiscos</p>
+        </div>
+        <div class="col-sm-6">
+            <p><strong>Total de Equipamentos Registrados:</strong> @Model.TotalEquipamentos</p>
+        </div>
+    </div>
+
+    <div class="card mb-4 border-success">
+        <div class="card-header bg-success text-white">
+            <i class="fas fa-lightbulb"></i> **Soluções Sugeridas**
+        </div>
+        <div class="card-body">
+            @if (Model.SolucoesSugeridas.Any())
+            {
+                <ul>
+                    @foreach (var solucao in Model.SolucoesSugeridas)
+                    {
+                        <li>@solucao</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>A IA não sugeriu soluções específicas no momento.</p>
+            }
+        </div>
+    </div>
+
+    <div class="card border-warning">
+        <div class="card-header bg-warning text-dark">
+            <i class="fas fa-exclamation-triangle"></i> **Previsões de Riscos Futuros**
+        </div>
+        <div class="card-body">
+            @if (Model.PrevisoesDeRisco.Any())
+            {
+                <ul>
+                    @foreach (var previsao in Model.PrevisoesDeRisco)
+                    {
+                        <li>@previsao</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>Nenhuma previsão de risco futuro identificada no momento.</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4 text-end">
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Fechar
+        </button>
+    </div>
+</div>
+
+<script>
+    // Script para fechar a modal quando o botão "Fechar" é clicado dentro da Partial View
+    $('#cancelModalButton').on('click', function() {
+        $('#ajax-modal').removeClass('active');
+        $('#modalBody').empty(); // Limpa o conteúdo
+    });
+</script>
