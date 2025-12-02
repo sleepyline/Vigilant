@@ -118,3 +118,25 @@ body {
     color: rgb(153, 0, 0); /* Cor mais escura no hover */
     text-decoration: underline;
 }
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: red;
+  z-index: 500;
+  padding-bottom: 10px;
+  box-sizing: content-box;
+}
+
+.logo .logo-name span {
+  color: black;
+}
+
+.logo {
+  display: flex;
+  padding-left: 70px;
+  font-size: 2.3rem;
+}
