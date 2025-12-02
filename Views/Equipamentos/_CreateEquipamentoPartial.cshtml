@@ -1,0 +1,76 @@
+@model VigiLant.Models.Equipamento
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Create" method="post" id="equipamentoForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Status" /> @* Mantém o Status inicial de PendenteConexao *@
+    <input type="hidden" asp-for="DataUltimaManutencao" />
+
+    <div class="SuperFlex">
+        <div class="flex1">
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Localizacao" class="form-label"></label>
+                <input asp-for="Localizacao" class="form-control" />
+                <span asp-validation-for="Localizacao" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Endereco" class="form-label"></label>
+                <input asp-for="Endereco" class="form-control" value="broker.emqx.io" readonly />
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="flex1">
+            <div class="form-group mb-3">
+                <label asp-for="Porta" class="form-label"></label>
+                <input asp-for="Porta" class="form-control" value="1883" /> @* Porta padrão MQTT *@
+                <span asp-validation-for="Porta" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Topico" class="form-label"></label>
+                <input asp-for="Topico" class="form-control" placeholder="Ex: sensor/temperatura/labx" />
+                <span asp-validation-for="Topico" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="TopicoResposta" class="form-label">Tópico de Resposta</label>
+                <input asp-for="TopicoResposta" class="form-control" placeholder="Ex: sensor/temperatura/labx/resposta" />
+                <span asp-validation-for="TopicoResposta" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="alert alert-info mt-3" role="alert">
+        Ao criar, será enviado o comando **"SeConectar"** para o broker. A atualização do status e tipo de sensor será automática após a resposta do equipamento.
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-satellite-dish"></i> Conectar e Criar Equipamento
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>
+
+@* Script para reativar a validação do lado do cliente (Unobtrusive Validation) *@
+<script>
+    if (window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive) {
+        var form = document.getElementById('equipamentoForm');
+        // O `Partialjs.js` já faz o re-parse e re-bind para formulários em modal.
+        // A linha abaixo é apenas uma garantia se não for a primeira abertura.
+        jQuery.validator.unobtrusive.parse(form);
+    }
+</script>

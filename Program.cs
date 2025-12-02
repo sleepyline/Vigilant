@@ -1,9 +1,13 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using MQTTnet;
+using MQTTnet.Client;
 using VigiLant.Contratos;
 using VigiLant.Data;
 using VigiLant.Hubs;
-using VigiLant.Repositories;
+using VigiLant.Repository;
 using VigiLant.Repository;
 using VigiLant.Services;
 
@@ -26,12 +30,20 @@ builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
 
+// Registra a Factory e o Cliente MQTT como Singleton (devem ser persistentes)
+builder.Services.AddSingleton<MqttFactory>();
+builder.Services.AddSingleton<IMqttClient>(sp => 
+{
+    var factory = sp.GetRequiredService<MqttFactory>();
+    return factory.CreateMqttClient();
+});
+
 // Servicos
 builder.Services.AddSingleton<IMqttService, MqttService>();
 builder.Services.AddSingleton<IHashService, HashService>();
 
 // Registro do Serviço de Background (A ponte entre MQTT e SignalR)
-builder.Services.AddHostedService<MqttHostedService>();
+builder.Services.AddHostedService<MqttBackgroundService>();
 
 // Registro do SignalR
 builder.Services.AddSignalR();
@@ -47,6 +59,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

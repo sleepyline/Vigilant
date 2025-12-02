@@ -1,20 +1,11 @@
-// Contratos/IMqttService.cs
+// VigiLant.Services/IMqttService.cs
 using System.Threading.Tasks;
 
-namespace VigiLant.Contratos
+namespace VigiLant.Services
 {
     public interface IMqttService
     {
-        event Action<string, string> OnMessageReceived;
-        
-        Task PublicarAsync(string topico, string mensagem);
-        
-        Task IniciarAsync();
-        
-        Task FinalizarAsync();
-        
-        Task AssinarTopicoAsync(string topico);
-        
-        Task DesassinarTopicoAsync(string topico);
+        // Publica uma mensagem para o broker. Usado pelo EquipamentosController.
+        Task PublicarMensagemAsync(string topico, string mensagem);
     }
 }

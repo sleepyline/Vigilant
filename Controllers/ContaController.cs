@@ -22,6 +22,15 @@ public class ContaController : Controller
 
     private IActionResult RedirecionarParaHome() => RedirectToAction("Index", "Home");
 
+    // --- Perfil (GET) ---
+    [HttpGet]
+    public IActionResult Perfil()
+    {
+
+        ViewData["Title"] = "Perfil";
+        return View();
+    }
+
     // --- Login (GET) ---
     [HttpGet]
     public IActionResult Login()
@@ -36,7 +45,7 @@ public class ContaController : Controller
     public async Task<IActionResult> Login(string email, string senha)
     {
         ViewData["Title"] = "Login";
-        
+
         // 1. Buscar usuário
         var usuario = await _usuarioRepository.BuscarPorEmail(email);
 
@@ -62,7 +71,7 @@ public class ContaController : Controller
         var authProperties = new AuthenticationProperties
         {
             // isPersistent: true para "Lembrar-me"
-            IsPersistent = false, 
+            IsPersistent = false,
             ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
         };
 
@@ -118,8 +127,8 @@ public class ContaController : Controller
     {
         // Remove o cookie de autenticação
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        
+
         // CORREÇÃO: Volta para a tela de Login
-        return RedirectToAction("Login"); 
+        return RedirectToAction("Login");
     }
 }

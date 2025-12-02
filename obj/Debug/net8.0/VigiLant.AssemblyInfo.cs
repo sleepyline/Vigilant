@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VigiLant")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+871c08033d16d782a47278393fd2e73cff3a869a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+574d7ed5910d19b9acade94917df89f68d48e555")]
 [assembly: System.Reflection.AssemblyProductAttribute("VigiLant")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VigiLant")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,106 +1,209 @@
-// Controllers/EquipamentosController.cs
 using Microsoft.AspNetCore.Mvc;
-using VigiLant.Contratos;
 using VigiLant.Models;
-using System.Threading.Tasks;
+using VigiLant.Contratos;
+using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Linq;
-using VigiLant.Repositories;
+using System.Threading.Tasks;
+using VigiLant.Services;
+using VigiLant.Repository; // Presumindo que você terá um serviço para MQTT
 
 namespace VigiLant.Controllers
 {
+    [Authorize]
     public class EquipamentosController : Controller
     {
-        private readonly IEquipamentoRepository _repo;
-        private readonly IMqttService _mqtt;
+        private readonly IEquipamentoRepository _equipamentoRepository;
+        private readonly IMqttService _mqttService; // Interface para o serviço MQTT
 
-        public EquipamentosController(IEquipamentoRepository repo, IMqttService mqtt)
+        // O repositório deve ser criado em VigiLant.Contratos
+        public EquipamentosController(IEquipamentoRepository equipamentoRepository, IMqttService mqttService)
         {
-            _repo = repo;
-            _mqtt = mqtt;
+            _equipamentoRepository = equipamentoRepository;
+            _mqttService = mqttService;
         }
 
+        // Helper para verificar se a requisição é AJAX
         private bool IsAjaxRequest()
         {
             return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
 
-        public async Task<IActionResult> Index()
+        // GET: /Equipamentos/Index
+        public IActionResult Index()
         {
-            var equipamentos = await _repo.GetAllAsync();
-
+            var equipamentos = _equipamentoRepository.GetAll();
             return View(equipamentos);
         }
 
-        public IActionResult Conectar()
+        // GET: /Equipamentos/Create
+        public IActionResult Create()
         {
             var novoEquipamento = new Equipamento
             {
-                DataUltimaManutencao = DateTime.Now,
-                Porta = 1883 // Define o valor padrão para a Partial View
+                Status = "PendenteConexao"
             };
 
             if (IsAjaxRequest())
             {
-                return PartialView("_ConectarEquipamentosPartial", novoEquipamento);
+                return PartialView("_CreateEquipamentoPartial", novoEquipamento);
             }
             return View(novoEquipamento);
         }
 
-
-        // POST: /Equipamentos/Conectar (Ação Principal)
+        // POST: /Equipamentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Conectar(Equipamento equipamento)
+        public async Task<IActionResult> Create(Equipamento equipamento)
         {
-            if (!ModelState.IsValid)
+            // Garante o status inicial de conexão
+            equipamento.Status = "PendenteConexao";
+            equipamento.DataUltimaManutencao = DateTime.Now; // Usado para inicializar a data
+
+            if (ModelState.IsValid)
             {
-                if (IsAjaxRequest())
+                // 1. Salva o equipamento no banco de dados
+                _equipamentoRepository.Add(equipamento);
+
+                try
                 {
-                    Response.StatusCode = 400;
-                    return PartialView("_ConectarEquipamentosPartial", equipamento);
-                }
-                return View(equipamento);
-            }
+                    // 2. Envia a mensagem de "SeConectar" via MQTT
+                    // O TopicoResposta será usado pelo serviço de background
+                    await _mqttService.PublicarMensagemAsync(
+                        $"{equipamento.Topico}/comando", // Ex: sensor/temp/comando
+                        "SeConectar"
+                    );
 
-            try
-            {
-                // 1. Definir o Tópico de Resposta (Convenção: Tópico Medição + /status)
-                string baseTopic = equipamento.Topico.TrimEnd('/');
-                equipamento.TopicoResposta = $"{baseTopic}/status";
-                equipamento.Status = "Aguardando Conexão";
-
-                // 2. Cadastrar o Equipamento Provisoriamente no banco de dados.
-                await _repo.AddAsync(equipamento);
-
-                // 3. Assinar os tópicos no broker para escutar a medição e a resposta
-                await _mqtt.AssinarTopicoAsync(equipamento.Topico);
-                await _mqtt.AssinarTopicoAsync(equipamento.TopicoResposta);
-
-                // 4. Publicar a mensagem "Conectando" (Gatilho para o dispositivo IoT)
-                await _mqtt.PublicarAsync(equipamento.Topico, "Conectando");
-
-                // 5. Sucesso (a confirmação final será feita pelo MqttHostedService)
-                if (IsAjaxRequest())
-                {
-                    return Ok(new
+                    // 3. O sucesso é imediato (a resposta do broker é assíncrona)
+                    if (IsAjaxRequest())
                     {
-                        success = true,
-                        message = $"Tentativa de conexão iniciada. Aguardando resposta em: {equipamento.TopicoResposta}..."
-                    });
+                        return Ok(); // Sucesso
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    // Trata erro de comunicação MQTT
+                    ModelState.AddModelError(string.Empty, "Erro ao tentar enviar o comando 'SeConectar' ao broker.");
+                    // Define o Status para indicar falha na comunicação inicial
+                    equipamento.Status = "ErroInicial";
+                }
             }
-            catch (Exception ex)
+
+            // SE VALIDAÇÃO FALHAR OU ERRO MQTT
+            if (IsAjaxRequest())
             {
-                ModelState.AddModelError(string.Empty, "Erro ao processar a conexão: " + ex.Message);
+                Response.StatusCode = 400;
+                return PartialView("_CreateEquipamentoPartial", equipamento);
+            }
+            return View(equipamento);
+        }
+
+        // GET: /Equipamentos/Details/5
+        public IActionResult Details(int id)
+        {
+            var equipamento = _equipamentoRepository.GetById(id);
+            if (equipamento == null)
+            {
+                if (IsAjaxRequest()) { Response.StatusCode = 404; return Content("Equipamento não encontrado."); }
+                return NotFound();
+            }
+
+            if (IsAjaxRequest())
+            {
+                return PartialView("_DetailsEquipamentoPartial", equipamento);
+            }
+            return View(equipamento);
+        }
+
+        // GET: /Equipamentos/Edit/5
+        public IActionResult Edit(int id)
+        {
+            var equipamento = _equipamentoRepository.GetById(id);
+            if (equipamento == null)
+            {
+                if (IsAjaxRequest()) { Response.StatusCode = 404; return Content("Equipamento não encontrado."); }
+                return NotFound();
+            }
+
+            if (IsAjaxRequest())
+            {
+                return PartialView("_EditEquipamentoPartial", equipamento);
+            }
+            return View(equipamento);
+        }
+
+        // POST: /Equipamentos/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Equipamento equipamento)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _equipamentoRepository.Update(equipamento);
+
+                    if (IsAjaxRequest())
+                    {
+                        return Ok();
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar as alterações.");
+
+                    if (IsAjaxRequest())
+                    {
+                        Response.StatusCode = 400;
+                        return PartialView("_EditEquipamentoPartial", equipamento);
+                    }
+                    return View(equipamento);
+                }
+            }
+
+            // SE VALIDAÇÃO FALHAR
+            if (IsAjaxRequest())
+            {
+                Response.StatusCode = 400;
+                return PartialView("_EditEquipamentoPartial", equipamento);
+            }
+            return View(equipamento);
+        }
+
+        // GET: /Equipamentos/DeleteConfirmation/5
+        public IActionResult DeleteConfirmation(int id)
+        {
+            var equipamento = _equipamentoRepository.GetById(id);
+            if (equipamento == null)
+            {
                 if (IsAjaxRequest())
                 {
-                    Response.StatusCode = 500;
-                    return PartialView("_ConectarEquipamentosPartial", equipamento);
+                    Response.StatusCode = 404;
+                    return Content("Equipamento não encontrado para exclusão.");
                 }
-                return View(equipamento);
+                return NotFound();
             }
+
+            if (IsAjaxRequest())
+            {
+                return PartialView("_DeleteEquipamentoPartial", equipamento);
+            }
+            return View(equipamento);
+        }
+
+        // POST: /Equipamentos/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _equipamentoRepository.Delete(id);
+
+            if (IsAjaxRequest())
+            {
+                return Ok();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

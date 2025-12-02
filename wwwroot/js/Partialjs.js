@@ -74,12 +74,14 @@ function handleFormSubmission(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
 
-    // Remove handlers antigos antes de adicionar um novo para evitar múltiplas execuções
-    // Isso é importante após re-binds ou se a mesma Partial for carregada várias vezes
+    // A CORREÇÃO PRINCIPAL ESTÁ AQUI:
+    // Remove o handler antigo antes de adicionar um novo.
+    // O handler deve ser armazenado diretamente no elemento do formulário.
     if (form.currentSubmitHandler) {
         form.removeEventListener('submit', form.currentSubmitHandler);
     }
     
+    // Define o novo handler.
     form.currentSubmitHandler = function (e) {
         e.preventDefault();
 
@@ -91,6 +93,14 @@ function handleFormSubmission(formId) {
         const formData = new FormData(form);
         const actionUrl = form.getAttribute('action');
         const method = form.getAttribute('method') || 'POST';
+        
+        // Desabilitar o botão de submit temporariamente para evitar cliques múltiplos
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+        }
+
 
         fetch(actionUrl, {
             method: method,
@@ -100,6 +110,15 @@ function handleFormSubmission(formId) {
             }
         })
         .then(response => {
+             // Reabilitar o botão de submit em caso de resposta (sucesso ou erro)
+            if (submitButton) {
+                // Restaurar o conteúdo original do botão - é necessário um atributo data-original-html
+                // mas para simplificar, vamos apenas reabilitar
+                submitButton.disabled = false; 
+                // Assumindo que o HTML original está definido no _ConectarEquipamentosPartial.cshtml,
+                // vamos apenas reabilitar o botão aqui, o re-bind 400 corrigirá o HTML.
+            }
+            
             if (response.ok) {
                 // Sucesso (Status 200/204)
                 closeModal();
@@ -109,7 +128,7 @@ function handleFormSubmission(formId) {
                 // Erro de Validação (Controller retorna PartialView com ModelState.Errors)
                 return response.text().then(html => {
                     modalBody.innerHTML = html;
-                    // Re-bind com o ID do formulário correto após erro
+                    // O re-bind é CRUCIAL após o erro 400. Ele re-analisa o form e re-adiciona o submit handler.
                     bindModalEventListeners(formId); 
                     // Removido o alert, pois a validação deve ser exibida no formulário
                 });
@@ -121,9 +140,16 @@ function handleFormSubmission(formId) {
         .catch(error => {
             console.error('Erro na submissão do formulário:', error);
             alert(`Erro na submissão: ${error.message}`);
+            // Reabilitar o botão de submit em caso de erro na requisição (ex: falha de rede)
+            if (submitButton) {
+                submitButton.disabled = false;
+                // Para restaurar o ícone original, seria necessário ter salvo o innerHTML original
+                // Exemplo: submitButton.innerHTML = submitButton.getAttribute('data-original-html');
+            }
         });
     };
     
+    // Adiciona o novo handler.
     form.addEventListener('submit', form.currentSubmitHandler);
 }
 
@@ -198,6 +224,9 @@ function bindModalEventListeners(formId) {
             jQuery(form).removeData('validator');
             jQuery(form).removeData('unobtrusiveValidation');
             jQuery.validator.unobtrusive.parse(form);
+            
+            // O código abaixo é apenas para fins de debug e pode ser removido
+            // console.log(`Validação Unobtrusive re-analisada para #${formId}`);
         }
     }
 

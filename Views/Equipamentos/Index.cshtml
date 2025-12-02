@@ -15,14 +15,10 @@
 <div class="page-actions">
     <div></div>
     <div class="btts">
-        <button type="button" class="btn-secondary" id="btnConfig">
-            <i class="fas fa-cog"></i>
-        </button>
-
-        <button type="button" class="btn-primary" id="btnConectar" data-action-type="create-modal"
-            data-url="@Url.Action("Conectar", "Equipamentos")" data-title="Conectar Equipamento" data-form-id="riscoForm">
+        <button type="button" class="btn-primary" id="btnAddEquipamento" data-action-type="create-modal"
+            data-url="@Url.Action("Create", "Equipamentos")" data-title="Adicionar Novo Equipamento" data-form-id="equipamentoForm">
             <i class="fas fa-plus"></i>
-            Conectar a sensor de Equipamento
+            Adicionar Novo Equipamento
         </button>
     </div>
 </div>
@@ -32,11 +28,11 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nome do Equipamento</th>
-                <th>Tipo</th>
+                <th>Nome</th>
                 <th>Localização</th>
+                <th>Tópico</th>
                 <th>Status</th>
-                <th>Próxima Manutenção</th>
+                <th>Tipo Sensor</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -45,34 +41,42 @@
             {
                 <tr>
                     <td>#@equipamento.Id</td>
-                    <td><strong>@equipamento.Nome</strong></td>
-                    <td>@equipamento.TipoSensor</td>
+                    <td>@equipamento.Nome</td>
                     <td>@equipamento.Localizacao</td>
+                    <td>@equipamento.Topico</td>
                     <td>
-                        @if (equipamento.Status == "Ativo")
-                        {
-                            <span class="status-badge success">@equipamento.Status</span>
+                        @{
+                            var statusClass = equipamento.Status switch
+                            {
+                                "Ativo" => "success",
+                                "Inativo" or "ErroInicial" => "danger",
+                                _ => "warning"
+                            };
                         }
-                        else if (equipamento.Status == "Manutenção")
-                        {
-                            <span class="status-badge warning">@equipamento.Status</span>
-                        }
-                        else
-                        {
-                            <span class="status-badge danger">@equipamento.Status</span>
-                        }
+                        <span class="status-badge @statusClass">
+                            @equipamento.Status
+                        </span>
                     </td>
-                    <td>@equipamento.DataUltimaManutencao.ToString("dd/MM/yyyy")</td>
+                    <td>@(string.IsNullOrEmpty(equipamento.TipoSensor) ? "Pendente" : equipamento.TipoSensor)</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon" title="Editar">
+
+                            <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@equipamento.Id"
+                                data-action-type="edit" data-controller-url="@Url.Content("~/Equipamentos")"
+                                data-title="Editar Equipamento #{ID}" data-form-id="editEquipamentoForm">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn-icon" title="Excluir">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button class="btn-icon" title="Ver Detalhes">
+
+                            <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes" data-id="@equipamento.Id"
+                                data-action-type="details" data-controller-url="@Url.Content("~/Equipamentos")"
+                                data-title="Detalhes do Equipamento #{ID}">
                                 <i class="fas fa-eye"></i>
+                            </button>
+
+                            <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
+                                data-id="@equipamento.Id" data-action-type="delete" data-controller-url="@Url.Content("~/Equipamentos")"
+                                data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteForm">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </td>
@@ -92,66 +96,6 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@7.0.0/dist/browser/signalr.min.js"></script>
-    <script src="/js/Partialjs.js" asp-append-version="true"></script>
-    <script>
-        // Cria a conexão com o Hub SignalR
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/medicaoHub") // Endpoint mapeado no Program.cs
-            .withAutomaticReconnect()
-            .build();
-
-        // ----------------------------------------------------
-        // Lógica de Atualização em Tempo Real da Medição (Corrente)
-        // ----------------------------------------------------
-        connection.on("ReceberMedicao", function (equipamentoId, corrente) {
-            // 1. Localiza a linha correta na tabela pelo ID do equipamento
-            const row = document.querySelector(`#equipamentosTable tr[data-equipamento-id="${equipamentoId}"]`);
-            if (row) {
-                // 2. Encontra a célula de status (quinta coluna)
-                const statusCell = row.querySelector('.status-cell');
-                if (statusCell) {
-                    // 3. Atualiza o conteúdo com a intensidade da corrente
-                    statusCell.innerHTML = `<span class="status-badge success"><i class="fas fa-bolt"></i> ${corrente.toFixed(2)}A</span>`;
-                }
-            }
-        });
-        
-        // ----------------------------------------------------
-        // Lógica de Novo Equipamento Conectado (Confirmação do Broker)
-        // ----------------------------------------------------
-        connection.on("NovoEquipamentoConectado", function (equipamento) {
-            // Notifica e recarrega a página para exibir o novo status
-            alert(`Equipamento '${equipamento.Nome}' conectado com sucesso (Status: Conectado)!`);
-            window.location.reload(); 
-        });
-
-        // ----------------------------------------------------
-        // Inicia a Conexão
-        // ----------------------------------------------------
-        async function startSignalR() {
-            try {
-                await connection.start();
-                console.log("Conexão SignalR estabelecida.");
-            } catch (err) {
-                console.error("Erro ao conectar ao SignalR:", err);
-                // Tenta reconectar após 5 segundos
-                setTimeout(startSignalR, 5000); 
-            }
-        };
-
-        // Inicia o processo de conexão
-        startSignalR();
-        
-        // Ajuste no botão de conectar (baseado no seu Index.cshtml)
-        document.addEventListener('DOMContentLoaded', function () {
-            const btnConectar = document.getElementById('btnConectar');
-            if (btnConectar) {
-                // Atualiza a URL e o título para usar a nova Partial View e Action
-                btnConectar.setAttribute('data-url', '@Url.Action("Conectar", "Equipamentos")');
-                btnConectar.setAttribute('data-title', 'Conectar Equipamento MQTT');
-                btnConectar.setAttribute('data-form-id', 'equipamentoForm'); // O ID do formulário na partial
-            }
-        });
-    </script>
+    @* Assumindo que você já tem o Partialjs.js no local correto *@
+    <script src="/js/Partialjs.js" asp-append-version="true"></script> 
 }

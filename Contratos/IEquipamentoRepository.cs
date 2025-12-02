@@ -1,15 +1,15 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+// VigiLant.Contratos/IEquipamentoRepository.cs
 using VigiLant.Models;
+using System.Collections.Generic;
 
-namespace VigiLant.Repositories
+namespace VigiLant.Contratos
 {
     public interface IEquipamentoRepository
     {
-        Task<IEnumerable<Equipamento>> GetAllAsync();
-        Task<Equipamento> GetByIdAsync(int id);
-        Task AddAsync(Equipamento equipamento);
-        Task UpdateAsync(Equipamento equipamento);
-        Task DeleteAsync(int id);
+        void Add(Equipamento equipamento);
+        void Update(Equipamento equipamento);
+        void Delete(int id);
+        Equipamento GetById(int id);
+        IEnumerable<Equipamento> GetAll();
     }
 }
