@@ -120,21 +120,10 @@
             // 2. Faz a requisição AJAX GET
             $.ajax({
                 type: 'GET',
-                url: urlAction,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function (response) {
-                    // 3. Carrega o conteúdo (Partial View)
-                    $('#modalBody').html(response);
-                },
-                error: function (xhr, status, error) {
-                    // 4. Trata erros e exibe mensagem
-                    console.error("Erro ao carregar a análise de IA:", error);
-                    $('#modalBody').html('<div class="alert alert-danger">Erro ao carregar a análise de IA. Verifique o console para detalhes.</div>');
-                }
+                // ERRO AQUI: 'urlAction' NÃO FOI DECLARADO
+                url: urlAction, 
+                // ...
             });
         });
-                    });
     </script>
 }
