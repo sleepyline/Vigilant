@@ -16,10 +16,11 @@
 <div class="page-actions">
     <div></div>
     <div class="btts">
-        <button type="button" class="btn-primary btn-ajax-modal" id="btnConectar" data-action-type="create-modal"
-            data-url="@Url.Action("Conectar", "Equipamentos")" data-title="Conectar Novo Equipamento"
-            data-form-id="conectarForm" <i class="fas fa-plug"></i>
-            Conectar Equipamento
+        <button type="button" class="btn-primary btn-ajax-modal" title="Novo Equipamento" data-form-id="conectarForm"
+            data-action-type="Conectar" data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="Monitorar"
+            data-title="Conectar Novo Equipamento">
+            <i class="fas fa-plug"></i>
+             Conectar Novo Equipamento
         </button>
     </div>
 </div>
