@@ -53,6 +53,7 @@
                     <td>#@risco.Id</td>
                     <td>@risco.Nome</td>
                     <td>@(risco.Descricao.Length > 50 ? risco.Descricao.Substring(0, 50) + "..." : risco.Descricao)</td>
+                    <td>@risco.Equipamento</td>
                     <td>
                         @{
                             var gravidadeClass = risco.NivelGravidade switch
@@ -67,7 +68,6 @@
                             @risco.NivelGravidade
                         </span>
                     </td>
-                    <td>@risco.Equipamento</td>
                     <td>
                         <span class="status-badge info">
                             @risco.Status
@@ -121,7 +121,7 @@
             $.ajax({
                 type: 'GET',
                 // ERRO AQUI: 'urlAction' NÃO FOI DECLARADO
-                url: urlAction, 
+                url: urlAction,
                 // ...
             });
         });
