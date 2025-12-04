@@ -7,13 +7,13 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <p class="mb-4">
-        Para iniciar o monitoramento, insira o <b>Identificador Único</b> (ID/Token de Conexão) fornecido pelo seu equipamento/broker. Ao clicar em **Conectar**, o sistema enviará a solicitação e registrará o equipamento no banco de dados.
+        Para iniciar o monitoramento, insira o <b>Identificador Único</b> (ID/Token de Conexão) fornecido pelo seu equipamento/broker. Ao clicar em <b>Conectar</b>, o sistema enviará a solicitação e registrará o equipamento no banco de dados.
     </p>
 
     <div class="form-group mb-3">
         <label for="identificador" class="form-label">Identificador Único do Equipamento</label>
         <input type="text" id="identificador" name="identificador" class="form-control" 
-               placeholder="Ex: Sensor-Temp-7812-TOKEN" required />
+               placeholder="Ex: SENS-00132" required />
 
         <span class="text-danger">@Html.ValidationMessage("identificador")</span>
     </div>
