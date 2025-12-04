@@ -1,5 +1,5 @@
 @model VigiLant.Models.AppConfig
-@using VigiLant.Models.Enum 
+@using VigiLant.Models.Enum
 
 @{
     ViewData["Title"] = "Configurações do Sistema";
@@ -7,12 +7,14 @@
 
 <link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
 
-<div class="page-header">
-    <h1 class="page-title">Configurações do Sistema</h1>
-    <div class="breadcrumb">
-        <a href="@Url.Action("Index", "Home")">Dashboard</a>
-        <span class="separator">/</span>
-        <span class="active">Configurações</span>
+<div class="PageFlex">
+    <div class="page-header">
+        <h1 class="page-title">Configurações do Sistema</h1>
+        <div class="breadcrumb">
+            <a href="@Url.Action("Index", "Home")">Dashboard</a>
+            <span class="separator">/</span>
+            <span class="active">Configurações</span>
+        </div>
     </div>
 </div>
 
@@ -31,7 +33,7 @@
         <form asp-action="Index" method="post">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group mb-3">
@@ -39,20 +41,21 @@
                 <input asp-for="MqttHost" class="form-control" />
                 <span asp-validation-for="MqttHost" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group mb-3">
                 <label asp-for="MqttPort" class="form-label"></label>
-                <select asp-for="MqttPort" asp-items="Html.GetEnumSelectList<MqttPorta>()"
-                    class="form-select"></select>
+                <select asp-for="MqttPort" asp-items="Html.GetEnumSelectList<MqttPorta>()" class="form-select"></select>
                 <span asp-validation-for="MqttPort" class="text-danger"></span>
-                <small class="form-text text-muted">A porta define o tipo de conexão: TCP padrão (1883) ou Segura/WebSocket (outras).</small>
+                <small class="form-text text-muted">A porta define o tipo de conexão: TCP padrão (1883) ou
+                    Segura/WebSocket (outras).</small>
             </div>
 
             <div class="form-group mb-3">
                 <label asp-for="MqttTopicWildcard" class="form-label"></label>
                 <input asp-for="MqttTopicWildcard" class="form-control" />
                 <span asp-validation-for="MqttTopicWildcard" class="text-danger"></span>
-                <small class="form-text text-muted">Ex: <code>vigilant/data/#</code> (o `#` capta todos os sub-tópicos)</small>
+                <small class="form-text text-muted">Ex: <code>vigilant/data/#</code> (o `#` capta todos os
+                    sub-tópicos)</small>
             </div>
 
             <div class="form-group mt-4 text-end">

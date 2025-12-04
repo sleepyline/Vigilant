@@ -3,24 +3,30 @@
     ViewData["Title"] = "Colaboradores";
 }
 
-<div class="page-header">
-    <h1 class="page-title">Colaboradores</h1>
-    <div class="breadcrumb">
-        <a href="@Url.Action("Index", "Home")">Dashboard</a>
-        <span class="separator">/</span>
-        <span class="active">Colaboradores</span>
+
+<div class="PageFlex">
+    <div class="page-header">
+        <h1 class="page-title">Colaboradores</h1>
+        <div class="breadcrumb">
+            <a href="@Url.Action("Index", "Home")">Dashboard</a>
+            <span class="separator">/</span>
+            <span class="active">Colaboradores</span>
+        </div>
     </div>
+@if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+{
+    <div class="page-actions">
+        <div></div>
+        <button type="button" class="btn-primary" id="btnAddColaborador" data-action-type="create-modal"
+            data-url="@Url.Action("Create", "Colaboradores")" data-title="Adicionar Novo Colaborador"
+            data-form-id="colaboradorForm">
+            <i class="fas fa-plus"></i>
+            Adicionar Novo Colaborador
+        </button>
+    </div>
+    }
 </div>
 
-<div class="page-actions">
-    <div></div>
-    <button type="button" class="btn-primary" id="btnAddColaborador" data-action-type="create-modal"
-        data-url="@Url.Action("Create", "Colaboradores")" data-title="Adicionar Novo Colaborador"
-        data-form-id="colaboradorForm">
-        <i class="fas fa-plus"></i>
-        Adicionar Novo Colaborador
-    </button>
-</div>
 
 <div class="table-container">
     <table class="data-table">
@@ -49,11 +55,14 @@
                     <td>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</td>
                     <td>
                         <div class="table-actions">
+                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                            {
                             <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@colaborador.Id"
                                 data-action-type="edit" data-controller-url="@Url.Content("~/Colaboradores")"
                                 data-title="Editar Colaborador #{ID}" data-form-id="editColaboradorForm">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            }
 
                             <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes"
                                 data-id="@colaborador.Id" data-action-type="details"
@@ -62,12 +71,15 @@
                                 <i class="fas fa-eye"></i>
                             </button>
 
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                            {
                             <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
                                 data-id="@colaborador.Id" data-action-type="delete"
                                 data-controller-url="@Url.Content("~/Colaboradores")"
                                 data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteColaboradorForm">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            }
                         </div>
                     </td>
                 </tr>

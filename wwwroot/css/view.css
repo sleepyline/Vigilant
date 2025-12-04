@@ -18,10 +18,20 @@ h1 {
   width: calc(100% - 250px);
 }
 
+.PageFlex {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 25px; 
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+    flex-wrap: wrap; /* Garante que os itens quebrem em telas menores */
+}
+
 .breadcrumb {
     font-size: 14px;
     color: #999;
     display: flex;
+    margin-bottom: 15px;
     gap: 8px;
     align-items: center;
 }

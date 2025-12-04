@@ -67,6 +67,8 @@
                         <li class="separator-item">
                             <hr class="menu-divider">
                         </li>
+                         @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                        {
                         <li>
                             <a href="@Url.Action("Index", "Relatorios")"
                                 class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Relatorios" ? "active" : "")">
@@ -74,9 +76,6 @@
                                 <span>Relatórios</span>
                             </a>
                         </li>
-
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                        {
                             <li>
                                 <a href="@Url.Action("Index", "Configuracoes")"
                                     class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Configuracoes" ? "active" : "")">

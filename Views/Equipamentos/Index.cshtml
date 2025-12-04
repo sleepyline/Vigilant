@@ -4,25 +4,31 @@
     ViewData["Title"] = "Equipamentos Monitorados";
 }
 
-<div class="page-header">
-    <h1 class="page-title">Equipamentos IoT</h1>
-    <div class="breadcrumb">
-        <a href="@Url.Action("Index", "Home")">Dashboard</a>
-        <span class="separator">/</span>
-        <span class="active">Equipamentos</span>
+<div class="PageFlex">
+    <div class="page-header">
+        <h1 class="page-title">Equipamentos IoT</h1>
+        <div class="breadcrumb">
+            <a href="@Url.Action("Index", "Home")">Dashboard</a>
+            <span class="separator">/</span>
+            <span class="active">Equipamentos</span>
+        </div>
     </div>
-</div>
 
-<div class="page-actions">
-    <div></div>
-    <div class="btts">
-        <button type="button" class="btn-primary btn-ajax-modal" title="Novo Equipamento" data-form-id="conectarForm"
-            data-action-type="Conectar" data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="Monitorar"
-            data-title="Conectar Novo Equipamento">
-            <i class="fas fa-plug"></i>
-             Conectar Novo Equipamento
-        </button>
-    </div>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+    {
+        <div class="page-actions">
+            <div></div>
+            <div class="btts">
+                <button type="button" class="btn-primary btn-ajax-modal" title="Novo Equipamento"
+                    data-form-id="conectarForm" data-action-type="Conectar"
+                    data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="Monitorar"
+                    data-title="Conectar Novo Equipamento">
+                    <i class="fas fa-plug"></i>
+                    Conectar Novo Equipamento
+                </button>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="table-container">
@@ -75,13 +81,15 @@
                                 data-title="Monitorar Equipamento #@equipamento.Id">
                                 <i class="fas fa-chart-line"></i>
                             </button>
-
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                            {
                             <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Desconectar"
                                 data-id="@equipamento.Id" data-action-type="delete"
                                 data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="DeleteConfirmation"
                                 data-title="Confirmação de Desconexão #@equipamento.Id" data-form-id="deleteForm">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            }
                         </div>
                     </td>
                 </tr>
