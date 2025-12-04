@@ -266,6 +266,7 @@
 .form-label {
     font-weight: 600;
     color: #495057;
+    margin-top: 15px;;
     margin-bottom: 6px;
     display: block;
 }
