@@ -66,8 +66,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Tiago/Documents/VigiLant/Views/Equipamentos/_CreateEquipamentoPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9DcmVhdGVFcXVpcGFtZW50b1BhcnRpYWwuY3NodG1s
+[E:/Tiago/Documents/VigiLant/Views/Equipamentos/_ConectarEquipamentoPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9Db25lY3RhckVxdWlwYW1lbnRvUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Tiago/Documents/VigiLant/Views/Equipamentos/_DeleteEquipamentoPartial.cshtml]
@@ -78,8 +78,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9EZXRhaWxzRXF1aXBhbWVudG9QYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/Tiago/Documents/VigiLant/Views/Equipamentos/_EditEquipamentoPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9FZGl0RXF1aXBhbWVudG9QYXJ0aWFsLmNzaHRtbA==
+[E:/Tiago/Documents/VigiLant/Views/Equipamentos/_MonitorarEquipamentoPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBhbWVudG9zXF9Nb25pdG9yYXJFcXVpcGFtZW50b1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Tiago/Documents/VigiLant/Views/Home/Index.cshtml]

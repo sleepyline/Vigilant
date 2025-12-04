@@ -39,11 +39,10 @@ builder.Services.AddSingleton<IMqttClient>(sp =>
 });
 
 // Servicos
-builder.Services.AddSingleton<IMqttService, MqttService>();
 builder.Services.AddSingleton<IHashService, HashService>();
+builder.Services.AddHostedService<MqttClientService>();
 
 // Registro do Serviço de Background (A ponte entre MQTT e SignalR)
-builder.Services.AddHostedService<MqttBackgroundService>();
 
 // Registro do SignalR
 builder.Services.AddSignalR();

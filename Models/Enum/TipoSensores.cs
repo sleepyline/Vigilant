@@ -2,14 +2,14 @@ namespace VigiLant.Models.Enum;
 
 public enum TipoSensores
 {
-    Temperatura,
-    Pressao,
-    QualidadeArGas,
-    Luminosidade,
-    Movimento,
-    Distancia,
-    NivelLiquido,
-    Vibracao,
-    CorrenteEletrica
+    Temperatura = 1 ,
+    Pressao = 2,
+    QualidadeArGas = 3,
+    Luminosidade = 4,
+    Movimento = 5,
+    Distancia = 6,
+    NivelLiquido = 7,
+    Vibracao = 8 ,
+    CorrenteEletrica = 9
 
 }

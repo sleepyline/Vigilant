@@ -1,33 +1,33 @@
-// VigiLant.Repository/EquipamentoRepository.cs
+// Repository/EquipamentoRepository.cs
+
 using VigiLant.Contratos;
 using VigiLant.Models;
-using VigiLant.Data; // Assumindo que seu DbContext está em VigiLant.Data
+using VigiLant.Models.Enum;
+using VigiLant.Data; // Importar BancoCtx
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace VigiLant.Repository
 {
-    // A implementação usa IEquipamentoRepository (definida anteriormente)
+    // A classe implementa a interface
     public class EquipamentoRepository : IEquipamentoRepository
     {
-        // Usa o DbContext injetado
-        private readonly BancoCtx _context; 
+        private readonly BancoCtx _context;
 
         public EquipamentoRepository(BancoCtx context)
         {
             _context = context;
         }
 
-        // --- LÓGICA DE GERAÇÃO MANUAL DE ID (Seguindo o padrão do RelatorioRepository) ---
+        // Lógica para encontrar o próximo ID disponível (mantendo seu padrão)
         private int GetNextAvailableId()
         {
-            // Nota: Esta abordagem de gerar IDs manualmente e procurar o próximo ID livre 
-            // é incomum e pode ter problemas de concorrência. O padrão é usar IDENTITY no BD.
-            var existingIds = _context.Equipamentos // Assumindo que o DbSet é 'Equipamentos'
-                                      .Select(e => e.Id)
-                                      .OrderBy(id => id)
-                                      .ToList();
+            var existingIds = _context.Equipamentos
+                                     .Select(e => e.Id)
+                                     .OrderBy(id => id)
+                                     .ToList();
 
             if (!existingIds.Any())
             {
@@ -35,62 +35,95 @@ namespace VigiLant.Repository
             }
 
             int nextId = 1;
-            
+
             foreach (var id in existingIds)
             {
                 if (id > nextId)
                 {
-                    return nextId; 
+                    return nextId;
                 }
                 nextId = id + 1;
             }
 
             return nextId;
         }
-        // ---------------------------------------------------------------------------------
 
+        // --- MÉTODOS CRUD ---
 
         public IEnumerable<Equipamento> GetAll()
         {
-            // Retorna todos os equipamentos.
             return _context.Equipamentos.ToList();
         }
 
-        public Equipamento GetById(int id)
+        public Equipamento? GetById(int id)
         {
-            // Busca um equipamento pelo ID.
             return _context.Equipamentos.Find(id);
         }
 
         public void Add(Equipamento equipamento)
         {
-            // 1. Gera o próximo ID manualmente antes de adicionar.
-            equipamento.Id = GetNextAvailableId(); 
-            
-            // 2. Adiciona ao contexto e salva as mudanças.
+            equipamento.Id = GetNextAvailableId();
             _context.Equipamentos.Add(equipamento);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
         }
 
         public void Update(Equipamento equipamento)
         {
-            // 1. Marca o estado da entidade como modificado.
             _context.Entry(equipamento).State = EntityState.Modified;
-            
-            // 2. Salva as mudanças.
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            // 1. Busca o equipamento.
             var equipamento = GetById(id);
-            
             if (equipamento != null)
             {
-                // 2. Remove do DbSet e salva as mudanças.
                 _context.Equipamentos.Remove(equipamento);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
+            }
+        }
+        
+        // --- MÉTODOS ESPECÍFICOS ---
+
+        // Método chamado pelo Controller (usuário clicou em Conectar)
+        public Equipamento Conectar(string identificadorUnico)
+        {
+            // Verifica se o identificador já existe para evitar duplicidade
+            if (_context.Equipamentos.Any(e => e.IdentificadorBroker == identificadorUnico))
+            {
+                throw new InvalidOperationException("Um equipamento com este identificador já está cadastrado.");
+            }
+
+            // Apenas cadastra o equipamento com status inicial (AGUARDANDO DADOS REAIS DO BROKER)
+            var novoEquipamento = new Equipamento
+            {
+                Nome = $"Equipamento NOVO - {identificadorUnico}",
+                Localizacao = "Aguardando dados iniciais do Broker",
+                TipoSensor = TipoSensores.Temperatura, // Um valor default, será atualizado
+                Status = StatusEquipament.AguardandoDados, 
+                UltimaAtualizacao = DateTime.Now,
+                IdentificadorBroker = identificadorUnico
+            };
+
+            Add(novoEquipamento); 
+
+            return novoEquipamento;
+        }
+
+        public void AtualizarDadosEmTempoReal(int id, StatusEquipament status, string localizacao, string nome, TipoSensores tipoSensor)
+        {
+            var existing = GetById(id);
+            if (existing != null)
+            {
+                // Atualiza os dados recebidos do broker/serviço MQTT
+                existing.Nome = nome;
+                existing.Localizacao = localizacao;
+                existing.TipoSensor = tipoSensor;
+                existing.Status = status;
+                existing.UltimaAtualizacao = DateTime.Now;
+
+                // Salva a alteração no banco
+                Update(existing);
             }
         }
     }

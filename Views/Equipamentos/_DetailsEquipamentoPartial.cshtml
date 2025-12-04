@@ -1,59 +1,58 @@
+@using VigiLant.Models.Enum
 @model VigiLant.Models.Equipamento
 
 <link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
 
 <div class="details-container">
+
     <div class="row mb-2">
-        <dt class="col-sm-4">Nome:</dt>
-        <dd class="col-sm-8">@Model.Nome</dd>
+        <dt class="col-sm-6">Nome:</dt>
+        <dd class="col-sm-6">@Model.Nome</dd>
     </div>
 
     <div class="row mb-2">
-        <dt class="col-sm-4">Localização:</dt>
-        <dd class="col-sm-8">@Model.Localizacao</dd>
-    </div>
-
-    <div class="row mb-2">
-        <dt class="col-sm-4">Tipo de Sensor:</dt>
-        <dd class="col-sm-8">@Model.TipoSensor</dd>
+        <dt class="col-sm-6">Identificador (Broker):</dt>
+        <dd class="col-sm-6">@Model.IdentificadorBroker</dd>
     </div>
     
-    <div class="SuperFlex mt-3">
-        <div class="row">
-            <div class="col-sm-6">Broker:</div>
-            <div class="col-sm-6">@Model.Endereco:@Model.Porta</div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6">Tópico de Medição:</div>
-            <div class="col-sm-6">@Model.Topico</div>
-        </div>
-        
-        <div class="row">
-            <div class="col-sm-6">Última Manutenção:</div>
-            <div class="col-sm-6">@(Model.DataUltimaManutencao.HasValue ? Model.DataUltimaManutencao.Value.ToShortDateString() : "N/A")</div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6">Status Atual:</div>
-            <div class="col-sm-6">
-                @{
-                    var statusClass = Model.Status switch
-                    {
-                        "Ativo" => "success",
-                        "Inativo" or "ErroInicial" => "danger",
-                        _ => "warning"
-                    };
-                }
-                <span class="status-badge @statusClass">@Model.Status</span>
-            </div>
-        </div>
+    <div class="row mb-2">
+        <dt class="col-sm-6">Localização:</dt>
+        <dd class="col-sm-6">@Model.Localizacao</dd>
+    </div>
+    
+    <div class="row mb-2">
+        <dt class="col-sm-6">Tipo de Sensor:</dt>
+        <dd class="col-sm-6">@Model.TipoSensor</dd>
     </div>
 
-</div>
+    <hr class="divider" />
+    
+    <div class="row mb-2">
+        <dt class="col-sm-6">Status Atual:</dt>
+        <dd class="col-sm-6">
+            @{
+                var statusClass = Model.Status switch
+                {
+                    StatusEquipament.Conectado => "success",
+                    StatusEquipament.Desconectado => "danger",
+                    StatusEquipament.Erro => "warning",
+                    _ => "info"
+                };
+            }
+            <span class="status-badge @statusClass">
+                @Model.Status
+            </span>
+        </dd>
+    </div>
 
-<div class="form-group mt-4 text-end">
-    <button type="button" class="btn-secondary" id="cancelModalButton">
-        <i class="fas fa-arrow-left"></i> Fechar Details
-    </button>
+    <div class="row mb-2">
+        <dt class="col-sm-6">Última Atualização:</dt>
+        <dd class="col-sm-6">@Model.UltimaAtualizacao.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Fechar
+        </button>
+    </div>
 </div>

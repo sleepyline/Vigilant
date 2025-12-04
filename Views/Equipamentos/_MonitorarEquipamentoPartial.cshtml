@@ -1,0 +1,116 @@
+@using VigiLant.Models.Enum
+@model VigiLant.Models.Equipamento
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<div class="details-container">
+
+    <div class="row mb-2">
+        <dt class="col-sm-6">Nome do Equipamento:</dt>
+        <dd class="col-sm-6" id="monitor-nome">@Model.Nome</dd>
+    </div>
+
+    <div class="row mb-2">
+        <dt class="col-sm-6">Localização:</dt>
+        <dd class="col-sm-6" id="monitor-localizacao">@Model.Localizacao</dd>
+    </div>
+    
+    <div class="row mb-2">
+        <dt class="col-sm-6">Tipo de Sensor:</dt>
+        <dd class="col-sm-6" id="monitor-tiposensor">@Model.TipoSensor</dd>
+    </div>
+
+    <div class="row mb-2">
+        <dt class="col-sm-6">Status Atual:</dt>
+        <dd class="col-sm-6">
+            @{
+                var statusClass = Model.Status switch
+                {
+                    StatusEquipament.Conectado => "success",
+                    StatusEquipament.Desconectado => "danger",
+                    StatusEquipament.Erro => "warning",
+                    _ => "info"
+                };
+            }
+            <span class="status-badge @statusClass" id="monitor-status-badge">@Model.Status</span>
+        </dd>
+    </div>
+
+    <div class="row mb-4">
+        <dt class="col-sm-6">Última Atualização:</dt>
+        <dd class="col-sm-6" id="monitor-ultima-atualizacao">@Model.UltimaAtualizacao.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+    </div>
+    
+    <div class="alert alert-info" role="alert" id="monitor-message">
+        <i class="fas fa-sync-alt"></i> Atualizando dados em tempo real...
+    </div>
+</div>
+
+<div class="form-group mt-4 text-end">
+    <button type="button" class="btn-secondary" id="cancelModalButton">
+        <i class="fas fa-arrow-left"></i> Fechar Monitoramento
+    </button>
+</div>
+
+@* Script para a funcionalidade de "Tempo Real" *@
+<script>
+    var equipamentoId = @Model.Id;
+    var intervalId;
+
+    function updateBadgeClass(status) {
+        let statusClass = 'info';
+        if (status === 'Conectado') statusClass = 'success';
+        else if (status === 'Desconectado') statusClass = 'danger';
+        else if (status === 'Erro') statusClass = 'warning';
+        
+        $('#monitor-status-badge').removeClass().addClass('status-badge ' + statusClass);
+    }
+
+    function fetchRealTimeData() {
+        $.ajax({
+            url: '@Url.Action("GetRealTimeData", "Equipamentos")',
+            type: 'GET',
+            data: { id: equipamentoId },
+            success: function(data) {
+                // Atualiza os campos na tela
+                $('#monitor-nome').text(data.nome);
+                $('#monitor-localizacao').text(data.localizacao);
+                $('#monitor-tiposensor').text(data.tipoSensor);
+                $('#monitor-ultima-atualizacao').text(data.ultimaAtualizacao);
+                
+                // Atualiza o status e a classe do badge
+                $('#monitor-status-badge').text(data.status);
+                updateBadgeClass(data.status);
+
+                $('#monitor-message').removeClass('alert-danger').addClass('alert-info').html('<i class="fas fa-sync-alt"></i> Dados atualizados com sucesso em ' + data.ultimaAtualizacao);
+            },
+            error: function(xhr) {
+                console.error("Erro ao buscar dados em tempo real: " + xhr.statusText);
+                $('#monitor-message').removeClass('alert-info').addClass('alert-danger').html('⚠️ Erro ao buscar dados. Tente fechar e reabrir.');
+                // Não paramos o intervalo para que a atualização possa retornar se o erro for temporário.
+            }
+        });
+    }
+
+    // Inicia a requisição AJAX a cada 5 segundos
+    // O ideal seria usar SignalR, mas o AJAX é uma forma mais simples de simular o "tempo real"
+    intervalId = setInterval(fetchRealTimeData, 5000); 
+
+    // Garante que o intervalo seja limpo quando a modal for fechada
+    // Se você estiver usando o 'Partialjs.js', você precisará garantir que,
+    // ao fechar a modal, esta função seja chamada
+    window.clearMonitorInterval = function() {
+        clearInterval(intervalId);
+        console.log("Monitoramento em tempo real parado.");
+    };
+    
+    // Adiciona o listener para limpar o intervalo ao clicar no botão de fechar modal
+    // Você pode precisar integrar isso ao seu 'Partialjs.js' para o evento de fechar a modal principal
+    $('#cancelModalButton').on('click', function() {
+        window.clearMonitorInterval();
+        // Assumindo que seu Partialjs.js fecha a modal após este clique
+    });
+    
+    // Chama a primeira atualização imediatamente
+    fetchRealTimeData();
+</script>

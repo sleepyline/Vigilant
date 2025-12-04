@@ -1,0 +1,33 @@
+@model VigiLant.Models.Equipamento
+
+<link rel="stylesheet" href="/css/viewrevo.css" asp-append-version="true" />
+
+<form asp-action="Conectar" method="post" id="conectarForm">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <p class="mb-4">
+        Para iniciar o monitoramento, insira o <b>Identificador Único</b> (ID/Token de Conexão) fornecido pelo seu equipamento/broker. Ao clicar em **Conectar**, o sistema enviará a solicitação e registrará o equipamento no banco de dados.
+    </p>
+
+    <div class="form-group mb-3">
+        <label for="identificador" class="form-label">Identificador Único do Equipamento</label>
+        <input type="text" id="identificador" name="identificador" class="form-control" 
+               placeholder="Ex: Sensor-Temp-7812-TOKEN" required />
+
+        <span class="text-danger">@Html.ValidationMessage("identificador")</span>
+    </div>
+
+    <div class="alert alert-info mt-4" role="alert">
+        <i class="fas fa-info-circle"></i> O sistema fará a conexão inicial com o broker para obter os dados de registro.
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-plug"></i> Conectar e Cadastrar
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalButton">
+            <i class="fas fa-arrow-left"></i> Cancelar
+        </button>
+    </div>
+</form>
