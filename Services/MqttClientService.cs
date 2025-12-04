@@ -9,8 +9,8 @@ using MQTTnet;
 using MQTTnet.Client;
 using Newtonsoft.Json;
 using VigiLant.Contratos;
-using VigiLant.Models.Payload; 
-using VigiLant.Models.Enum; 
+using VigiLant.Models.Payload;
+using VigiLant.Models.Enum;
 
 namespace VigiLant.Services
 {
@@ -32,7 +32,7 @@ namespace VigiLant.Services
             _serviceProvider = serviceProvider;
             _mqttFactory = new MqttFactory();
             _mqttClient = _mqttFactory.CreateMqttClient();
-            
+
             _mqttClient.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
             _mqttClient.DisconnectedAsync += HandleDisconnectedAsync;
         }
@@ -51,21 +51,22 @@ namespace VigiLant.Services
                         {
                             var configRepository = scope.ServiceProvider.GetRequiredService<IAppConfigRepository>();
                             var config = configRepository.GetConfig();
-                            
+
                             _mqttHost = config.MqttHost;
-                            _mqttPort = config.MqttPort;
+                            // CONVERSÃO EXPLÍCITA DE ENUM PARA INT
+                            _mqttPort = (int)config.MqttPort;
                             _mqttTopicWildcard = config.MqttTopicWildcard;
-                            
-                            _logger.LogInformation($"Configurações carregadas: Host={_mqttHost}, Topic={_mqttTopicWildcard}");
+
+                            _logger.LogInformation($"Configurações carregadas: Host={_mqttHost}, Porta={_mqttPort}, Topic={_mqttTopicWildcard}");
                         }
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Erro ao carregar configurações do AppConfigRepository. Tentando novamente em 10 segundos...");
                         await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-                        continue; 
+                        continue;
                     }
-                    
+
                     // 2. TENTA CONECTAR COM AS NOVAS CONFIGURAÇÕES
                     try
                     {
@@ -74,7 +75,7 @@ namespace VigiLant.Services
                             .WithClientId(Guid.NewGuid().ToString())
                             .WithCleanSession()
                             .Build();
-                        
+
                         var result = await _mqttClient.ConnectAsync(options, stoppingToken);
 
                         if (result.ResultCode == MQTTnet.Client.MqttClientConnectResultCode.Success)
@@ -95,7 +96,7 @@ namespace VigiLant.Services
                         _logger.LogError(ex, "Erro ao conectar ou subscrever ao Broker MQTT.");
                     }
                 }
-                
+
                 // Espera 5 segundos antes de verificar a conexão novamente
                 await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
             }
@@ -105,7 +106,7 @@ namespace VigiLant.Services
         {
             _logger.LogWarning($"Desconectado do Broker MQTT. Tentando reconectar em 5 segundos...");
             // Não precisamos de um await aqui, o loop ExecuteAsync cuidará da reconexão.
-            await Task.Delay(TimeSpan.FromSeconds(5)); 
+            await Task.Delay(TimeSpan.FromSeconds(5));
         }
 
         private async Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)

@@ -1,4 +1,6 @@
 @model VigiLant.Models.AppConfig
+@using VigiLant.Models.Enum // Necessário para acessar o Enum MqttPorta
+
 @{
     ViewData["Title"] = "Configurações do Sistema";
 }
@@ -37,12 +39,17 @@
                 <input asp-for="MqttHost" class="form-control" />
                 <span asp-validation-for="MqttHost" class="text-danger"></span>
             </div>
-
+            
+            {{-- NOVO CAMPO: SELEÇÃO DA PORTA POR ENUM --}}
             <div class="form-group mb-3">
                 <label asp-for="MqttPort" class="form-label"></label>
-                <input asp-for="MqttPort" type="number" class="form-control" />
+                {{-- Usando o Helper para gerar opções do Enum com base no DisplayName --}}
+                <select asp-for="MqttPort" asp-items="Html.GetEnumSelectList<MqttPorta>()"
+                    class="form-select"></select>
                 <span asp-validation-for="MqttPort" class="text-danger"></span>
+                <small class="form-text text-muted">A porta define o tipo de conexão: TCP padrão (1883) ou Segura/WebSocket (outras).</small>
             </div>
+            {{-- FIM NOVO CAMPO --}}
 
             <div class="form-group mb-3">
                 <label asp-for="MqttTopicWildcard" class="form-label"></label>

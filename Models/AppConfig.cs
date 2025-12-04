@@ -1,6 +1,5 @@
-// Models/AppConfig.cs
-
 using System.ComponentModel.DataAnnotations;
+using VigiLant.Models.Enum;
 
 namespace VigiLant.Models
 {
@@ -10,6 +9,6 @@ namespace VigiLant.Models
 
         public string MqttHost { get; set; } = "broker.emqx.io"; 
         public string MqttTopicWildcard { get; set; } = "vigilant/data/#"; 
-        public int MqttPort { get; set; } = 1883; 
+        public MqttPorta MqttPort { get; set; }  = MqttPorta.Porta1883;
     }
 }
