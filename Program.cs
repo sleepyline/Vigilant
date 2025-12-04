@@ -29,6 +29,7 @@ builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRelatorioRepository, RelatorioRepository>();
+builder.Services.AddScoped<IAppConfigRepository, AppConfigRepository>();
 
 // Registra a Factory e o Cliente MQTT como Singleton (devem ser persistentes)
 builder.Services.AddSingleton<MqttFactory>();
