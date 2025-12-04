@@ -2,6 +2,7 @@
 @model IEnumerable<VigiLant.Models.Equipamento>
 @{
     ViewData["Title"] = "Equipamentos Monitorados";
+    var hasRelatorios = Model.Any();
 }
 
 <div class="PageFlex">
@@ -44,58 +45,69 @@
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var equipamento in Model)
-            {
-                <tr>
-                    <td>#@equipamento.Id</td>
-                    <td>@equipamento.Nome</td>
-                    <td>@equipamento.IdentificadorBroker</td>
-                    <td>@equipamento.Localizacao</td>
-                    <td>
-                        @{
-                            var statusClass = equipamento.Status switch
-                            {
-                                StatusEquipament.Conectado => "success",
-                                StatusEquipament.Desconectado => "danger",
-                                StatusEquipament.Erro => "warning",
-                                _ => "info"
-                            };
-                        }
-                        <span class="status-badge @statusClass">
-                            @equipamento.Status
-                        </span>
-                    </td>
-                    <td>@equipamento.UltimaAtualizacao.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                    <td>
-                        <div class="table-actions">
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Detalhes" data-id="@equipamento.Id"
-                                data-action-type="details" data-controller-url="@Url.Content("~/Equipamentos")"
-                                data-url-action="Details" data-title="Detalhes do Equipamento #@equipamento.Id">
-                                <i class="fas fa-eye"></i>
-                            </button>
-
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Monitorar"
-                                data-id="@equipamento.Id" data-action-type="details"
-                                data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="Monitorar"
-                                data-title="Monitorar Equipamento #@equipamento.Id">
-                                <i class="fas fa-chart-line"></i>
-                            </button>
-                            @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                            {
-                            <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Desconectar"
-                                data-id="@equipamento.Id" data-action-type="delete"
-                                data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="DeleteConfirmation"
-                                data-title="Confirmação de Desconexão #@equipamento.Id" data-form-id="deleteForm">
-                                <i class="fas fa-trash"></i>
-                            </button>
+        @if (hasRelatorios)
+        {
+            <tbody>
+                @foreach (var equipamento in Model)
+                {
+                    <tr>
+                        <td>#@equipamento.Id</td>
+                        <td>@equipamento.Nome</td>
+                        <td>@equipamento.IdentificadorBroker</td>
+                        <td>@equipamento.Localizacao</td>
+                        <td>
+                            @{
+                                var statusClass = equipamento.Status switch
+                                {
+                                    StatusEquipament.Conectado => "success",
+                                    StatusEquipament.Desconectado => "danger",
+                                    StatusEquipament.Erro => "warning",
+                                    _ => "info"
+                                };
                             }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
+                            <span class="status-badge @statusClass">
+                                @equipamento.Status
+                            </span>
+                        </td>
+                        <td>@equipamento.UltimaAtualizacao.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>
+                            <div class="table-actions">
+                                <button type="button" class="btn-icon btn-ajax-modal" title="Detalhes" data-id="@equipamento.Id"
+                                    data-action-type="details" data-controller-url="@Url.Content("~/Equipamentos")"
+                                    data-url-action="Details" data-title="Detalhes do Equipamento #@equipamento.Id">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                                <button type="button" class="btn-icon btn-ajax-modal" title="Monitorar"
+                                    data-id="@equipamento.Id" data-action-type="details"
+                                    data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="Monitorar"
+                                    data-title="Monitorar Equipamento #@equipamento.Id">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                                {
+                                    <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Desconectar"
+                                        data-id="@equipamento.Id" data-action-type="delete"
+                                        data-controller-url="@Url.Content("~/Equipamentos")" data-url-action="DeleteConfirmation"
+                                        data-title="Confirmação de Desconexão #@equipamento.Id" data-form-id="deleteForm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
     </table>
+    @if (!hasRelatorios)
+    {
+        <div class="empty-list-message">
+            <i class="fas fa-file-excel icon-large"></i>
+            <h3>Nenhum Equipamento Encontrado</h3>
+            <p>Clique em <b>Conectar Novo Equipamento</b> para iniciar a coleta de dados e monitoramento</p>
+        </div>
+    }
 </div>
 
 <div id="ajax-modal" class="modal-overlay">

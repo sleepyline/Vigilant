@@ -288,3 +288,33 @@ h1 {
     }
 }
 
+/* --- ESTILO PARA TABELA/LISTA VAZIA --- */
+.empty-list-message {
+    text-align: center;
+    padding: 60px 20px;
+    margin: 30px auto;
+    background-color: #f8f9fa; /* Fundo cinza claro */
+    border: 1px dashed #ced4da; /* Borda tracejada */
+    border-radius: 12px;
+    max-width: 600px;
+}
+
+.empty-list-message .icon-large {
+    font-size: 3.5rem;
+    color: #ff0000; /* Cor primária para destaque */
+    margin-bottom: 20px;
+}
+
+.empty-list-message h3 {
+    font-size: 1.5rem;
+    color: #343a40;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.empty-list-message p {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+

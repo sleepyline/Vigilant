@@ -3,6 +3,7 @@
 @model IEnumerable<VigiLant.Models.Risco>
 @{
     ViewData["Title"] = "Riscos";
+    var hasRelatorios = Model.Any();
 }
 
 <div class="PageFlex">
@@ -48,65 +49,76 @@
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var risco in Model)
-            {
-                <tr>
-                    <td>#@risco.Id</td>
-                    <td>@risco.Nome</td>
-                    <td>@(risco.Descricao.Length > 50 ? risco.Descricao.Substring(0, 50) + "..." : risco.Descricao)</td>
-                    <td>@risco.Equipamento</td>
-                    <td>
-                        @{
-                            var gravidadeClass = risco.NivelGravidade switch
-                            {
-                                NivelSeveridade.Critico => "danger",
-                                NivelSeveridade.Alto => "danger",
-                                NivelSeveridade.Medio => "warning",
-                                _ => "success"
-                            };
-                        }
-                        <span class="status-badge @gravidadeClass nivel-gravidade">
-                            @risco.NivelGravidade
-                        </span>
-                    </td>
-                    <td>
-                        <span class="status-badge info">
-                            @risco.Status
-                        </span>
-                    </td>
-                    <td>@risco.DataIdentificacao.ToShortDateString()</td>
-                    <td>
-                        <div class="table-actions">
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                        {
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@risco.Id"
-                                data-action-type="edit" data-controller-url="@Url.Content("~/Riscos")"
-                                data-title="Editar Risco #{ID}" data-form-id="editRiscoForm">
-                                <i class="fas fa-edit"></i>
-                            </button>
+        @if (hasRelatorios)
+        {
+            <tbody>
+                @foreach (var risco in Model)
+                {
+                    <tr>
+                        <td>#@risco.Id</td>
+                        <td>@risco.Nome</td>
+                        <td>@(risco.Descricao.Length > 50 ? risco.Descricao.Substring(0, 50) + "..." : risco.Descricao)</td>
+                        <td>@risco.Equipamento</td>
+                        <td>
+                            @{
+                                var gravidadeClass = risco.NivelGravidade switch
+                                {
+                                    NivelSeveridade.Critico => "danger",
+                                    NivelSeveridade.Alto => "danger",
+                                    NivelSeveridade.Medio => "warning",
+                                    _ => "success"
+                                };
                             }
+                            <span class="status-badge @gravidadeClass nivel-gravidade">
+                                @risco.NivelGravidade
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge info">
+                                @risco.Status
+                            </span>
+                        </td>
+                        <td>@risco.DataIdentificacao.ToShortDateString()</td>
+                        <td>
+                            <div class="table-actions">
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                                {
+                                    <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@risco.Id"
+                                        data-action-type="edit" data-controller-url="@Url.Content("~/Riscos")"
+                                        data-title="Editar Risco #{ID}" data-form-id="editRiscoForm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                }
 
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes" data-id="@risco.Id"
-                                data-action-type="details" data-controller-url="@Url.Content("~/Riscos")"
-                                data-title="Detalhes do Risco #{ID}">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                                <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes" data-id="@risco.Id"
+                                    data-action-type="details" data-controller-url="@Url.Content("~/Riscos")"
+                                    data-title="Detalhes do Risco #{ID}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
 
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                        {
-                            <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
-                                data-id="@risco.Id" data-action-type="delete" data-controller-url="@Url.Content("~/Riscos")"
-                                data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteForm">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                                {
+                                    <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
+                                        data-id="@risco.Id" data-action-type="delete" data-controller-url="@Url.Content("~/Riscos")"
+                                        data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteForm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
     </table>
+    @if (!hasRelatorios)
+    {
+        <div class="empty-list-message">
+            <i class="fas fa-file-excel icon-large"></i>
+            <h3>Nenhum Risco Encontrado</h3>
+            <p>Clique em <b>Adicionar Novo Risco Manualmente</b> para registrar, classificar e iniciar o monitoramento e o tratamento do novo evento de risco.</p>
+        </div>
+    }
 </div>
 
 <div id="ajax-modal" class="modal-overlay">

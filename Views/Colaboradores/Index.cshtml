@@ -1,6 +1,7 @@
 @model IEnumerable<VigiLant.Models.Colaborador>
 @{
     ViewData["Title"] = "Colaboradores";
+    var hasRelatorios = Model.Any();
 }
 
 
@@ -13,17 +14,17 @@
             <span class="active">Colaboradores</span>
         </div>
     </div>
-@if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-{
-    <div class="page-actions">
-        <div></div>
-        <button type="button" class="btn-primary" id="btnAddColaborador" data-action-type="create-modal"
-            data-url="@Url.Action("Create", "Colaboradores")" data-title="Adicionar Novo Colaborador"
-            data-form-id="colaboradorForm">
-            <i class="fas fa-plus"></i>
-            Adicionar Novo Colaborador
-        </button>
-    </div>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+    {
+        <div class="page-actions">
+            <div></div>
+            <button type="button" class="btn-primary" id="btnAddColaborador" data-action-type="create-modal"
+                data-url="@Url.Action("Create", "Colaboradores")" data-title="Adicionar Novo Colaborador"
+                data-form-id="colaboradorForm">
+                <i class="fas fa-plus"></i>
+                Adicionar Novo Colaborador
+            </button>
+        </div>
     }
 </div>
 
@@ -42,50 +43,61 @@
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var colaborador in Model)
-            {
-                <tr>
-                    <td>#@colaborador.Id</td>
-                    <td><strong>@colaborador.Nome</strong></td>
-                    <td>@colaborador.Cargo</td>
-                    <td>@colaborador.Departamento</td>
-                    <td>@colaborador.Email</td>
-                    <td>@colaborador.Telefone</td>
-                    <td>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</td>
-                    <td>
-                        <div class="table-actions">
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                            {
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@colaborador.Id"
-                                data-action-type="edit" data-controller-url="@Url.Content("~/Colaboradores")"
-                                data-title="Editar Colaborador #{ID}" data-form-id="editColaboradorForm">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            }
+        @if (hasRelatorios)
+        {
+            <tbody>
+                @foreach (var colaborador in Model)
+                {
+                    <tr>
+                        <td>#@colaborador.Id</td>
+                        <td><strong>@colaborador.Nome</strong></td>
+                        <td>@colaborador.Cargo</td>
+                        <td>@colaborador.Departamento</td>
+                        <td>@colaborador.Email</td>
+                        <td>@colaborador.Telefone</td>
+                        <td>@colaborador.DataAdmissao.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <div class="table-actions">
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                                {
+                                    <button type="button" class="btn-icon btn-ajax-modal" title="Editar" data-id="@colaborador.Id"
+                                        data-action-type="edit" data-controller-url="@Url.Content("~/Colaboradores")"
+                                        data-title="Editar Colaborador #{ID}" data-form-id="editColaboradorForm">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                }
 
-                            <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes"
-                                data-id="@colaborador.Id" data-action-type="details"
-                                data-controller-url="@Url.Content("~/Colaboradores")"
-                                data-title="Detalhes do Colaborador #{ID}">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                                <button type="button" class="btn-icon btn-ajax-modal" title="Ver Detalhes"
+                                    data-id="@colaborador.Id" data-action-type="details"
+                                    data-controller-url="@Url.Content("~/Colaboradores")"
+                                    data-title="Detalhes do Colaborador #{ID}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
 
-                            @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
-                            {
-                            <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
-                                data-id="@colaborador.Id" data-action-type="delete"
-                                data-controller-url="@Url.Content("~/Colaboradores")"
-                                data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteColaboradorForm">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Gestor"))
+                                {
+                                    <button type="button" class="btn-icon btn-ajax-modal text-danger" title="Excluir"
+                                        data-id="@colaborador.Id" data-action-type="delete"
+                                        data-controller-url="@Url.Content("~/Colaboradores")"
+                                        data-title="Confirmação de Exclusão #{ID}" data-form-id="deleteColaboradorForm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
     </table>
+    @if (!hasRelatorios)
+    {
+        <div class="empty-list-message">
+            <i class="fas fa-file-excel icon-large"></i>
+            <h3>Nenhum Colaborador Encontrado</h3>
+            <p>Clique em <b>Adicionar Novo Colaborador</b> para vincular o usuário e configurar suas permissões de acesso e monitoramento.</p>
+        </div>
+    }
 </div>
 
 <div id="ajax-modal" class="modal-overlay">
