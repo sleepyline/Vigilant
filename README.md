@@ -12,6 +12,7 @@ O projeto VIGILANT é uma solução de software desenvolvida para modernizar e t
 * [Inicio Rápido](#Inicio_Rápido)
 * [Problema](#Problema )
 * [Design & Extensibilidade](#Design_&_Extensibilidade)
+* [Testes de Sistema](#Testes)
 * [Recursos-Chave](#Recursos-Chave)
 * [Licença](#Licença)
 * [Equipe](#Equipe)
@@ -52,6 +53,18 @@ A gestão de riscos na Renault era baseada em processos manuais e reativos, resu
 > **A Solução: Vigilant - Gestão Proativa:** O Vigilant é uma plataforma modular desenhada para ser o centro de controle da segurança industrial, alinhando a Renault aos conceitos da Indústria 4.0.
 
 ## Design_&_Extensibilidade
+
+## Testes
+Para testar a conexão do broker sem um sensor e asp, configure o MQTT Broker do sistema ( mqttHost, MqttPort e MqttTopicWildcard)
+logo apos use o padrão:
+
+{
+    "Identificador": "SENS_001",
+    "Nome": "SENSOR TREE",
+    "Localizacao": "Rack Principal",
+    "TipoSensor": 5,
+    "Status": 1
+}
 
 ## Recursos-Chave
 
